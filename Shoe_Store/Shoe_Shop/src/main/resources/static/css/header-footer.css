@@ -1,0 +1,272 @@
+* {
+    scroll-behavior: smooth;
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+.main{
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Header & Nav*/
+header{
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 8vh;
+    background-color: hsl(0, 0%, 100%);
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    border-bottom: 1px solid rgb(255, 151, 151);
+}
+header a{
+    text-decoration: none;
+    color: black;
+}
+header a:hover{
+    color: red;
+}
+.header-container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+.header-menu{
+    display: flex;
+    flex-direction: row;
+    margin-left: 5%;
+}
+.header-rightPart{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top: 0;
+    right: 50px;
+    height: 8vh;
+}
+.account{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    width: auto;
+}
+
+.header-item, .cart{
+    width: 100px;
+    margin-left: 5%;
+    margin-top: 10px;
+    text-align: center;
+}
+.cart:hover{
+    color: red;
+}
+#logo{
+    width: 120px;
+    margin-left: 50px;
+    margin-top: 10px;
+}
+#logo img{
+    width: 50px;
+    height: 40px;
+}
+
+.search-box {
+	width: 70px;
+	height: 70%;
+    margin-top: 10px;
+	background-color: #f3f3f3;
+	position: relative;
+	overflow: hidden;
+	transition: all 0.5s ease;
+	border-radius: 15px;
+}
+
+.search-box.open {
+	width: 350px;
+}
+
+.search-input {
+	width: 100%;
+    height: 110%;
+	border: none;
+	box-shadow: none;
+	background: transparent;
+	color: #000000;
+    padding: 20px;
+	font-size: 15px;
+    margin-top: -2px;
+    margin-left: -5px;
+}
+
+.search-btn {
+	color: #000000;
+	outline: none;
+	border: none;
+	width: 70px;
+    height: 100%;
+	position: absolute;
+	right: 0;
+	top: 0;
+	cursor: pointer;
+	font-size: 15px;
+}
+.search-btn:hover{
+    color: red;
+}
+
+.header-cart img{
+    height: 40px;
+    width: 40px;
+}
+#shop-icon{
+    height: 50px;
+    width: 50px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .header-menu{
+        display: none;
+    }
+    #searchBar{
+        width: 0;
+    }
+}
+
+.shopNow-btn {
+    text-align:center;
+    width: 180px;
+    height: 45px;
+    margin: 20px;
+    border: none;
+    background-color: rgb(210, 0, 0);
+    transition: transform 0.3s ease;
+}
+.shopNow-btn{
+    text-decoration: none;
+    color: white;
+}
+.shopNow-btn:hover{
+    transform: scale(1.02)
+}
+
+/* footer */
+footer{
+    width: 100%;
+    position: relative;
+    bottom: 0;
+}
+.footer-top{
+    display: flex;
+    margin-top: 5%;
+    margin-bottom: 10%;
+}
+.footer-links{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    gap: 10px 0;
+}
+.footer-links a, .footer-bottom a{
+    text-decoration: none;
+    color: black;
+}
+.footer-links a:hover, .footer-bottom a:hover{
+    color: red;
+}
+.footer-bottom{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 10%;
+    padding: 20px 0;
+    background-color: rgb(245, 245, 245);
+}
+@media screen and (min-width:768px) {
+    .footer-top{
+        flex-direction: row;
+        width: 80%;
+        margin-left: 10%;
+    }
+    .footer-bottom{
+        width: 100%;
+    }
+    .footer-top p{
+        text-align: justify;
+        width: 40%;
+    }
+}
+@media screen and (max-width:768px) {
+    .footer-top{
+        flex-direction: column;
+        width: 68%;
+        margin-left: 16%;
+    }
+    .footer-links a, .footer-bottom a{
+        font-size: 12px;
+    }
+    .footer-bottom{
+        padding: 10px 5%;
+    }
+    .footer-top p{
+        text-align: justify;
+        width: 100%;
+        margin-top: 5%;
+    }
+}
+/* a bar */
+@media screen and (min-width:768px) {
+    #a-bar p{
+        display: inline-block;
+        color:white;
+        text-align:center;
+    }
+}
+@media screen and (max-width:768px) {
+    #a-bar p{
+        color:white;
+        text-align:center;
+        margin-top: 10px;
+    }
+}
+/* Button scroll to top*/
+#scrollToTopBtn {
+    display: none;
+    position: fixed;
+    height: 45px;
+    width: 45px;
+    bottom: 10px;
+    right: 60px;
+    z-index: 99;
+    border: 1px solid red;
+    outline: none;
+    background-color: hsl(0, 0%, 100%);
+    color: rgb(255, 0, 0);
+    cursor: pointer;
+    border-radius: 100%;
+    transition: transform 0.5s ease;
+}
+
+#scrollToTopBtn:hover {
+    transform: translateY(-5px);
+    background-color: red;
+    color: white;
+}
+@media screen and (min-width:768px){
+    #scrollToTopBtn {
+        bottom: 10px;
+        right: 60px;
+    }
+}
+@media screen and (max-width:768px){
+    #scrollToTopBtn {
+        bottom: 20px;
+        right: 20px;
+    }
+}
