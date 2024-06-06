@@ -17,7 +17,15 @@ public class OrderService {
     }
 
     // GET
-    public Order getOrder(Integer id, Customer customer) {
+	public List<Order> getOrdersByCustomer(Customer customer) {
+		return orderRepository.findByCustomer(customer);
+	}
+
+    public Order getOrderByIdAndCustomer(Integer id, Customer customer) {
+		boolean exist = orderRepository.existsByIdAndCustomer(id, customer);
+        if(exist){
+            throw new IllegalStateException("Order does not exists!");
+        }
 		return orderRepository.findByIdAndCustomer(id, customer);
 	}
 
@@ -30,7 +38,7 @@ public class OrderService {
 		newOrder.setDate(new Date());
 		newOrder.setCustomer(customer);
 		newOrder.setShippingCost(gatherInfo.getShippingCostTotal());
-        newOrder.setStatus("Đang đặt hàng");
+        newOrder.setStatus("Đã đặt hàng!");
 		newOrder.setTax(0.0f);
         newOrder.setTotal(gatherInfo.getTotal() * (1 + newOrder.getTax()));
 		
@@ -55,8 +63,11 @@ public class OrderService {
 	}
 
     // DELETE
-    public void DeleteOrder(int id, Customer customer)
-    {
-        orderRepository.deleteByIdAndCustomer(id, customer);
+    public void DeleteOrder(int id, Customer customer){
+		Order order = orderRepository.findByIdAndCustomer(id, customer);
+		if(order == null){
+			throw new IllegalStateException("Order does not exists!");
+		}
+        orderRepository.delete(order);
     }
 }

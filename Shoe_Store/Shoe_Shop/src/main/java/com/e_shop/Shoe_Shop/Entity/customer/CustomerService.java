@@ -14,11 +14,9 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public Customer findCustomerById(int id) {
-        Customer customer = customerRepository.findById(id);
-        if (customer == null) {
-            throw new IllegalStateException("Customer with id: " + id + " does not exist!");
-        }
+    public Customer findCustomerById(Integer id) {
+        Customer customer = customerRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Customer with id: " + id + " does not exist!"));
         return customer;
     }
 
@@ -45,13 +43,21 @@ public class CustomerService {
 
     // POST
     public Customer createCustomer(Customer customer) {
+        boolean exist = customerRepository.existsByEmail(customer.getEmail());
+        if(exist){
+            throw new IllegalStateException("Customer with email: " + customer.getEmail() + " already exists!");
+        }
         return customerRepository.save(customer);
     }
 
     // DELETE
     public void deleteCustomerByIdAndEmail(int id, String email)
     {
-        customerRepository.delete(customerRepository.findByIdAndEmail(id, email));
+        Customer customer = customerRepository.findByIdAndEmail(id, email);
+        if(customer == null){
+            throw new IllegalStateException("Customer with email: " + email + " and id: " + id + " does not exist!");
+        }
+        customerRepository.delete(customer);
     }
 
     // PUT
@@ -62,7 +68,7 @@ public class CustomerService {
 
         if(newEmail != null && !newEmail.isBlank() && !Objects.equals(customer.getEmail(), newEmail))
         {
-            if(customerRepository.findByEmail(newEmail) != null)
+            if(customerRepository.existsByEmail(newEmail))
                 throw new IllegalStateException("Email taken! Please use another email!");
 
             customer.setEmail(newEmail);

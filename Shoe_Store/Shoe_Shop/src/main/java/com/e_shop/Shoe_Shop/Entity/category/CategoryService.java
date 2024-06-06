@@ -28,6 +28,11 @@ public class CategoryService {
     // POST
     public void addNewCategory(Category category)
     {
+        boolean exists = categoryRepository.existsById(category.getId());
+        if(exists)
+        {
+            throw new IllegalStateException("Category with id: " + category.getId() +" already exists!");
+        }
         categoryRepository.save(category);
     }
 

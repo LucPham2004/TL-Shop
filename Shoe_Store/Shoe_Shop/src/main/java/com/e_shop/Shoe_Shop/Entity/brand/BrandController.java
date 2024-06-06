@@ -33,7 +33,7 @@ public class BrandController {
         return brandService.addBrand(brand);
     }
 
-    @DeleteMapping(path = "/delete/{id}")
+    @DeleteMapping(path = "/{id}")
     public void deleteBrand(@PathVariable Integer id) {
         brandService.deleteBrand(id);
     }

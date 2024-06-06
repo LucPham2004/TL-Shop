@@ -98,8 +98,10 @@ public class ProductService {
 
     // CRUD Methods
     // GET
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDTO> getAllProducts() {
+        return productRepository.findAll().stream()
+        .map(this::convertToDTO)
+        .collect(Collectors.toList());
     }
 
     public ProductDTO getProductById(Integer id) {
@@ -111,7 +113,7 @@ public class ProductService {
     public List<ProductDTO> getProductsByBrand(int brandId) {
         boolean exists = brandRepository.existsById(brandId);
         if (!exists) {
-            throw new IllegalStateException("Brand with name: " + brandId + " doesn't exist!");
+            throw new IllegalStateException("Brand with id: " + brandId + " doesn't exist!");
         }
         List<Product> products = productRepository.findByBrandId(brandId);
         return products.stream()
@@ -122,7 +124,7 @@ public class ProductService {
     public List<ProductDTO> getProductsByCategory(Category category) {
         boolean exists = categoryRepository.existsById(category.getId());
         if (!exists) {
-            throw new IllegalStateException("Category with name: " + category + " doesn't exist!");
+            throw new IllegalStateException("Category with id: " + category.getId() + " doesn't exist!");
         }
         List<Product> products = productRepository.findByCategory(category);
         return products.stream()
@@ -140,8 +142,10 @@ public class ProductService {
     }
 
     // DELETE
-    public void deleteProduct(int id) {
-        productRepository.deleteById(id);
+    public void deleteProduct(Integer id) {
+        Product product = productRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+        productRepository.delete(product);
     }
 
     // PUT
