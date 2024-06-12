@@ -2,6 +2,7 @@ package com.e_shop.Shoe_Shop.Entity.customer;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,10 +42,10 @@ public class CustomerController {
     }
 
     // POST
-    @PostMapping
-    public void addNewCustomer(@RequestBody Customer customer)
-    {
-        customerService.createCustomer(customer);
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody Customer customer) {
+        Customer savedCustomer = customerService.createCustomer(customer);
+        return ResponseEntity.ok(savedCustomer);
     }
     
     // DELETE

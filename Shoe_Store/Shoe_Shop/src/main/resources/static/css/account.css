@@ -1,0 +1,72 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    margin-top: 5%;
+}
+.user-info , #editForms{
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 25%;
+    height: max-content;
+    margin-right: 5%;
+}
+.user-info input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+.user-info h2 {
+    margin-top: 0;
+}
+.user-info p {
+    margin: 5px 0;
+}
+.changeInfo-btn, #submitBtn{
+    text-align: center;
+    width: 180px;
+    height: 40px;
+    margin-top: 20px;
+    margin-left: 50px;
+    margin-bottom: 20px;
+    border: 1px solid red;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    transition: transform 0.3s ease;
+}
+.changeInfo-btn:hover, #submitBtn:hover{
+    color: white;
+    background-color: red;
+    transform: scale(1.02);
+}
+
+.orders {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 70%;
+    max-width: 800px;
+}
+.orders h2 {
+    margin-top: 0;
+}
+.order {
+    border-top: 1px solid #ddd;
+    padding: 10px 0;
+}
+.order:first-child {
+    border-top: none;
+}
+.order p {
+    margin: 5px 0;
+}
+.order p strong {
+    display: inline-block;
+    width: 150px;
+}
+.hidden{
+    display: none;
+}

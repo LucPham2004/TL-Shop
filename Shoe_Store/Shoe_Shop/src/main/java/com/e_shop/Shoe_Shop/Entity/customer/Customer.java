@@ -27,6 +27,9 @@ public class Customer {
 
     @Column(name = "customer_name")
     private String name;
+
+    @Column(name = "password")
+    private String password;
     
     @Column(name = "customer_email")
     private String email;
@@ -100,6 +103,30 @@ public class Customer {
     public String toString() {
         return "Customer [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", address="
                 + address + "]";
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(Set<Order> order) {
+        this.order = order;
+    }
+
+    public Set<Review> getReview() {
+        return review;
+    }
+
+    public void setReview(Set<Review> review) {
+        this.review = review;
     }
 
 }

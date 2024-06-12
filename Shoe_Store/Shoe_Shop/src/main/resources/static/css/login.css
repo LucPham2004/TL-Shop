@@ -1,0 +1,109 @@
+body{
+    margin: 0;
+}
+.container{
+    margin-top: 5%;
+}
+.login-form {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.form-item {
+    margin-bottom: 15px;
+}
+.form-item label {
+    display: block;
+    margin-bottom: 5px;
+}
+.form-item input, .form-item select {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+@media screen and (min-width: 414px) {
+    .login-form {
+        max-width: 500px;
+        margin: auto;
+        padding: 20px;
+    }
+}
+
+@media screen and (max-width: 414px) {
+    .login-form {
+        max-width: 300px;
+        margin: auto;
+        padding: 10px;
+    }
+}
+.form-item #login {
+    width: 98.5%;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid red;
+    border-radius: 5px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    cursor: pointer;
+}
+.form-item #login:hover {
+    background-color: red;
+    color: white;
+}
+
+#google-login, #facebook-login{
+    display: flex;
+    justify-content: start;
+    padding: 0;
+    margin-top: 30px;
+    border-radius: 20px;
+    background-color: white;
+    cursor: pointer;
+}
+#google_icon, #facebook_icon{
+    height: 30px;
+    width: 30px;
+}
+#google-login span, #facebook-login span{
+    margin-top: 6px;
+    margin-left: 10%;
+    font-weight: bold;
+    text-align: center;
+}
+@media screen and (min-width: 414px) {
+    #google-login, #facebook-login{
+        width: 25%;
+        margin-left: 16%;
+    }
+}
+
+@media screen and (max-width: 414px) {
+    #google-login, #facebook-login{
+        width: 35%;
+        font-size: 12px;
+        margin-left: 10%;
+    }
+}
+#google-login{
+    border: 1px solid red;
+}
+#facebook-login{
+    border: 1px solid blue;
+}
+#google-login:hover{
+    background-color: orange;
+    span{
+        color: white;
+    }
+}
+#facebook-login:hover{
+    background-color: blue;
+    span{
+        color: white;
+    }
+}

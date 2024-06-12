@@ -2,6 +2,7 @@ package com.e_shop.Shoe_Shop.Entity.customer;
 
 import java.util.*;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -9,9 +10,14 @@ import jakarta.transaction.Transactional;
 @Service
 public class CustomerService {
     private final CustomerRepository customerRepository;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
+    }
+
+    public boolean checkPassword(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
     public Customer findCustomerById(Integer id) {
@@ -43,10 +49,10 @@ public class CustomerService {
 
     // POST
     public Customer createCustomer(Customer customer) {
-        boolean exist = customerRepository.existsByEmail(customer.getEmail());
-        if(exist){
+        if(customerRepository.existsByEmail(customer.getEmail())){
             throw new IllegalStateException("Customer with email: " + customer.getEmail() + " already exists!");
         }
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         return customerRepository.save(customer);
     }
 

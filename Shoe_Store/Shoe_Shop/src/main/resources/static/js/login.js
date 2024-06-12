@@ -1,52 +1,39 @@
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
-  };
+document.addEventListener('DOMContentLoaded', () => {
+	const form = document.querySelector('.login-form');
 
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
+	form.addEventListener('submit', async (event) => {
+		event.preventDefault();
 
-  // Email/password login
-  document.getElementById('login-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+		const email = document.querySelector('#email').value;
+		const password = document.querySelector('#password').value;
 
-    auth.signInWithEmailAndPassword(email, password)
-      .then(userCredential => {
-        console.log('User signed in:', userCredential.user);
-      })
-      .catch(error => {
-        console.error('Error signing in:', error);
-      });
-  });
+		const loginData = {
+			email: email,
+			password: password
+		};
 
-  // Google login
-  document.getElementById('google-login').addEventListener('click', () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider)
-      .then(result => {
-        console.log('User signed in with Google:', result.user);
-      })
-      .catch(error => {
-        console.error('Error signing in with Google:', error);
-      });
-  });
+		try {
+			const response = await fetch('/api/auth/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(loginData)
+			});
 
-  // Facebook login
-  document.getElementById('facebook-login').addEventListener('click', () => {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    auth.signInWithPopup(provider)
-      .then(result => {
-        console.log('User signed in with Facebook:', result.user);
-      })
-      .catch(error => {
-        console.error('Error signing in with Facebook:', error);
-      });
-  });
+			if (!response.ok) {
+				throw new Error('Đăng nhập thất bại');
+			}
+
+			document.cookie = "userLoggedIn=true;path=/";
+			
+			alert('Đăng nhập thành công!');
+
+			window.location.href = '/index.html';
+
+		} catch (error) {
+			console.error('Có lỗi xảy ra:', error);
+			alert('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
+		}
+	});
+});
