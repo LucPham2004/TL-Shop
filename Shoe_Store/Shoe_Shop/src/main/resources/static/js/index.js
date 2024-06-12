@@ -1,9 +1,3 @@
-// Hiệu ứng thanh Tìm kiếm
-document.querySelector('.search-btn').addEventListener('click', function(){
-    this.parentElement.classList.toggle('open')
-	this.previousElementSibling.focus()
-})
-
 // Hàm Hiệu ứng cho các ảnh sản phẩm
 function applyFadeEffect(imgElement, hoverSrc, originSrc) {
     imgElement.addEventListener('mouseover', function () {
