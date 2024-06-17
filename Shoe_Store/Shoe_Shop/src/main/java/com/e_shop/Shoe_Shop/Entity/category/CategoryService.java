@@ -26,14 +26,16 @@ public class CategoryService {
     }
 
     // POST
-    public void addNewCategory(Category category)
+    public Category addNewCategory(String categoryName)
     {
-        boolean exists = categoryRepository.existsById(category.getId());
+        boolean exists = categoryRepository.existsByName(categoryName);
         if(exists)
         {
-            throw new IllegalStateException("Category with id: " + category.getId() +" already exists!");
+            throw new IllegalStateException("Category with name: " + categoryName +" already exists!");
         }
-        categoryRepository.save(category);
+        Category category = new Category();
+        category.setName(categoryName);
+        return categoryRepository.save(category);
     }
 
     // DELETE

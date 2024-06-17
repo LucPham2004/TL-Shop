@@ -1,11 +1,18 @@
 package com.e_shop.Shoe_Shop.Entity.product;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import com.e_shop.Shoe_Shop.Entity.brand.Brand;
 import com.e_shop.Shoe_Shop.Entity.brand.BrandRepository;
 import com.e_shop.Shoe_Shop.Entity.category.CategoryRepository;
@@ -18,7 +25,9 @@ import jakarta.transaction.Transactional;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
+    @Autowired
     private BrandRepository brandRepository;
+    @Autowired
     private CategoryRepository categoryRepository;
 
     public ProductService(ProductRepository productRepository) {
@@ -41,7 +50,7 @@ public class ProductService {
             product.getDiscountPercent(),
             product.getReviewCount(),
             product.getAverageRating(),
-            product.getBrand().getId(),
+            product.getBrand().getName(),
             product.getCategory().stream().map(Category::getName).collect(Collectors.toSet()),
             detailDTOs
         );
@@ -69,7 +78,7 @@ public class ProductService {
         product.setReviewCount(productDTO.getReviewCount());
         product.setAverageRating(productDTO.getAverageRating());
         
-        Brand brand = brandRepository.findById(productDTO.getBrandId());
+        Brand brand = brandRepository.findByName(productDTO.getBrandName());
         if (brand != null) {
             product.setBrand(brand);
         }
@@ -110,23 +119,23 @@ public class ProductService {
         return convertToDTO(product);
     }
 
-    public List<ProductDTO> getProductsByBrand(int brandId) {
-        boolean exists = brandRepository.existsById(brandId);
+    public List<ProductDTO> getProductsByBrand(String brandName) {
+        boolean exists = brandRepository.existsByName(brandName);
         if (!exists) {
-            throw new IllegalStateException("Brand with id: " + brandId + " doesn't exist!");
+            throw new IllegalStateException("Brand with name: " + brandName + " doesn't exist!");
         }
-        List<Product> products = productRepository.findByBrandId(brandId);
+        List<Product> products = productRepository.findByBrandName(brandName);
         return products.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<ProductDTO> getProductsByCategory(Category category) {
-        boolean exists = categoryRepository.existsById(category.getId());
+    public List<ProductDTO> getProductsByCategory(String categoryName) {
+        boolean exists = categoryRepository.existsByName(categoryName);
         if (!exists) {
-            throw new IllegalStateException("Category with id: " + category.getId() + " doesn't exist!");
+            throw new IllegalStateException("Category with name: " + categoryName + " doesn't exist!");
         }
-        List<Product> products = productRepository.findByCategory(category);
+        List<Product> products = productRepository.findByCategoryName(categoryName);
         return products.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -135,10 +144,46 @@ public class ProductService {
     // POST
     public ProductDTO saveProduct(ProductDTO productDTO) {
         Product product = convertToEntity(productDTO);
-        product.getDetails().forEach(detail -> detail.setProduct(product));
-        
-        Product savedProduct = productRepository.save(product);
-        return convertToDTO(savedProduct);
+        if(productRepository.existsByProductNameAndProductDescription(product.getProductName(), product.getProductDescription()))
+            throw new IllegalStateException("Product with name: " + product.getProductName() + 
+            " and description: " + product.getProductDescription() + " already exists!");
+        else{
+            product.getDetails().forEach(detail -> detail.setProduct(product));
+
+            Product savedProduct = productRepository.save(product);
+            return convertToDTO(savedProduct);
+        }
+    }
+
+    public String uploadImages(String productName, MultipartFile[] files) {
+        String uploadDir =  "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/Shoe_Shop/src/main/resources/static/img/products/" + productName;
+
+        File uploadDirFile = new File(uploadDir);
+        if (!uploadDirFile.exists()) {
+            uploadDirFile.mkdirs();
+        }
+
+        Path path = Paths.get(uploadDir);
+        try {
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Failed to create upload directory");
+        }
+
+        for (MultipartFile file : files) {
+            @SuppressWarnings("null")
+            String filePath = uploadDir + "/" + StringUtils.cleanPath(file.getOriginalFilename());
+            try {
+                file.transferTo(new File(filePath));
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new IllegalStateException("Failed to upload images");
+            }
+        }
+        return "Upload Images succesfully";
     }
 
     // DELETE
@@ -165,7 +210,7 @@ public class ProductService {
         productToUpdate.setAverageRating(productDTO.getAverageRating());
 
         // Update brand
-        Brand brand = brandRepository.findById(productDTO.getBrandId());
+        Brand brand = brandRepository.findByName(productDTO.getBrandName());
         if (brand != null) {
             productToUpdate.setBrand(brand);
         }

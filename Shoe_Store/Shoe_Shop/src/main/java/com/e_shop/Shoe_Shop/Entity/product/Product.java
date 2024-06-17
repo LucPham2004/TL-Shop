@@ -61,7 +61,7 @@ public class Product {
 	private Brand brand;
 
     @ManyToMany
-	@JoinTable( name = "product", 
+	@JoinTable( name = "product_categories", 
                 joinColumns = @JoinColumn(name = "product_id"), 
                 inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> category;

@@ -29,8 +29,8 @@ public class BrandController {
     }
 
     @PostMapping
-    public Brand createBrand(@RequestBody Brand brand) {
-        return brandService.addBrand(brand);
+    public Brand createBrand(@RequestBody String brandName) {
+        return brandService.addBrand(brandName);
     }
 
     @DeleteMapping(path = "/{id}")

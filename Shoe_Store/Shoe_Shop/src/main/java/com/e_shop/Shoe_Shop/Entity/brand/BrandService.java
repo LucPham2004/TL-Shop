@@ -27,12 +27,14 @@ public class BrandService {
     }
 
     // POST
-    public Brand addBrand(Brand brand) {
-        boolean exists = brandRepository.existsById(brand.getId());
+    public Brand addBrand(String brandName) {
+        boolean exists = brandRepository.existsByName(brandName);
         if(exists)
         {
-            throw new IllegalStateException("Brand with id: " + brand.getId() +" already exists!");
+            throw new IllegalStateException("Brand with name: " + brandName +" already exists!");
         }
+        Brand brand = new Brand();
+        brand.setName(brandName);
         return brandRepository.save(brand);
     }
 

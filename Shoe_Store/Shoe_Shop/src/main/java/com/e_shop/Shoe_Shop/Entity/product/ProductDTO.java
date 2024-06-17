@@ -2,9 +2,14 @@ package com.e_shop.Shoe_Shop.Entity.product;
 
 import java.util.Set;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 public class ProductDTO {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String productName;
     private String productDescription;
@@ -14,7 +19,7 @@ public class ProductDTO {
     private Float discountPercent;
     private Integer reviewCount;
     private Float averageRating;
-    private int brandId;
+    private String brandName;
     private Set<String> categories;
     private Set<ProductDetailDTO> details;
 
@@ -23,7 +28,7 @@ public class ProductDTO {
 
     public ProductDTO(Integer id, String productName, String productDescription, String productImage,
             Float productPrice, Integer productQuantity, Float discountPercent, Integer reviewCount,
-            Float averageRating, int brandId, Set<String> categories, Set<ProductDetailDTO> details) {
+            Float averageRating, String brandName, Set<String> categories, Set<ProductDetailDTO> details) {
         this.id = id;
         this.productName = productName;
         this.productDescription = productDescription;
@@ -33,7 +38,7 @@ public class ProductDTO {
         this.discountPercent = discountPercent;
         this.reviewCount = reviewCount;
         this.averageRating = averageRating;
-        this.brandId = brandId;
+        this.brandName = brandName;
         this.categories = categories;
         this.details = details;
     }
@@ -41,6 +46,8 @@ public class ProductDTO {
     // Inner class for ProductDetailDTO
     public static class ProductDetailDTO {
 
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
         private String color;
         private Integer size;
@@ -93,7 +100,7 @@ public class ProductDTO {
         return "ProductDTO [id=" + id + ", productName=" + productName + ", productDescription=" + productDescription
                 + ", productImage=" + productImage + ", productPrice=" + productPrice + ", productQuantity="
                 + productQuantity + ", discountPercent=" + discountPercent + ", reviewCount=" + reviewCount
-                + ", averageRating=" + averageRating + ", brandId=" + brandId + ", categories=" + categories
+                + ", averageRating=" + averageRating + ", brandName=" + brandName + ", categories=" + categories
                 + ", details=" + details + "]";
     }
 
@@ -169,12 +176,12 @@ public class ProductDTO {
         this.averageRating = averageRating;
     }
 
-    public int getBrandId() {
-        return brandId;
+    public String getBrandName() {
+        return brandName;
     }
 
-    public void setBrandName(int brandId) {
-        this.brandId = brandId;
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
     public Set<String> getCategories() {
