@@ -111,7 +111,9 @@ document.getElementById('addproductForm').addEventListener('submit', function(ev
     });
 });
 
-// POST Method creating brand
+// Brands Methods
+
+// Create Brand
 document.getElementById('addBrandForm').addEventListener('submit', function(event) {
     event.preventDefault();  
     var brandName = document.getElementById('brandName').value;
@@ -130,9 +132,38 @@ document.getElementById('addBrandForm').addEventListener('submit', function(even
     .catch((error) => {
         console.error('Error:', error);
     });
+
+    fetchBrandData();
 });
 
-// POST Method creating category
+// Delete Brand
+document.getElementById('deleteBrandForm').addEventListener('submit', function(event) {
+    event.preventDefault();  
+    var brandId = document.getElementById('brandId').value;
+
+    fetch(`/api/v1/brand/${brandId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: brandId
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+
+    fetchBrandData();
+});
+
+
+
+// Category Methods
+
+// Create Category
 document.getElementById('addCategoryForm').addEventListener('submit', function(event) {
     event.preventDefault();  
     var categoryName = document.getElementById('categoryName').value;
@@ -151,9 +182,32 @@ document.getElementById('addCategoryForm').addEventListener('submit', function(e
     .catch((error) => {
         console.error('Error:', error);
     });
+
+    fetchCategoryData();
 });
 
+// Delete Category
+document.getElementById('deleteCategoryForm').addEventListener('submit', function(event) {
+    event.preventDefault();  
+    var categoryId = document.getElementById('categoryId').value;
 
+    fetch(`/api/v1/category/${categoryId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: categoryId
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+    
+    fetchCategoryData();
+});
 
 
 

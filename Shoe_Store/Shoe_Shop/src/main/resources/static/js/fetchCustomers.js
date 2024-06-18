@@ -6,6 +6,7 @@ async function fetchCustomers() {
         const tbody = document.querySelector('#customer-table tbody');
         tbody.innerHTML = '';
 
+        // Show data in admin page
         customers.forEach(customer => {
             const tr = document.createElement('tr');
 

@@ -109,10 +109,38 @@ th {
 
 
 
+.horizontal-table {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+}
+.horizontal-table .column {
+    display: flex;
+    flex-direction: row;
+    margin: 0 10px;
+    border-bottom: 1px solid black;
+}
+.horizontal-table .column div {
+    border-right: 1px solid black;
+    width: 80px;
+    padding: 5px;
+}
+.horizontal-table .column .header {
+    font-weight: bold;
+    border-right: 2px solid black;
+}  
 
+.brandForms, .categoryForms{
+    display: flex;
+    flex-direction: row;
+}
 
-
-
+.brandForms #addBrand, 
+.brandForms #deleteBrand, 
+.categoryForms #addCategory, 
+.categoryForms #deleteCategory{
+    width: 50%;
+}
 
 
 

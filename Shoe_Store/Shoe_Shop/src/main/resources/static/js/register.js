@@ -32,6 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             alert('Đăng ký thành công!');
 
+            if(window.location.href ==  '/admin.html'){
+                fetchCustomers();
+            }
+
             if(window.location.href ==  '/register.html'){
                 window.location.href = '/login.html';
             }

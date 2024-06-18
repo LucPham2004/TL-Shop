@@ -6,6 +6,7 @@ async function fetchProducts() {
         const tbody = document.querySelector('#product-table tbody');
         tbody.innerHTML = '';
 
+        // Show products in admin page
         products.forEach(product => {
             const tr = document.createElement('tr');
 
@@ -27,6 +28,8 @@ async function fetchProducts() {
             tbody.appendChild(tr);
         });
 
+
+        // Show data in shop page
         const productsContainer = document.querySelector('.Products .products-container');
 
         products.forEach(product => {

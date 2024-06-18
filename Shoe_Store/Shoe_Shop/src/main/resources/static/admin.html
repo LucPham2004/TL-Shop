@@ -58,26 +58,28 @@
 										Thêm tài khoản
 									</button>
 									<div class="collapse" id="registerForm">
-										<div class="card card-body" id="signup_form">
-											<div class="form-item">
-												<label for="fullName">Họ và Tên:</label>
-												<input type="text" id="fullName" name="fullName">
-											</div>
-											<div class="form-item">
-												<label for="email">Email:</label>
-												<input type="email" id="email" name="email">
-											</div>
-											<div class="form-item">
-												<label for="phone">Số Điện Thoại:</label>
-												<input type="text" id="phone" name="phone">
-											</div>
-											<div class="form-item">
-												<label for="password">Mật Khẩu</label>
-												<input type="password" id="password" required>
-											</div>  
-											<div class="form-item">
-												<button type="submit" id="register">Đăng Ký</button>
-											</div>
+										<div class="card card-body">
+											<form id="signup_form">
+												<div class="form-item">
+													<label for="fullName">Họ và Tên:</label>
+													<input type="text" id="fullName" name="fullName" required>
+												</div>
+												<div class="form-item">
+													<label for="email">Email:</label>
+													<input type="email" id="email" name="email" required>
+												</div>
+												<div class="form-item">
+													<label for="phone">Số Điện Thoại:</label>
+													<input type="text" id="phone" name="phone" required>
+												</div>
+												<div class="form-item">
+													<label for="password">Mật Khẩu:</label>
+													<input type="password" id="password" name="password" required>
+												</div>
+												<div class="form-item">
+													<button type="submit" id="register">Đăng Ký</button>
+												</div>
+											</form>
 										</div>
 									</div>
 								</div>
@@ -134,18 +136,18 @@
 							<div class="funtionsAndSearch">
 								<div class="product-funtions">
 									<div class="addProduct">
-										<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addProductForm-container" aria-expanded="false" aria-controls="collapseExample">
+										<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addProductForm-container" aria-expanded="false" aria-controls="addProductForm-container">
 											Thêm sản phẩm
 										</button>
 									</div>
 									<div class="addBrand">
-										<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addBrand" aria-expanded="false" aria-controls="collapseExample">
-											Thêm thương hiệu
+										<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#brand-container" aria-expanded="false" aria-controls="brand-container">
+											Thương hiệu
 										</button>
 									</div>
 									<div class="addCategory">
-										<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addCategory" aria-expanded="false" aria-controls="collapseExample">
-											Thêm danh mục
+										<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#category-container" aria-expanded="false" aria-controls="category-container">
+											Danh mục sản phẩm
 										</button>
 									</div>
 								</div>
@@ -203,24 +205,72 @@
 										</form>
 									</div>
 								</div>
-								<div class="collapse" id="addBrand">
-									<div class="card card-body">
-										<h5>Tạo Thương Hiệu Mới</h5>
-										<form  method="POST" enctype="application/json" id="addBrandForm">
-											<label for="brandName">Tên Thương Hiệu:</label>
-											<input type="text" id="brandName" name="brandName" required><br><br>
-											<button type="submit">Tạo Thương Hiệu</button>
-										</form>
+								<div class="collapse" id="brand-container">
+									<div class="brandForms">
+										<div id="addBrand">
+											<div class="card card-body">
+												<h5>Tạo Thương Hiệu Mới</h5>
+												<form  method="POST" enctype="application/json" id="addBrandForm">
+													<label for="brandName">Tên Thương Hiệu:</label>
+													<input type="text" id="brandName" name="brandName" required><br><br>
+													<button type="submit">Tạo Thương Hiệu</button>
+												</form>
+											</div>
+										</div>
+										<div id="deleteBrand">
+											<div class="card card-body">
+												<h5>Xóa Thương Hiệu</h5>
+												<form method="DELETE" enctype="application/json" id="deleteBrandForm">
+													<label for="brandId">ID Thương Hiệu:</label>
+													<input type="text" id="brandId" name="brandId" required><br><br>
+													<button type="submit">Xóa Thương Hiệu</button>
+												</form>
+											</div>
+										</div>
+									</div>
+									<div id="allBrands">
+										<div id="brandTable" class="horizontal-table">
+											<div class="column">
+												<div class="header">ID</div>
+											</div>
+											<div class="column">
+												<div class="header">Name</div>
+											</div>
+										</div>
 									</div>
 								</div>
-								<div class="collapse" id="addCategory">
-									<div class="card card-body">
-										<h5>Tạo Danh Mục Mới</h5>
-										<form action="/api/v1/category" method="POST" enctype="application/json" id="addCategoryForm">
-											<label for="categoryName">Tên Danh Mục:</label>
-											<input type="text" id="categoryName" name="categoryName" required><br><br>
-											<button type="submit">Tạo Danh Mục</button>
-										</form>
+								<div class="collapse" id="category-container">
+									<div class="categoryForms">
+										<div id="addCategory">
+											<div class="card card-body">
+												<h5>Tạo Danh Mục Mới</h5>
+												<form action="/api/v1/category" method="POST" enctype="application/json" id="addCategoryForm">
+													<label for="categoryName">Tên Danh Mục:</label>
+													<input type="text" id="categoryName" name="categoryName" required><br><br>
+													<button type="submit">Tạo Danh Mục</button>
+												</form>
+											</div>
+										</div>
+										<div id="deleteCategory">
+											<div class="card card-body">
+												<h5>Xóa Danh mục sản phẩm</h5>
+												<form method="DELETE" enctype="application/json" id="deleteCategoryForm">
+													<label for="categoryId">ID Danh mục sản phẩm:</label>
+													<input type="text" id="categoryId" name="categoryId" required><br><br>
+													<button type="submit">Xóa Danh mục sản phẩm</button>
+												</form>
+											</div>
+										</div>
+									</div>
+									<div id="allCategories">
+										<div id="categoryTable" class="horizontal-table">
+											<div class="column">
+												<div class="header">ID</div>
+											</div>
+											<div class="column">
+												<div class="header">Name</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -271,6 +321,8 @@
 		});
     </script>
 
+	<script src="./js/fetchCategory.js"></script>
+	<script src="./js/fetchBrands.js"></script>
 	<script src="./js/fetchProducts.js"></script>
 	<script src="./js/fetchCustomers.js"></script>
 	<script src="./js/admin.js"></script>
