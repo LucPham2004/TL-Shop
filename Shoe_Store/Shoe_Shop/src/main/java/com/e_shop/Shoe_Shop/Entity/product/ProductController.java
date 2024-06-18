@@ -50,7 +50,6 @@ public class ProductController {
     // POST
     @PostMapping
     public ProductDTO createProduct(@RequestBody ProductDTO productDTO) {
-        System.out.println(productDTO);
         return productService.saveProduct(productDTO);
     }
 

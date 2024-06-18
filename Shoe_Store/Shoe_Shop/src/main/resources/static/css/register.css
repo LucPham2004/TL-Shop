@@ -1,12 +1,12 @@
 .container{
     margin-top: 5%
 }
-.signup_form {
+#signup_form {
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.signup_form h2 {
+#signup_form h2 {
     text-align: center;
     margin-bottom: 20px;
 }
@@ -24,7 +24,7 @@
     border-radius: 5px;
 }
 @media screen and (min-width: 414px) {
-    .signup_form {
+    #signup_form {
         max-width: 500px;
         margin: auto;
         padding: 20px;
@@ -32,7 +32,7 @@
 }
 
 @media screen and (max-width: 414px) {
-    .signup_form {
+    #signup_form {
         max-width: 300px;
         margin: auto;
         padding: 10px;

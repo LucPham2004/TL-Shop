@@ -18,6 +18,7 @@ function addDetail() {
     detailCount++;
 }
 
+// POST Method creating product and upload images
 document.getElementById('addproductForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const form = document.getElementById('addproductForm');
@@ -110,7 +111,7 @@ document.getElementById('addproductForm').addEventListener('submit', function(ev
     });
 });
 
-
+// POST Method creating brand
 document.getElementById('addBrandForm').addEventListener('submit', function(event) {
     event.preventDefault();  
     var brandName = document.getElementById('brandName').value;
@@ -131,7 +132,7 @@ document.getElementById('addBrandForm').addEventListener('submit', function(even
     });
 });
 
-
+// POST Method creating category
 document.getElementById('addCategoryForm').addEventListener('submit', function(event) {
     event.preventDefault();  
     var categoryName = document.getElementById('categoryName').value;

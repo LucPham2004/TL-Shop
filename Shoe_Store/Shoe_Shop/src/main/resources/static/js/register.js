@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('.signup_form');
+    const signupForm = document.querySelector('#signup_form');
 
-    form.addEventListener('submit', async (event) => {
+    signupForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         const fullName = document.querySelector('#fullName').value;
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch('/api/auth/register', {
+            const signupResponse = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -25,14 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(signupData)
             });
 
-            if (!response.ok) {
-                const errorMessage = await response.text();
+            if (!signupResponse.ok) {
+                const errorMessage = await signupResponse.text();
                 throw new Error(errorMessage || 'Đăng ký thất bại');
             }
 
             alert('Đăng ký thành công!');
 
-            window.location.href = '/login.html';
+            if(window.location.href ==  '/register.html'){
+                window.location.href = '/login.html';
+            }
 
         } catch (error) {
             console.error('Có lỗi xảy ra:', error);

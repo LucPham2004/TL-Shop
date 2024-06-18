@@ -14,447 +14,251 @@
     
     <div class="container-fluid">
         <div class="row">
-          <!-- Menu bên trái -->
-          <div class="col-md-2" id="menu">
-            <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-              <li class="nav-item">
-                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Tổng Quan Shop</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="v-pills-content-tab" data-toggle="pill" href="#v-pills-content" role="tab" aria-controls="v-pills-content" aria-selected="false">Quản Lý Nội Dung</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="v-pills-customer-tab" data-toggle="pill" href="#v-pills-customer" role="tab" aria-controls="v-pills-customer" aria-selected="false">Khách Hàng</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="v-pills-product-tab" data-toggle="pill" href="#v-pills-product" role="tab" aria-controls="v-pills-product" aria-selected="false">Sản Phẩm</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
-              </li>
-            </ul>
-          </div>
+			<!-- Menu bên trái -->
+			<div class="col-md-2" id="menu">
+				<ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+				<li class="nav-item">
+					<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Tổng Quan Shop</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="v-pills-content-tab" data-toggle="pill" href="#v-pills-content" role="tab" aria-controls="v-pills-content" aria-selected="false">Quản Lý Nội Dung</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="v-pills-customer-tab" data-toggle="pill" href="#v-pills-customer" role="tab" aria-controls="v-pills-customer" aria-selected="false">Khách Hàng</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="v-pills-product-tab" data-toggle="pill" href="#v-pills-product" role="tab" aria-controls="v-pills-product" aria-selected="false">Sản Phẩm</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+				</li>
+				</ul>
+			</div>
       
-          <!-- Nội dung hiển thị bên phải -->
-          <div class="col-md-10" id="content-tab">
-            <div class="tab-content" id="v-pills-tabContent">
-              <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                <h3>Tổng Quan</h3>
-                <p>Nội dung Tổng Quan.</p>
-              </div>
-              <div class="tab-pane fade" id="v-pills-content" role="tabpanel" aria-labelledby="v-pills-content-tab">
-                <h3>content</h3>
-                <p>Nội dung cho content.</p>
-              </div>
-              <div class="tab-pane fade" id="v-pills-customer" role="tabpanel" aria-labelledby="v-pills-customer-tab">
-				<div class="customer-tab">
-					<h3>Khách hàng</h3>
-					<div class="funtionsAndSearch">
-						<div class="customer-funtions">
-							<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#registerForm" aria-expanded="false" aria-controls="collapseExample">
-								Thêm tài khoản
-							</button>
-							<div class="collapse" id="registerForm">
-								<div class="card card-body">
-									<div class="form-item">
-										<label for="fullName">Họ và Tên:</label>
-										<input type="text" id="fullName" name="fullName">
+			<!-- Nội dung hiển thị bên phải -->
+			<div class="col-md-10" id="content-tab">
+				<div class="tab-content" id="v-pills-tabContent">
+					<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+						<h3>Tổng Quan</h3>
+						<p>Nội dung Tổng Quan.</p>
+					</div>
+					<div class="tab-pane fade" id="v-pills-content" role="tabpanel" aria-labelledby="v-pills-content-tab">
+						<h3>content</h3>
+						<p>Nội dung cho content.</p>
+					</div>
+					<div class="tab-pane fade" id="v-pills-customer" role="tabpanel" aria-labelledby="v-pills-customer-tab">
+						<div class="customer-tab">
+							<h3>Khách hàng</h3>
+							<div class="funtionsAndSearch">
+								<div class="customer-funtions">
+									<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#registerForm" aria-expanded="false" aria-controls="registerForm">
+										Thêm tài khoản
+									</button>
+									<div class="collapse" id="registerForm">
+										<div class="card card-body" id="signup_form">
+											<div class="form-item">
+												<label for="fullName">Họ và Tên:</label>
+												<input type="text" id="fullName" name="fullName">
+											</div>
+											<div class="form-item">
+												<label for="email">Email:</label>
+												<input type="email" id="email" name="email">
+											</div>
+											<div class="form-item">
+												<label for="phone">Số Điện Thoại:</label>
+												<input type="text" id="phone" name="phone">
+											</div>
+											<div class="form-item">
+												<label for="password">Mật Khẩu</label>
+												<input type="password" id="password" required>
+											</div>  
+											<div class="form-item">
+												<button type="submit" id="register">Đăng Ký</button>
+											</div>
+										</div>
 									</div>
-									<div class="form-item">
-										<label for="email">Email:</label>
-										<input type="email" id="email" name="email">
-									</div>
-									<div class="form-item">
-										<label for="phone">Số Điện Thoại:</label>
-										<input type="tel" id="phone" name="phone">
-									</div>
-									<div class="form-item">
-										<label for="password">Mật Khẩu</label>
-										<input type="password" id="password" required>
-									</div>  
-									<div class="form-item">
-										<button type="submit" id="register">Đăng Ký</button>
+								</div>
+								<div class="search-container">
+									<div class="search-box">
+										<input type="text" class="search-input" placeholder="seach..."/>
+										<button class="search-btn" title="search" type="button">
+											<i class="fas fa-search"></i>
+										</button>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="search-container">
-							<div class="search-box">
-								<input type="text" class="search-input" placeholder="seach..."/>
-								<button class="search-btn" title="search" type="button">
-									<i class="fas fa-search"></i>
-								</button>
+							<div class="customer-content">
+								<table id="customer-table">
+									<thead>
+									<tr>
+										<th>ID</th>
+										<th>Tên</th>
+										<th>Email</th>
+										<th>Số điện thoại</th>
+										<th>Địa chỉ</th>
+										<th>Chức năng</th>
+									</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+							<!-- Modal for editing customer -->
+							<div id="editModal" style="display:none;">
+								<h2>Chỉnh sửa thông tin khách hàng</h2>
+								<form id="editCustomerForm">
+									<input type="hidden" id="editCustomerId" name="id">
+									<label for="editCustomerName">Tên:</label>
+									<input type="text" id="editCustomerName" name="name">
+									<br>
+									<label for="editCustomerEmail">Email:</label>
+									<input type="email" id="editCustomerEmail" name="email">
+									<br>
+									<label for="editCustomerPhone">Số điện thoại:</label>
+									<input type="text" id="editCustomerPhone" name="phone">
+									<br>
+									<label for="editCustomerAddress">Địa chỉ:</label>
+									<input type="text" id="editCustomerAddress" name="address">
+									<br>
+									<button type="submit">Lưu</button>
+									<button type="button" onclick="closeEditModal()">Hủy</button>
+								</form>
 							</div>
 						</div>
 					</div>
-					<div class="customer-content">
-						<table id="customer-table">
-							<thead>
-							<tr>
-								<th>ID</th>
-								<th>Tên</th>
-								<th>Email</th>
-								<th>Số điện thoại</th>
-								<th>Địa chỉ</th>
-								<th>Chức năng</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr>
-								<td>1</td>
-								<td>Nguyễn Văn A</td>
-								<td>nguyenvana@example.com</td>
-								<td>0123456789</td>
-								<td>123 Đường A, Quận B, TP.C</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>Trần Thị B</td>
-								<td>tranthib@example.com</td>
-								<td>0987654321</td>
-								<td>456 Đường X, Quận Y, TP.Z</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>Hắc Vũ Tiên Long Võ Phi Dương</td>
-								<td>hacvutienlong@example.com</td>
-								<td>0999999999</td>
-								<td>789 Đường X, Quận Y, TP.Z</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>Nguyễn Văn A</td>
-								<td>nguyenvana@example.com</td>
-								<td>0123456789</td>
-								<td>123 Đường A, Quận B, TP.C</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>Trần Thị B</td>
-								<td>tranthib@example.com</td>
-								<td>0987654321</td>
-								<td>456 Đường X, Quận Y, TP.Z</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>Hắc Vũ Tiên Long Võ Phi Dương</td>
-								<td>hacvutienlong@example.com</td>
-								<td>0999999999</td>
-								<td>789 Đường X, Quận Y, TP.Z</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-								</tr>
-							<tr>
-								<td>1</td>
-								<td>Nguyễn Văn A</td>
-								<td>nguyenvana@example.com</td>
-								<td>0123456789</td>
-								<td>123 Đường A, Quận B, TP.C</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>Trần Thị B</td>
-								<td>tranthib@example.com</td>
-								<td>0987654321</td>
-								<td>456 Đường X, Quận Y, TP.Z</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>Hắc Vũ Tiên Long Võ Phi Dương</td>
-								<td>hacvutienlong@example.com</td>
-								<td>0999999999</td>
-								<td>789 Đường X, Quận Y, TP.Z</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-								</tr>
-							<tr>
-								<td>1</td>
-								<td>Nguyễn Văn A</td>
-								<td>nguyenvana@example.com</td>
-								<td>0123456789</td>
-								<td>123 Đường A, Quận B, TP.C</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>Trần Thị B</td>
-								<td>tranthib@example.com</td>
-								<td>0987654321</td>
-								<td>456 Đường X, Quận Y, TP.Z</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>Hắc Vũ Tiên Long Võ Phi Dương</td>
-								<td>hacvutienlong@example.com</td>
-								<td>0999999999</td>
-								<td>789 Đường X, Quận Y, TP.Z</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>Nguyễn Văn A</td>
-								<td>nguyenvana@example.com</td>
-								<td>0123456789</td>
-								<td>123 Đường A, Quận B, TP.C</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>Trần Thị B</td>
-								<td>tranthib@example.com</td>
-								<td>0987654321</td>
-								<td>456 Đường X, Quận Y, TP.Z</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>Hắc Vũ Tiên Long Võ Phi Dương</td>
-								<td>hacvutienlong@example.com</td>
-								<td>0999999999</td>
-								<td>789 Đường X, Quận Y, TP.Z</td>
-								<td>
-									<button class="customerBtn-edit">Sửa</button>
-									<button class="customerBtn-delete">Xóa</button>
-									<button class="customerBtn-showOrders">Xem Đơn Hàng</button>
-								</td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-              </div>
-              <div class="tab-pane fade" id="v-pills-product" role="tabpanel" aria-labelledby="v-pills-product-tab">
-                <div class="product-tab">
-					<h3>Sản phẩm</h3>
-					<div class="funtionsAndSearch">
-						<div class="product-funtions">
-							<div class="addProduct">
-								<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addProductForm-container" aria-expanded="false" aria-controls="collapseExample">
-									Thêm sản phẩm
-								</button>
-							</div>
-							<div class="addBrand">
-								<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addBrand" aria-expanded="false" aria-controls="collapseExample">
-									Thêm thương hiệu
-								</button>
-							</div>
-							<div class="addCategory">
-								<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addCategory" aria-expanded="false" aria-controls="collapseExample">
-									Thêm danh mục
-								</button>
-							</div>
-						</div>
-						<div class="search-container">
-							<div class="search-box">
-								<input type="text" class="search-input" placeholder="seach..."/>
-								<button class="search-btn" title="search" type="button">
-									<i class="fas fa-search"></i>
-								</button>
-							</div>
-						</div>
-					</div>
-					<div class="product-forms">
-						<div class="collapse" id="addProductForm-container">
-							<div class="card card-body">
-								<h5>Thông tin sản phẩm</h5>
-								<form method="POST" enctype="multipart/form-data" id="addproductForm">
-									<label for="productName">Tên Sản Phẩm:</label>
-									<input type="text" id="productName" name="productName" required><br>
-							
-									<label for="productDescription">Mô Tả Sản Phẩm:</label>
-									<textarea id="productDescription" name="productDescription" required></textarea><br>
-							
-									<label for="productPrice">Giá Sản Phẩm:</label>
-									<input type="number" step="0.01" id="productPrice" name="productPrice" required><br>
-							
-									<label for="discountPercent">Phần Trăm Giảm Giá:</label>
-									<input type="number" step="0.01" id="discountPercent" name="discountPercent"><br>
-							
-									<label for="productBrandName">Thương Hiệu:</label>
-									<input type="text" id="productBrandName" name="productBrandName" required><br>
-							
-									<label for="categories">Danh Mục (dấu phẩy ngăn cách):</label>
-									<input type="text" id="categories" name="categories"><br>
-							
-									<h5>Chi Tiết Sản Phẩm</h5>
-									<div id="productDetails">
-										<div class="productDetail">
-											<label for="detailColor0">Màu Sắc:</label>
-											<input type="text" id="detailColor0" name="details[0].color"><br>
-							
-											<label for="detailSize0">Kích Thước:</label>
-											<input type="number" id="detailSize0" name="details[0].size"><br>
-							
-											<label for="detailQuantity0">Số Lượng:</label>
-											<input type="number" id="detailQuantity0" name="details[0].quantity" required><br>
-										</div>
+					<div class="tab-pane fade" id="v-pills-product" role="tabpanel" aria-labelledby="v-pills-product-tab">
+						<div class="product-tab">
+							<h3>Sản phẩm</h3>
+							<div class="funtionsAndSearch">
+								<div class="product-funtions">
+									<div class="addProduct">
+										<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addProductForm-container" aria-expanded="false" aria-controls="collapseExample">
+											Thêm sản phẩm
+										</button>
 									</div>
-									<button type="button" onclick="addDetail()">Thêm Chi Tiết Khác</button><br><br>
+									<div class="addBrand">
+										<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addBrand" aria-expanded="false" aria-controls="collapseExample">
+											Thêm thương hiệu
+										</button>
+									</div>
+									<div class="addCategory">
+										<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addCategory" aria-expanded="false" aria-controls="collapseExample">
+											Thêm danh mục
+										</button>
+									</div>
+								</div>
+								<div class="search-container">
+									<div class="search-box">
+										<input type="text" class="search-input" placeholder="seach..."/>
+										<button class="search-btn" title="search" type="button">
+											<i class="fas fa-search"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="product-forms">
+								<div class="collapse" id="addProductForm-container">
+									<div class="card card-body">
+										<h5>Thông tin sản phẩm</h5>
+										<form method="POST" enctype="multipart/form-data" id="addproductForm">
+											<label for="productName">Tên Sản Phẩm:</label>
+											<input type="text" id="productName" name="productName" required><br>
+									
+											<label for="productDescription">Mô Tả Sản Phẩm:</label>
+											<textarea id="productDescription" name="productDescription" required></textarea><br>
+									
+											<label for="productPrice">Giá Sản Phẩm:</label>
+											<input type="number" step="0.01" id="productPrice" name="productPrice" required><br>
+									
+											<label for="discountPercent">Phần Trăm Giảm Giá:</label>
+											<input type="number" step="0.01" id="discountPercent" name="discountPercent"><br>
+									
+											<label for="productBrandName">Thương Hiệu:</label>
+											<input type="text" id="productBrandName" name="productBrandName" required><br>
+									
+											<label for="categories">Danh Mục (dấu phẩy ngăn cách):</label>
+											<input type="text" id="categories" name="categories"><br>
+									
+											<h5>Chi Tiết Sản Phẩm</h5>
+											<div id="productDetails">
+												<div class="productDetail">
+													<label for="detailColor0">Màu Sắc:</label>
+													<input type="text" id="detailColor0" name="details[0].color"><br>
+									
+													<label for="detailSize0">Kích Thước:</label>
+													<input type="number" id="detailSize0" name="details[0].size"><br>
+									
+													<label for="detailQuantity0">Số Lượng:</label>
+													<input type="number" id="detailQuantity0" name="details[0].quantity" required><br>
+												</div>
+											</div>
+											<button type="button" onclick="addDetail()">Thêm Chi Tiết Khác</button><br><br>
 
-									<label for="productImages">Tải Lên Hình Ảnh:</label>
-        							<input type="file" id="productImages" name="productImages" multiple><br><br>
-							
-									<button type="submit">Tạo Sản Phẩm</button>
-								</form>
+											<label for="productImages">Tải Lên Hình Ảnh:</label>
+											<input type="file" id="productImages" name="productImages" multiple><br><br>
+									
+											<button type="submit">Tạo Sản Phẩm</button>
+										</form>
+									</div>
+								</div>
+								<div class="collapse" id="addBrand">
+									<div class="card card-body">
+										<h5>Tạo Thương Hiệu Mới</h5>
+										<form  method="POST" enctype="application/json" id="addBrandForm">
+											<label for="brandName">Tên Thương Hiệu:</label>
+											<input type="text" id="brandName" name="brandName" required><br><br>
+											<button type="submit">Tạo Thương Hiệu</button>
+										</form>
+									</div>
+								</div>
+								<div class="collapse" id="addCategory">
+									<div class="card card-body">
+										<h5>Tạo Danh Mục Mới</h5>
+										<form action="/api/v1/category" method="POST" enctype="application/json" id="addCategoryForm">
+											<label for="categoryName">Tên Danh Mục:</label>
+											<input type="text" id="categoryName" name="categoryName" required><br><br>
+											<button type="submit">Tạo Danh Mục</button>
+										</form>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="collapse" id="addBrand">
-							<div class="card card-body">
-								<h5>Tạo Thương Hiệu Mới</h5>
-								<form  method="POST" enctype="application/json" id="addBrandForm">
-									<label for="brandName">Tên Thương Hiệu:</label>
-									<input type="text" id="brandName" name="brandName" required><br><br>
-									<button type="submit">Tạo Thương Hiệu</button>
-								</form>
-							</div>
-						</div>
-						<div class="collapse" id="addCategory">
-							<div class="card card-body">
-								<h5>Tạo Danh Mục Mới</h5>
-								<form action="/api/v1/category" method="POST" enctype="application/json" id="addCategoryForm">
-									<label for="categoryName">Tên Danh Mục:</label>
-									<input type="text" id="categoryName" name="categoryName" required><br><br>
-									<button type="submit">Tạo Danh Mục</button>
-								</form>
+							<div class="product-content">
+								<table id="product-table">
+									<thead>
+									<tr>
+										<th>ID</th>
+										<th>Tên Sản Phẩm</th>
+										<th>Giá</th>
+										<th>Mô Tả</th>
+										<th>Tổng Số Lượng</th>
+										<th>Hãng/Thể Loại</th>
+										<th>Đánh Giá</th>
+										<th>Chức năng</th>
+									</tr>
+									</thead>
+									<tbody>
+										
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>
-					<div class="product-content">
-						<table id="product-table">
-							<thead>
-							<tr>
-								<th>ID</th>
-								<th>Tên Sản Phẩm</th>
-								<th>Giá</th>
-								<th>Mô Tả</th>
-								<th>Tổng Số Lượng</th>
-								<th>Hãng/Thể Loại</th>
-								<th>Đánh Giá</th>
-								<th>Chức năng</th>
-							</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Giày Thể thao aknjsdkasndanksdnkasdasdknj</td>
-									<td>1.200.000đ</td>
-									<td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa debitis minus mollitia dolorem numquam fuga porro iusto ab, laborum quo atque sed sequi in voluptatibus possimus inventore voluptatum recusandae soluta.</td>
-									<td>7749</td>
-									<td>Thể Thao, Giày nam, Nike</td>
-									<td>5</td>
-									<td>
-										<button class="productBtn-edit">Sửa</button>
-										<button class="productBtn-delete">Xóa</button>
-										<button class="productBtn-details">Chi tiết</button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+					<div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+						<h3>Messages</h3>
+						<p>Nội dung cho Messages.</p>
+					</div>
+					<div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+						<h3>Settings</h3>
+						<p>Nội dung cho Settings.</p>
 					</div>
 				</div>
-              </div>
-              <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                <h3>Messages</h3>
-                <p>Nội dung cho Messages.</p>
-              </div>
-              <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                <h3>Settings</h3>
-                <p>Nội dung cho Settings.</p>
-              </div>
-            </div>
-          </div>
+			</div>
         </div>
-      </div>
+    </div>
+    
       
-      
-      
-
-    <!-- scroll-to-top button -->
-    <script>
-        window.onscroll = function () {
-            scrollFunction()
-        };
-
-        function scrollFunction() {
-            // <!-- Button scroll to top -->
-            if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 500) {
-                document.getElementById("scrollToTopBtn").style.display = "block";
-            } else {
-                document.getElementById("scrollToTopBtn").style.display = "none";
-            }
-        }
-
-        function scrollToTop() {
-            document.body.scrollTop = 0; // Dành cho Safari
-            document.documentElement.scrollTop = 0; //Dành cho Chrome, Firefox, IE với Opera
-        }
-
-    </script>
 
 	<!--  search button -->
     <script>
@@ -467,10 +271,14 @@
 		});
     </script>
 
+	<script src="./js/fetchProducts.js"></script>
+	<script src="./js/fetchCustomers.js"></script>
 	<script src="./js/admin.js"></script>
     <script src="./js/auth.js"></script>
+	<script src="./js/register.js"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>
