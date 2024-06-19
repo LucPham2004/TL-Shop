@@ -47,6 +47,7 @@
 }
 .Products{
     width: 100%;
+    min-height: 100vh;
 }
 .products-container{
     display: flex;
