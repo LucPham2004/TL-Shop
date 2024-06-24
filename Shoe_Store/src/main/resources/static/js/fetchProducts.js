@@ -4,15 +4,8 @@ async function fetchProducts() {
         const response = await fetch('/api/v1/products');
         const products = await response.json();
 
-        // show data in pages
-        if(window.location.href == '/admin.html'){
-            showProductsInAdminPage(products);
-        }
-
-        if(window.location.href == '/shop.html'){
-            showProductsInShopPage(products);
-        }
-        
+        showProductsInShopPage(products);
+        showProductsInAdminPage(products);
     } catch (error) {
         console.error('Error fetching products:', error);
     }
@@ -57,5 +50,49 @@ function showProductsInAdminPage(products){
     });
 }
 
+// Show Products In Shop Page
+function showProductsInShopPage(products){
+    const productsContainer = document.querySelector('.main #products-container');
+    if (!productsContainer) {
+        console.error('No #products-container found in the DOM');
+        return;
+    }
+    else {
+        console.log(products);
+    }
+    productsContainer.innerHTML = '';
+
+    products.forEach(product => {
+        const productItem = document.createElement('div');
+        productItem.classList.add('product-item');
+
+        // Link ảnh tượng trưng
+        productItem.innerHTML = `
+            <a href="/products.html?${convertProductName(product.productName)}&id=${product.id}">
+                <img alt="${product.productName}" src="../img/homepage/favorite/favorite1.png">
+                <p class="productName">${product.productName}</p>
+                <p class="price">${product.price}đ</p>
+            </a>
+        `;
+
+        productsContainer.appendChild(productItem);
+    });
+}
 
 document.addEventListener('DOMContentLoaded', fetchProducts);
+
+function removeVietnameseTones(str) {
+    str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    str = str.replace(/đ/g, 'd').replace(/Đ/g, 'D');
+    return str;
+}
+
+function convertProductName(productName) {
+    // Bỏ dấu tiếng Việt
+    let noToneName = removeVietnameseTones(productName);
+    
+    // Thay thế khoảng trắng bằng dấu gạch ngang
+    let convertedName = noToneName.replace(/\s+/g, '-');
+    
+    return convertedName;
+}
