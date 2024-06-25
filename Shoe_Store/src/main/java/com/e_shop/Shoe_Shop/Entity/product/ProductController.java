@@ -3,7 +3,6 @@ package com.e_shop.Shoe_Shop.Entity.product;
 import java.util.List;
 
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping(path = "/api/v1/products")
 public class ProductController {
     private final ProductService productService;
-    private ProductRepository productRepository;
 
     public ProductController(ProductService productService) {
         this.productService = productService;
@@ -36,16 +34,6 @@ public class ProductController {
     public ProductDTO getProduct(@PathVariable Integer id) {
         return productService.getProductById(id);
     }
-
-    // @GetMapping("/{productName}-{id}")
-    // public ResponseEntity<ProductDTO> getProductByName(@PathVariable String productName, int id) {
-    //     Product product = productRepository.findByIdAndProductName(productName, id);
-    //     if (product != null) {
-    //         return ResponseEntity.ok(productService.convertToDTO(product));
-    //     } else {
-    //         return ResponseEntity.notFound().build();
-    //     }
-    // }
 
     @GetMapping(path = "/brand/{brandName}")
     public List<ProductDTO> getProductsByBrand(@PathVariable String brandName)

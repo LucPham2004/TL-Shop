@@ -1,3 +1,5 @@
+
+
 let detailCount = 1;
 
 function addDetail() {
@@ -18,7 +20,9 @@ function addDetail() {
     detailCount++;
 }
 
-// POST Method creating product and upload images
+// Products Methods
+
+// Creare product and upload images
 document.getElementById('addproductForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const form = document.getElementById('addproductForm');
@@ -110,6 +114,22 @@ document.getElementById('addproductForm').addEventListener('submit', function(ev
         alert('Đã xảy ra lỗi khi tạo sản phẩm: ' + error.message);
     });
 });
+
+// Delete product
+async function deleteProduct(id) {
+    const response = await fetch(`/api/v1/products/${id}`, {
+        method: 'DELETE',
+    });
+
+    if (response.ok) {
+        fetchProducts();
+    } else {
+        console.error('Failed to delete product');
+    }
+}
+
+
+
 
 // Brands Methods
 

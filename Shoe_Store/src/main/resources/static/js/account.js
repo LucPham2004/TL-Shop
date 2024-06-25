@@ -1,4 +1,26 @@
+async function fetchCustomerInfo() {
+    try {
+        const response = await fetch('/api/v1/customers/' + getCustomerId());
+        const customerInfo = await response.json();
+
+        const nameSpan = document.getElementById('name');
+        const emailSpan = document.getElementById('email');
+        const phoneSpan = document.getElementById('phone');
+        const addressSpan = document.getElementById('address');
+
+        nameSpan.innerHTML = `${customerInfo.name}`;
+        emailSpan.innerHTML = `${customerInfo.email}`;
+        phoneSpan.innerHTML = `${customerInfo.phone}`;
+        addressSpan.innerHTML = `${customerInfo.address}`;
+
+    } catch (error) {
+        console.error('Error fetching customer infomation:', error);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    fetchCustomerInfo();
+
     const changeInfo = document.querySelector('.user-info');
     const changeInfoBtn = document.querySelector('.changeInfo-btn');
     const editForms = document.getElementById('editForms');

@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Thêm phần header và cart vào đầu body
+    
     const headerHTML = `
     <header>
         <div class="header-container">
@@ -140,7 +140,20 @@ document.addEventListener("DOMContentLoaded", function() {
     document.body.insertAdjacentHTML("afterbegin", headerHTML);
     document.body.insertAdjacentHTML("beforeend", footerHTML);
 
-    
+    changeLoginOrProfileHeaderPart();
+
+    // Mã điều khiển thanh search
+    const searchButton = document.querySelector('.search-btn');
+    if (searchButton) {
+        searchButton.addEventListener('click', function(){
+            this.parentElement.classList.toggle('open');
+            this.previousElementSibling.focus();
+        });
+    }
+});
+
+
+function changeLoginOrProfileHeaderPart() {
     const accountDiv = document.querySelector('.account');
     const isLoggedIn = checkLogin();
 
@@ -153,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="./account.html">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Đăng xuất<i class="fas fa-arrow-circle-right" style="margin-left: 15px;"></i></a></li>
+                    <li><a class="dropdown-item" href="#" onclick="logout()">Đăng xuất<i class="fas fa-arrow-circle-right" style="margin-left: 15px;"></i></a></li>
                 </ul>
             </div>
         `;
@@ -168,14 +181,4 @@ document.addEventListener("DOMContentLoaded", function() {
             </a>
         `;
     }
-
-
-    const searchButton = document.querySelector('.search-btn');
-    if (searchButton) {
-        searchButton.addEventListener('click', function(){
-            this.parentElement.classList.toggle('open');
-            this.previousElementSibling.focus();
-        });
-    }
-});
-
+}

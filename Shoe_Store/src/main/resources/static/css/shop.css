@@ -60,14 +60,13 @@
     width: 24%;
     margin-bottom: 20px;
     transition: opacity 0.2s ease;
-    .product-name{
-        text-align: center;
+    color: black;
+    a {
+        text-decoration: none;
     }
-    .description{
+    .product-name, .description, .price{
         text-align: center;
-    }
-    .price{
-        text-align: center;
+        color: black;
     }
 }
 .product-item img{

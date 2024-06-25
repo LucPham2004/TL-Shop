@@ -30,6 +30,7 @@ async function fetchCustomers() {
     }
 }
 
+// Edit Customer's info
 function openEditModal(id, name, email, phone, address) {
     document.getElementById('editCustomerId').value = id;
     document.getElementById('editCustomerName').value = name;
@@ -69,6 +70,7 @@ async function updateCustomer(event) {
     }
 }
 
+// Delete Customer
 async function deleteCustomer(id, email) {
     const response = await fetch(`/api/v1/customers?id=${id}&email=${email}`, {
         method: 'DELETE',
@@ -82,8 +84,7 @@ async function deleteCustomer(id, email) {
 }
 
 function showOrders(id) {
-    console.log('Show orders for customer with ID:', id);
-    // Thêm mã để xử lý xem đơn hàng của khách hàng
+
 }
 
 // Gọi hàm fetchCustomers khi trang được tải

@@ -11,17 +11,6 @@ async function fetchProducts() {
     }
 }
 
-async function deleteProduct(id) {
-    const response = await fetch(`/api/v1/products/${id}`, {
-        method: 'DELETE',
-    });
-
-    if (response.ok) {
-        fetchProducts();
-    } else {
-        console.error('Failed to delete product');
-    }
-}
 
 // Show Products In Admin Page
 function showProductsInAdminPage(products){
@@ -70,8 +59,8 @@ function showProductsInShopPage(products){
         productItem.innerHTML = `
             <a href="/products.html?${convertProductName(product.productName)}&id=${product.id}">
                 <img alt="${product.productName}" src="../img/homepage/favorite/favorite1.png">
-                <p class="productName">${product.productName}</p>
-                <p class="price">${product.price}đ</p>
+                <p class="product-name">${product.productName}</p>
+                <p class="price">${formatNumber(product.productPrice)} đ</p>
             </a>
         `;
 
@@ -95,4 +84,8 @@ function convertProductName(productName) {
     let convertedName = noToneName.replace(/\s+/g, '-');
     
     return convertedName;
+}
+
+function formatNumber(number) {
+    return number.toLocaleString('vi-VN');
 }

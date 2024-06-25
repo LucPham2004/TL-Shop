@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.querySelector(".main-container .product-name").textContent = product.productName;
                 document.querySelector(".main-container .Type").textContent = product.categories; 
                 document.querySelector(".main-container .star span").textContent = product.reviewCount;
-                document.querySelector(".main-container .price").textContent = product.productPrice + " đ";
+                document.querySelector(".main-container .price").textContent = formatNumber(product.productPrice) + " đ";
                 document.querySelector(".main-container .description").innerHTML = `
                     <h6>Mô Tả Sản Phẩm:</h6>
                     <ul>
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img alt="Giày similar" src="./img/homepage/favorite/favorite1.png">
                         <p class="product-name">${product.productName}</p>
                         <p class="description">${product.productDescription}</p>
-                        <p class="price">${product.productPrice}đ</p>
+                        <p class="price">${formatNumber(product.productPrice)} đ</p>
                     </div>
                 `;
 
@@ -100,6 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error fetching products:', error));
 });
 
+function formatNumber(number) {
+    return number.toLocaleString('vi-VN');
+}
 
 // document.addEventListener('DOMContentLoaded', function() {
 //     const stars = document.querySelectorAll('.star');

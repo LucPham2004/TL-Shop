@@ -1,23 +1,18 @@
-// Hàm để lấy giá trị của một cookie dựa vào tên
 function getCookie(name) {
     let cookieArr = document.cookie.split(";");
     
-    // Duyệt qua từng cặp cookie
     for(let i = 0; i < cookieArr.length; i++) {
         let cookiePair = cookieArr[i].split("=");
         
-        // Loại bỏ khoảng trắng ở đầu và cuối tên cookie và so sánh với tên đã cho
         if(name == cookiePair[0].trim()) {
-            // Trả về giá trị của cookie
             return decodeURIComponent(cookiePair[1]);
         }
     }
     
-    // Nếu không tìm thấy cookie thì trả về null
     return null;
 }
 
-// Kiểm tra xem người dùng đã đăng nhập hay chưa
+// Check if user logged in or not
 function checkLogin() {
     let userLoggedIn = getCookie("userLoggedIn");
     
@@ -25,5 +20,34 @@ function checkLogin() {
         return true
     } else {
         return false
+    }
+}
+
+// Get user's id
+function getCustomerId() {
+    return parseInt(getCookie("id"));
+}
+
+// Log out
+async function logout() {
+    try {
+        const response = await fetch('/api/auth/logout', {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json', 
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Đăng xuất thất bại');
+        }
+        
+        alert('Đăng xuất thành công!');
+
+        window.location.href = '/index.html';
+
+    } catch (error) {
+        console.error('Có lỗi xảy ra:', error);
+        alert('Đăng xuất thất bại.');
     }
 }
