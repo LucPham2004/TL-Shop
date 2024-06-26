@@ -56,18 +56,22 @@
     gap: 10px;
 }
 
-.product-item{
+.product-item {
     width: 24%;
     margin-bottom: 20px;
     transition: opacity 0.2s ease;
     color: black;
-    a {
-        text-decoration: none;
-    }
-    .product-name, .description, .price{
-        text-align: center;
-        color: black;
-    }
+}
+
+.product-item a {
+    text-decoration: none;
+}
+
+.product-item .product-name, 
+.product-item .description, 
+.product-item .price {
+    text-align: center;
+    color: black;
 }
 .product-item img{
     aspect-ratio: 1 / 1;
@@ -76,8 +80,6 @@
     margin-bottom: 10px;
     transition: opacity 0.2s ease;
 }
-.product-item:hover{
-    .product-name, .price{
-        color: red;
-    }
+.product-item:hover *{
+    color: red;
 }

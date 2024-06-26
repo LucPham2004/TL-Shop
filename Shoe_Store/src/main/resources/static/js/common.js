@@ -39,51 +39,11 @@ document.addEventListener("DOMContentLoaded", function() {
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Giỏ Hàng</h5>
+            <a href="payment.html"><div class="orderBtn">Đặt hàng</div></a>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <div class="cart-items">
-                <div class="cart-item">
-                    <img alt="Giày similar" src="./img/homepage/favorite/favorite1.png">
-                    <div class="item-info">
-                        <p class="product-name">STAN SMITH SHOES</p>
-                        <p class="description">Women's Shoes</p>
-                        <p class="price">3.350.000đ</p>
-                    </div>
-                </div>
-                <div class="cart-item">
-                    <img alt="Giày similar" src="./img/homepage/favorite/favorite1.png">
-                    <div class="item-info">
-                        <p class="product-name">STAN SMITH SHOES</p>
-                        <p class="description">Women's Shoes</p>
-                        <p class="price">3.350.000đ</p>
-                    </div>
-                </div>
-                <div class="cart-item">
-                    <img alt="Giày similar" src="./img/homepage/favorite/favorite1.png">
-                    <div class="item-info">
-                        <p class="product-name">STAN SMITH SHOES</p>
-                        <p class="description">Women's Shoes</p>
-                        <p class="price">3.350.000đ</p>
-                    </div>
-                </div>
-                <div class="cart-item">
-                    <img alt="Giày similar" src="./img/homepage/favorite/favorite1.png">
-                    <div class="item-info">
-                        <p class="product-name">STAN SMITH SHOES</p>
-                        <p class="description">Women's Shoes</p>
-                        <p class="price">3.350.000đ</p>
-                    </div>
-                </div>
-                <div class="cart-item">
-                    <img alt="Giày similar" src="./img/homepage/favorite/favorite1.png">
-                    <div class="item-info">
-                        <p class="product-name">STAN SMITH SHOES</p>
-                        <p class="description">Women's Shoes</p>
-                        <p class="price">3.350.000đ</p>
-                    </div>
-                </div>
-            </div>
+            <div id="cart-items"></div>
         </div>
     </div>
     `;

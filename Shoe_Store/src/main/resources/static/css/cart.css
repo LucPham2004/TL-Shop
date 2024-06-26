@@ -1,5 +1,5 @@
 /* Cart */
-.cart-items{
+#cart-items{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -7,7 +7,7 @@
 .cart-item{
     display: flex;
     flex-direction: row;
-    width: 90%;
+    width: 100%;
 }
 .cart-item img{
     aspect-ratio: 1 / 1;
@@ -16,28 +16,56 @@
     margin-bottom: 10px;
 }
 .item-info{
-    margin-left: 20px;
-    .product-name{
-        font-size: 16px;
-    }
-    .description{
-        font-size: 13px;
-    }
-    .price{
-        font-size: 16px;
-    }
+    display: flex;
+    flex-direction: row;
+    width: 65%;
 }
+.cartItemInfo{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin-left: 20px;
+}
+.cartItemInfo .product-name, .cartItemInfo .price {
+    font-size: 16px;
+}
+.cartItemInfo .description{
+    font-size: 13px;
+}
+
+.dropCartItem{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 20%;
+    margin-bottom: 10px;
+}
+.dropCartItemBtn{
+    background-color: white;
+    border: 1px solid red;
+    align-self: center;
+    color: black;
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+}
+.dropCartItemBtn:hover{
+    background-color: red;
+    color: white;
+}
+
 /* Order Button */
 .orderBtn{
     text-align:center;
-    width: 180px;
+    width: 120px;
     height: 40px;
     margin: 0 20px;
+    padding-top: 5px;
     border: none;
     background-color: rgb(210, 0, 0);
     transition: transform 0.3s ease;
 }
-.orderBtn a {
+.offcanvas-header a {
     text-decoration: none;
     color: white;
 }
