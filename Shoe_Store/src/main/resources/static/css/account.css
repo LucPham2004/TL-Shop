@@ -24,6 +24,15 @@
 .user-info p {
     margin: 5px 0;
 }
+
+.info-label {
+    display: inline-block;
+    width: 40%;
+}
+.info-text {
+    width: 60%;
+}
+
 .changeInfo-btn, #submitBtn{
     text-align: center;
     width: 180px;
@@ -48,7 +57,7 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 70%;
-    max-width: 800px;
+    max-width: 850px;
 }
 .orders h2 {
     margin-top: 0;

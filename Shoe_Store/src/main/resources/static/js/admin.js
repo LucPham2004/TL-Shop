@@ -117,14 +117,18 @@ document.getElementById('addproductForm').addEventListener('submit', function(ev
 
 // Delete product
 async function deleteProduct(id) {
-    const response = await fetch(`/api/v1/products/${id}`, {
-        method: 'DELETE',
-    });
+    if(confirm("Bạn có chắc muốn xóa sản phẩm?")) {
+        const response = await fetch(`/api/v1/products/${id}`, {
+            method: 'DELETE',
+        });
 
-    if (response.ok) {
-        fetchProducts();
+        if (response.ok) {
+            fetchProducts();
+        } else {
+            console.error('Failed to delete product');
+        }
     } else {
-        console.error('Failed to delete product');
+        return
     }
 }
 
@@ -159,24 +163,28 @@ document.getElementById('addBrandForm').addEventListener('submit', function(even
 // Delete Brand
 document.getElementById('deleteBrandForm').addEventListener('submit', function(event) {
     event.preventDefault();  
-    var brandId = document.getElementById('brandId').value;
+    if(confirm("Bạn có chắc muốn xóa thương hiệu này?")) {
+        var brandId = document.getElementById('brandId').value;
 
-    fetch(`/api/v1/brand/${brandId}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: brandId
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+        fetch(`/api/v1/brand/${brandId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: brandId
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 
-    fetchBrandData();
+        fetchBrandData();
+    } else {
+        return
+    }
 });
 
 
@@ -209,24 +217,28 @@ document.getElementById('addCategoryForm').addEventListener('submit', function(e
 // Delete Category
 document.getElementById('deleteCategoryForm').addEventListener('submit', function(event) {
     event.preventDefault();  
-    var categoryId = document.getElementById('categoryId').value;
+    if(confirm("Bạn có chắc muốn xóa danh mục này?")) {
+        var categoryId = document.getElementById('categoryId').value;
 
-    fetch(`/api/v1/category/${categoryId}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: categoryId
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-    
-    fetchCategoryData();
+        fetch(`/api/v1/category/${categoryId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: categoryId
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+        
+        fetchCategoryData();
+    } else {
+        return
+    }
 });
 
 

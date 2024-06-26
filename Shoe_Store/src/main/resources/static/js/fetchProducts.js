@@ -29,7 +29,7 @@ function showProductsInAdminPage(products){
         tr.innerHTML = `
             <td>${product.id}</td>
             <td>${product.productName}</td>
-            <td>${product.productPrice}</td>
+            <td>${formatNumber(product.productPrice)} đ</td>
             <td>${product.productDescription}</td>
             <td>${product.productQuantity}</td>
             <td>${product.brandName}, ${product.categories}</td>

@@ -72,14 +72,18 @@ async function updateCustomer(event) {
 
 // Delete Customer
 async function deleteCustomer(id, email) {
-    const response = await fetch(`/api/v1/customers?id=${id}&email=${email}`, {
-        method: 'DELETE',
-    });
+    if(confirm("Bạn có chắc muốn xóa tài khoản của khách hàng này?")) {
+        const response = await fetch(`/api/v1/customers?id=${id}&email=${email}`, {
+            method: 'DELETE',
+        });
 
-    if (response.ok) {
-        fetchCustomers();
+        if (response.ok) {
+            fetchCustomers();
+        } else {
+            console.error('Failed to delete customer');
+        }
     } else {
-        console.error('Failed to delete customer');
+        return
     }
 }
 

@@ -92,7 +92,7 @@ function displayCart(cart) {
 // Remove an item from Cart
 function removeFromCart(productId) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let updatedCart = cart.filter(product => product.id !== productId);
+    let updatedCart = cart.filter(product => product.id != productId);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
 
     loadCart();
