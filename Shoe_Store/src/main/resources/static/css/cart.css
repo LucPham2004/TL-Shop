@@ -28,16 +28,19 @@
 }
 .cartItemInfo .product-name, .cartItemInfo .price {
     font-size: 16px;
+    text-align: start;
 }
 .cartItemInfo .description{
     font-size: 13px;
+    text-align: start;
 }
 
+/* X button to remove product from cart */
 .dropCartItem{
     display: flex;
     justify-content: center;
     height: 100%;
-    width: 20%;
+    width: 10%;
     margin-bottom: 10px;
 }
 .dropCartItemBtn{

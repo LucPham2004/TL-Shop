@@ -39,7 +39,7 @@ public class Order {
     private Float shippingCost;
 
     @Column(name = "tax")
-    private Float tax;
+    private Float tax = 8.0f;
 
     @Column(name = "order_status")
     private String status;
