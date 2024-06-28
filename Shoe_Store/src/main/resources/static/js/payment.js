@@ -51,24 +51,33 @@ document.getElementById("placeOrderBtn").addEventListener("click", function() {
     cart.forEach(product => {
         let orderDetail = {
             productId: product.id,
-            quantity: product.quantity,
-            unit_price: parseInt(product.price)
-          };
+            productName: product.productName,
+            quantity: parseInt(product.quantity),
+            unit_price: parseInt(product.price),
+            size: parseInt(product.size),
+            color: product.color,
+            categories: product.categories
+        };
 
         orderDetails.push(orderDetail);
     })
 
     createOrder(customerId, orderDetails);
+    clearCart();
 });
 
 async function createOrder(customerId, orderDetails) {
-    const url = '/api/v1/orders';
+    const url = '/api/v1/orders/placeOrder';
     const orderData = {
         customerId: customerId,
         orderDetails: orderDetails.map(detail => ({
             productId: detail.productId,
             quantity: detail.quantity,
-            unit_price: detail.unit_price
+            unit_price: detail.unit_price,
+            productName: detail.productName,
+            color: detail.color,
+            size: detail.size,
+            categories: detail.categories
         }))
     };
 
@@ -86,6 +95,7 @@ async function createOrder(customerId, orderDetails) {
         }
 
         const data = await response.json();
+        window.alert("Đơn hàng được đặt thành công!")
         console.log('Order created successfully:', data);
         return data;
     } catch (error) {

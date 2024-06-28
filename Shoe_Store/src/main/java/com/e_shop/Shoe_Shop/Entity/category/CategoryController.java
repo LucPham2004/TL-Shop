@@ -29,7 +29,7 @@ public class CategoryController {
         return categoryService.getCategoryById(id);
     }
 
-    @PostMapping()
+    @PostMapping
     public Category addNewCategory(@RequestBody String categoryName) {
         return categoryService.addNewCategory(categoryName);
     }

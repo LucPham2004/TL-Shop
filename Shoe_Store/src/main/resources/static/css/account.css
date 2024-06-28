@@ -50,6 +50,9 @@
     background-color: red;
     transform: scale(1.02);
 }
+.hidden {
+    display: none;
+}
 
 .orders {
     background-color: #fff;
@@ -59,23 +62,43 @@
     width: 70%;
     max-width: 850px;
 }
+#orders-container {
+    display: flex;
+    flex-direction: column;
+}
 .orders h2 {
     margin-top: 0;
 }
+
+
 .order {
+    display: flex;
+    flex-direction: column;
     border-top: 1px solid #ddd;
     padding: 10px 0;
 }
-.order:first-child {
-    border-top: none;
+.orderInfo{
+    display: flex;
+    flex-direction: row;
 }
-.order p {
+.orderProducts{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+}
+.orderProduct {
+    display: flex;
+    width: 100%;
+    height: 150px;
     margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
 }
-.order p strong {
-    display: inline-block;
-    width: 150px;
+.orderProduct img {
+    flex: 0 0 150px; 
+    height: 150px;
+    object-fit: cover;
 }
-.hidden{
-    display: none;
-}
+

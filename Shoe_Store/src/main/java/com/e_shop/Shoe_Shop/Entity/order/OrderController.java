@@ -23,9 +23,9 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping
-    public List<Order> getOrdersByCustomer(Customer customer){
-        return orderService.getOrdersByCustomer(customer);
+    @GetMapping(path = "/customer/{customerId}")
+    public List<Order> getOrdersByCustomer(@PathVariable int customerId){
+        return orderService.getOrdersByCustomer(customerId);
     }
 
     @GetMapping(path = "/{id}")
@@ -33,13 +33,13 @@ public class OrderController {
         return orderService.getOrderByIdAndCustomer(id, customer);
     }
 
-    @PostMapping
+    @PostMapping(path = "/placeOrder")
     public Order createOrder(@RequestBody OrderRequest orderRequest){
         return orderService.createOrder(orderRequest);
     }
 
-    @DeleteMapping
-    public void deleteOrder(Integer id, Customer customer){
-        orderService.DeleteOrder(id, customer);
+    @DeleteMapping(path = "/{id}")
+    public void deleteOrder(@PathVariable int id){
+        orderService.DeleteOrder(id);
     }
 }

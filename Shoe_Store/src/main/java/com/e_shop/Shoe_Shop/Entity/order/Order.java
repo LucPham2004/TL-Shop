@@ -1,6 +1,5 @@
 package com.e_shop.Shoe_Shop.Entity.order;
 
-import java.sql.Time;
 import java.util.*;
 
 import com.e_shop.Shoe_Shop.Entity.customer.Customer;
@@ -32,11 +31,8 @@ public class Order {
     @Column(name = "order_date")
     private Date date;
 
-    @Column(name = "order_time")
-    private Time orderTime;
-
     @Column(name = "shipping_cost")
-    private Float shippingCost;
+    private Float shippingCost = 15000.0f;
 
     @Column(name = "tax")
     private Float tax = 8.0f;
@@ -54,12 +50,11 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Set<OrderDetail> orderDetails;
+    private Set<OrderDetail> orderDetails = new HashSet<>();
     
-    public Order(Date date, Time orderTime, Float shippingCost, Float tax, String status, Float total,
+    public Order(Date date, Float shippingCost, Float tax, String status, Float total,
             Customer customer) {
         this.date = date;
-        this.orderTime = orderTime;
         this.shippingCost = shippingCost;
         this.tax = tax;
         this.status = status;
@@ -84,14 +79,6 @@ public class Order {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public Date getOrderTime() {
-        return orderTime;
-    }
-
-    public void setOrderTime(Time orderTime) {
-        this.orderTime = orderTime;
     }
 
     public Float getShippingCost() {
@@ -144,7 +131,7 @@ public class Order {
     
     @Override
     public String toString() {
-        return "Order [id=" + id + ", date=" + date + ", time=" + orderTime + ", shippingCost=" + shippingCost
+        return "Order [id=" + id + ", date=" + date + ", shippingCost=" + shippingCost
                 + ", tax=" + tax + ", status=" + status + ", total=" + total + ", customer=" + customer + "]";
     }
 

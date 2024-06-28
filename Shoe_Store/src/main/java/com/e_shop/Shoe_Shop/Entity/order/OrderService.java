@@ -21,15 +21,15 @@ public class OrderService {
 	@Autowired
 	private ProductRepository productRepository;
 
-	private final Float ShippingCostMinimum = 15000.0f;
+	private final Float ShippingCostCurrent = 15000.0f;
 
     public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 
     // GET
-	public List<Order> getOrdersByCustomer(Customer customer) {
-		return orderRepository.findByCustomer(customer);
+	public List<Order> getOrdersByCustomer(int customerId) {
+		return orderRepository.findByCustomerId(customerId);
 	}
 
     public Order getOrderByIdAndCustomer(Integer id, Customer customer) {
@@ -46,14 +46,14 @@ public class OrderService {
         List<OrderDetailRequest> orderDetailRequests = orderRequest.getOrderDetails();
 
         Order newOrder = new Order();
-        GatherInfo gatherInfo = new GatherInfo();
+        Float TotalPrice = 0.0f;
 
         newOrder.setDate(new Date());
         newOrder.setCustomer(customerRepository.findById(customerId));
-        newOrder.setShippingCost(gatherInfo.getShippingCostTotal());
+        newOrder.setShippingCost(ShippingCostCurrent);
         newOrder.setStatus("Đã đặt hàng!");
         newOrder.setTax(0.0f);
-        newOrder.setTotal(gatherInfo.getTotal() * (1 + newOrder.getTax()));
+        
 
         Set<OrderDetail> newOrderDetails = newOrder.getOrderDetails();
 
@@ -63,20 +63,24 @@ public class OrderService {
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(newOrder);
             orderDetail.setProduct(product);
+            orderDetail.setProductName(detailRequest.getProductName());
             orderDetail.setQuantity(detailRequest.getQuantity());
-            orderDetail.setShippingCost(ShippingCostMinimum);
-            orderDetail.setUnit_price(detailRequest.getUnit_price());
+            orderDetail.setColor(detailRequest.getColor());
+            orderDetail.setSize(detailRequest.getSize());
+            orderDetail.setCategories(detailRequest.getCategories());
+            orderDetail.setUnitPrice(detailRequest.getUnit_price());
             orderDetail.setSubtotal(detailRequest.getQuantity() * detailRequest.getUnit_price());
-
+            TotalPrice += orderDetail.getSubtotal();
             newOrderDetails.add(orderDetail);
         }
+        newOrder.setTotal(TotalPrice * (1 + newOrder.getTax()) + newOrder.getShippingCost());
 
         return orderRepository.save(newOrder);
     }
 
     // DELETE
-    public void DeleteOrder(int id, Customer customer){
-		Order order = orderRepository.findByIdAndCustomer(id, customer);
+    public void DeleteOrder(int id){
+		Order order = orderRepository.findById(id);
 		if(order == null){
 			throw new IllegalStateException("Order does not exists!");
 		}
@@ -106,12 +110,20 @@ public class OrderService {
 
     static class OrderDetailRequest {
         private int productId;
+        private String productName;
         private int quantity;
-        private float shippingCost;
+        private Integer size;
+        private String color;
         private float unit_price;
-        private float subtotal;
+        private String categories;
 
-		public int getProductId() {
+		public String getCategories() {
+            return categories;
+        }
+        public void setCategories(String categories) {
+            this.categories = categories;
+        }
+        public int getProductId() {
 			return productId;
 		}
 		public void setProductId(int productId) {
@@ -123,24 +135,30 @@ public class OrderService {
 		public void setQuantity(int quantity) {
 			this.quantity = quantity;
 		}
-		public float getShippingCost() {
-			return shippingCost;
-		}
-		public void setShippingCost(float shippingCost) {
-			this.shippingCost = shippingCost;
-		}
 		public float getUnit_price() {
 			return unit_price;
 		}
 		public void setUnit_price(float unit_price) {
 			this.unit_price = unit_price;
 		}
-		public float getSubtotal() {
-			return subtotal;
-		}
-		public void setSubtotal(float subtotal) {
-			this.subtotal = subtotal;
-		}
+        public String getProductName() {
+            return productName;
+        }
+        public void setProductName(String productName) {
+            this.productName = productName;
+        }
+        public Integer getSize() {
+            return size;
+        }
+        public void setSize(Integer size) {
+            this.size = size;
+        }
+        public String getColor() {
+            return color;
+        }
+        public void setColor(String color) {
+            this.color = color;
+        }
 
     }
 

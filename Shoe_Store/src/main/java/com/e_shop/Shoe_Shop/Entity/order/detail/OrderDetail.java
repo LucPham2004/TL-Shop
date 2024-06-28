@@ -1,5 +1,7 @@
 package com.e_shop.Shoe_Shop.Entity.order.detail;
 
+// import java.util.Set;
+
 import com.e_shop.Shoe_Shop.Entity.order.Order;
 import com.e_shop.Shoe_Shop.Entity.product.Product;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -23,11 +25,20 @@ public class OrderDetail {
     @Column(name = "order_detail_id")
     private Integer id;
 
+    @Column(name = "product_name")
+    private String productName;
+
     @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name = "shipping_cost")
-    private Float shippingCost;
+    @Column(name = "size")
+    private Integer size;
+
+    @Column(name = "color")
+    private String color;
+
+    @Column(name = "categories")
+    private String categories;
 
     @Column(name = "unit_price")
     private Float unitPrice;
@@ -35,8 +46,9 @@ public class OrderDetail {
     @Column(name = "sub_total")
     private Float subtotal;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
+    @JsonBackReference
 	private Product product;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -47,24 +59,25 @@ public class OrderDetail {
     public OrderDetail() {
     }
 
-    public OrderDetail(Integer quantity, Float shippingCost, Float unit_price, Float subtotal, Product product,
-            Order order) {
+    public OrderDetail(Integer id, String productName, Integer quantity, Integer size, String color, String categories,
+            Float unitPrice, Float subtotal, Product product, Order order) {
+        this.id = id;
+        this.productName = productName;
         this.quantity = quantity;
-        this.shippingCost = shippingCost;
-        this.unitPrice = unit_price;
+        this.size = size;
+        this.color = color;
+        this.categories = categories;
+        this.unitPrice = unitPrice;
         this.subtotal = subtotal;
         this.product = product;
         this.order = order;
     }
 
-    public Float calculateSubtotal() {
-        return (this.unitPrice * this.quantity) + this.shippingCost;
-    }
-
     @Override
     public String toString() {
-        return "OrderDetail [id=" + id + ", quantity=" + quantity + ", shippingCost=" + shippingCost + ", unit_price="
-                + unitPrice + ", subtotal=" + subtotal + ", product=" + product + ", order=" + order + "]";
+        return "OrderDetail [id=" + id + ", productName=" + productName + ", quantity=" + quantity + ", size=" + size
+                + ", color=" + color + ", categories=" + categories + ", unitPrice=" + unitPrice + ", subtotal="
+                + subtotal + ", product=" + product + ", order=" + order + "]";
     }
 
     public Integer getId() {
@@ -81,25 +94,6 @@ public class OrderDetail {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;   
-        this.subtotal = calculateSubtotal();
-    }
-
-    public Float getShippingCost() {
-        return shippingCost;
-    }
-
-    public void setShippingCost(Float shippingCost) {
-        this.shippingCost = shippingCost;
-        this.subtotal = calculateSubtotal();
-    }
-
-    public Float getUnit_price() {
-        return unitPrice;
-    }
-
-    public void setUnit_price(Float unitPrice) {
-        this.unitPrice = unitPrice;
-        this.subtotal = calculateSubtotal();
     }
 
     public Float getSubtotal() {
@@ -124,5 +118,45 @@ public class OrderDetail {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getCategories() {
+        return categories;
+    }
+
+    public void setCategories(String categories) {
+        this.categories = categories;
+    }
+
+    public Float getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(Float unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }
