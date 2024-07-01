@@ -321,6 +321,16 @@
 		});
     </script>
 
+	<script>
+		function showNotification() {
+			var notification = document.getElementById("notification");
+			notification.style.display = "block";
+			setTimeout(function() {
+				notification.style.display = "none";
+			}, 5000);
+		}
+	</script>
+
 	<script src="./js/fetchCategory.js"></script>
 	<script src="./js/fetchBrands.js"></script>
 	<script src="./js/fetchProducts.js"></script>

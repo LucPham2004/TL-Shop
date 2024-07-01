@@ -1,6 +1,6 @@
 package com.e_shop.Shoe_Shop.Entity.review;
 
-import java.sql.Date;
+import java.util.Date;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,12 +40,12 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    @JsonBackReference
+    @JsonBackReference(value = "reference1")
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    @JsonBackReference
+    @JsonBackReference(value = "reference2")
     private Customer customer;
 
     public Integer getId() {

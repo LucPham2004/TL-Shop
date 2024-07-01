@@ -93,51 +93,35 @@
 
     <div class="review">
         <div class="review-container">
+            <div class="reviewForm-container">
+                <form id="reviewForm">
+                    <div>
+                        <label for="reviewTitle">Tiêu đề:</label>
+                        <input type="text" id="reviewTitle" required>
+                    </div>
+                    <div>
+                        <label for="rating">Đánh giá:</label>
+                        <select id="rating" required>
+                            <option value="5">5★</option>
+                            <option value="4">4★</option>
+                            <option value="3">3★</option>
+                            <option value="2">2★</option>
+                            <option value="1">1★</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="comment">Bình luận:</label>
+                        <textarea id="comment" required></textarea>
+                    </div>
+                    <button type="submit">Thêm Đánh giá</button>
+                </form>
+                <div style="display: flex;justify-content:center;"><hr style="width:80%;"></div>
+            </div>
             <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseReview" aria-expanded="false" aria-controls="collapseReview">
-                    Xem Đánh Giá Sản Phẩm
+                    Đánh Giá Sản Phẩm
             </button>
             <div class="collapse show" id="collapseReview">
-                <div class="card card-body">
-                    <div class="review-item">
-                        <div class="review-info">
-                            <img class="customer-avt" alt="customer-avt" src="./img/logo/TL.png">
-                            <p class="customer-name">Phạm Tiến Lực</p>
-                            <p class="review-date">29/05/2024</p>
-                            <p class="star">★★★★☆</p>
-                        </div>
-                        <div>
-                            <h6 class="review-title">Đẹp bùng lổ!!!</h6>
-                            <p class="review-content">Đôi giày này quá mức đẹp, vừa vắn, êm ái, rất chắc, Đẳng cấp đấy! Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto deleniti adipisci voluptate, animi, est velit deserunt impedit aperiam debitis aliquid perspiciatis. Explicabo eaque nam quod molestiae nisi qui labore laborum!</p>
-                        </div>
-                        <div style="display: flex;justify-content:center;"><hr style="width:80%;"></div>
-                    </div>
-                    <div class="review-item">
-                        <div class="review-info">
-                            <img class="customer-avt" alt="customer-avt" src="./img/logo/TL.png">
-                            <p class="customer-name">Phạm Tiến Lực</p>
-                            <p class="review-date">29/05/2024</p>
-                            <p class="star">★★★★★</p>
-                        </div>
-                        <div>
-                            <h6 class="review-title">Đẹp bùng lổ!!!</h6>
-                            <p class="review-content">Đôi giày này quá mức đẹp, vừa vắn, êm ái, rất chắc, Đẳng cấp đấy!</p>
-                        </div>
-                        <div style="display: flex;justify-content:center;"><hr style="width:80%;"></div>
-                    </div>
-                    <div class="review-item">
-                        <div class="review-info">
-                            <img class="customer-avt" alt="customer-avt" src="./img/logo/TL.png">
-                            <p class="customer-name">Phạm Tiến Lực</p>
-                            <p class="review-date">29/05/2024</p>
-                            <p class="star">★★★★★</p>
-                        </div>
-                        <div>
-                            <h6 class="review-title">Đẹp bùng lổ!!!</h6>
-                            <p class="review-content">Đôi giày này quá mức đẹp, vừa vắn, êm ái, rất chắc, Đẳng cấp đấy!</p>
-                        </div>
-                        <div style="display: flex;justify-content:center;"><hr style="width:80%;"></div>
-                    </div>
-                </div>
+                <div class="card card-body"></div>
             </div>
         </div>
     </div>
@@ -161,6 +145,10 @@
                 </button>
             </div>
         </div>
+    </div>
+
+    <div id="notification" style="display:none; position:fixed; top:10%; left:45%; background-color:lightgray; padding:10px; border-radius:5px;">
+        Đã thêm vào giỏ hàng!
     </div>
 
     <!-- scroll to top button -->

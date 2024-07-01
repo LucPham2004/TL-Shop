@@ -39,7 +39,15 @@
 		</div>
 	</div>
 	
-
-  <script src="./js/register.js"></script>
+	<script>
+		function showNotification() {
+			var notification = document.getElementById("notification");
+			notification.style.display = "block";
+			setTimeout(function() {
+				notification.style.display = "none";
+			}, 5000);
+		}
+	</script>
+  	<script src="./js/register.js"></script>
 </body>
 </html>

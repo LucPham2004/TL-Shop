@@ -166,10 +166,9 @@ body{
     flex-direction: row;
     gap: 10px;
 }
-.customer-avt{
+.user-icon{
     width: 30px;
     height: 30px;
-    
 }
 .star{
     color: rgb(255, 255, 0);

@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.e_shop.Shoe_Shop.Entity.review.ReviewService.NewReviewRequest;
+import com.e_shop.Shoe_Shop.Entity.review.ReviewService.ReviewResponse;
+
 @RestController
 @RequestMapping(path = "/api/v1/reviews")
 public class ReviewController {
@@ -23,45 +26,40 @@ public class ReviewController {
 
     // GET
     @GetMapping
-    public List<Review> getAllReviews() {
+    public List<ReviewResponse> getAllReviews() {
         return reviewService.getAllReviews();
     }
 
     @GetMapping(path = "/{id}")
-    public Review getReviewById(@PathVariable int id) {
+    public ReviewResponse getReviewById(@PathVariable int id) {
         return reviewService.getReviewById(id);
     }
     
     @GetMapping(path = "/product/{product_id}")
-    public List<Review> getAllReviewbyProduct(@PathVariable int product_id)
-    {
+    public List<ReviewResponse> getAllReviewbyProduct(@PathVariable int product_id) {
         return reviewService.getAllReviewsByProduct(product_id);
     }
 
     @GetMapping(path = "/customer/{customer_id}")
-    public List<Review> getAllReviewbyCustomer(@PathVariable int customer_id)
-    {
+    public List<ReviewResponse> getAllReviewbyCustomer(@PathVariable int customer_id) {
         return reviewService.getAllReviewsByCustomer(customer_id);
     }
 
     // POST
     @PostMapping
-    public void addNewReview(@RequestBody Review review)
-    {
-        reviewService.addNewReview(review);
+    public void addNewReview(@RequestBody NewReviewRequest newReviewRequest) {
+        reviewService.addNewReview(newReviewRequest);
     }
 
     // PUT
     @PutMapping
-    public void updateReview(@RequestBody Review review)
-    {
+    public void updateReview(@RequestBody Review review) {
         reviewService.updateReview(review);
     }
 
     // DELETE
     @DeleteMapping
-    public void deleteReview(@RequestBody int id)
-    {
+    public void deleteReview(@RequestBody int id) {
         reviewService.deleteReview(id);
     }
 }

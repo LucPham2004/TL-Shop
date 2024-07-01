@@ -22,6 +22,7 @@ public class OrderService {
 	private ProductRepository productRepository;
 
 	private final Float ShippingCostCurrent = 15000.0f;
+    private final Float TaxCurrent = 0.08f;
 
     public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
@@ -52,7 +53,7 @@ public class OrderService {
         newOrder.setCustomer(customerRepository.findById(customerId));
         newOrder.setShippingCost(ShippingCostCurrent);
         newOrder.setStatus("Đã đặt hàng!");
-        newOrder.setTax(0.0f);
+        newOrder.setTax(TaxCurrent);
         
 
         Set<OrderDetail> newOrderDetails = newOrder.getOrderDetails();

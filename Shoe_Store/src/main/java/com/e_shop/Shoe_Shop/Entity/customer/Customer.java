@@ -45,7 +45,7 @@ public class Customer {
     private Set<Order> order;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "reference2")
     private Set<Review> review;
 
     public Integer getId() {

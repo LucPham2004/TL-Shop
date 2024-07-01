@@ -68,6 +68,7 @@ async function fetchCustomerOrders() {
         const orders = await orderResponse.json();
 
         const ordersContainer = document.getElementById("orders-container");
+        ordersContainer.innerHTML = '';
 
         orders.forEach(order => {
             const orderItem = document.createElement('div');
@@ -124,6 +125,8 @@ async function deleteOrder(id) {
         });
 
         if (response.ok) {
+            
+            showNotification();
             fetchCustomerOrders();
         } else {
             console.error('Failed to delete order');

@@ -104,37 +104,104 @@ function formatNumber(number) {
     return number.toLocaleString('vi-VN');
 }
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     const stars = document.querySelectorAll('.star');
-//     stars.forEach(star => {
-//         star.addEventListener('click', setRating);
-//         star.addEventListener('mouseover', hoverRating);
-//         star.addEventListener('mouseout', resetRating);
-//     });
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get("id");
+    displayReviews(productId);
+    const customerId = getCustomerId();
+    const reviewForm = document.getElementById('reviewForm');
 
-//     function setRating(event) {
-//         const selectedValue = event.target.getAttribute('data-value');
-//         stars.forEach(star => {
-//             star.classList.remove('selected');
-//             if (star.getAttribute('data-value') <= selectedValue) {
-//                 star.classList.add('selected');
-//             }
-//         });
-//     }
+    reviewForm.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-//     function hoverRating(event) {
-//         const hoverValue = event.target.getAttribute('data-value');
-//         stars.forEach(star => {
-//             star.classList.remove('hover');
-//             if (star.getAttribute('data-value') <= hoverValue) {
-//                 star.classList.add('hover');
-//             }
-//         });
-//     }
+        const reviewTitle = document.getElementById('reviewTitle').value;
+        const rating = document.getElementById('rating').value;
+        const comment = document.getElementById('comment').value;
 
-//     function resetRating() {
-//         stars.forEach(star => {
-//             star.classList.remove('hover');
-//         });
-//     }
-// });
+        const reviewData = {
+            reviewTitle: reviewTitle,
+            reviewContent: comment,
+            reviewDate: new Date(),
+            reviewRating: rating,
+            productId: parseInt(productId),
+            customerId: customerId
+        }
+        
+        try {
+            const response = fetch('/api/v1/reviews', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reviewData)
+            });
+
+            reviewForm.reset();
+            displayReviews(productId);
+            window.alert('Đánh giá thành công!')
+
+        } catch (error) {
+            console.error('Error while creating review: ' + error);
+        }
+        
+    });
+
+});
+
+async function displayReviews(productId) {
+    try {
+        const response = await fetch('/api/v1/reviews/product/' + parseInt(productId));
+        const reviews = await response.json();
+
+        const reviewContainer = document.querySelector(' #collapseReview .card-body');
+        reviewContainer.innerHTML = '';
+
+        if(reviews == null) {
+            reviewContainer.innerHTML = 'Chưa có bình luận, đánh giá nào về sản phẩm này.'
+        } else {
+            reviews.forEach(review => {
+                const reviewItem = document.createElement('div');
+                reviewItem.classList.add('review-item');
+        
+                reviewItem.innerHTML = `
+                    <div class="review-info">
+                        <img class="user-icon" alt="user-icon" src="./img/logo/user.png">
+                        <p class="customer-name">${review.customerName}</p>
+                        <p class="review-date">${extractDate(review.reviewDate)}</p>
+                        <p class="star">${displayStars(review.reviewRating)}</p>
+                    </div>
+                    <div>
+                        <h6 class="review-title">${review.reviewTitle}</h6>
+                        <p class="review-content">${review.reviewContent}</p>
+                    </div>
+                    <div style="display: flex;justify-content:center;"><hr style="width:80%;"></div>
+                `;
+
+                reviewContainer.appendChild(reviewItem);
+            });
+        }
+
+    } catch (error) {
+        console.error('Error fetching reviews:', error);
+    }
+}
+
+function extractDate(datetimeString) {
+    let datePart = datetimeString.split('T')[0];
+    
+    return datePart;
+}
+
+function displayStars(rating) {
+    let stars = "";
+
+    for (let i = 0; i < rating; i++) {
+        stars += "★";
+    }
+
+    for (let i = rating; i < 5; i++) {
+        stars += "☆";
+    }
+
+    return stars;
+}

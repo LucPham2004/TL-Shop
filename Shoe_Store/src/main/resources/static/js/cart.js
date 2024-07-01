@@ -42,7 +42,7 @@ if(addToCartBtn) {
 
                     if(countItemsInCart() < maxCartProducts) {
                         cartContainer.appendChild(cartItem);
-                        window.alert("Đã thêm vào giỏ hàng thành công!")
+                        showNotification();
                         addToCart({ id: `${product.id}`, productName: `${product.productName}`, 
                                     price: `${price}`, categories: `${product.categories}`, 
                                     color: `${color}`, size: `${size}`,
