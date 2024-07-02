@@ -32,6 +32,7 @@ public class ReviewService {
     public ReviewResponse convertToResponse(Review review) {
         Customer customer = review.getCustomer();
         ReviewResponse reviewResponse = new ReviewResponse();
+        reviewResponse.setId(review.getId());
         reviewResponse.setCustomerName(customer.getName());
         reviewResponse.setReviewContent(review.getReviewContent());
         reviewResponse.setReviewDate(review.getReviewDate());
@@ -98,14 +99,19 @@ public class ReviewService {
 
     // PUT
     @Transactional
-    public void updateReview(Review review) {
-        Review reviewToUpdate = reviewRepository.findById(review.getId())
+    public void updateReview(NewReviewRequest newReviewRequest) {
+        Review reviewToUpdate = reviewRepository.findById(newReviewRequest.getId())
         .orElseThrow(() -> new EntityNotFoundException("Review not found"));
-        reviewToUpdate = review;
+
+        reviewToUpdate.setReviewTitle(newReviewRequest.getReviewTitle());
+        reviewToUpdate.setReviewContent(newReviewRequest.getReviewContent());
+        reviewToUpdate.setReviewRating(newReviewRequest.getReviewRating());
+
         reviewRepository.save(reviewToUpdate);
     }
 
     static class NewReviewRequest {
+        private int id;
         private String reviewTitle;
         private String reviewContent;
         private Date reviewDate;
@@ -113,6 +119,12 @@ public class ReviewService {
         private int productId;
         private int customerId;
         
+        public int getId() {
+            return id;
+        }
+        public void setId(int id) {
+            this.id = id;
+        }
         public String getReviewTitle() {
             return reviewTitle;
         }
@@ -152,12 +164,19 @@ public class ReviewService {
     }
 
     static class ReviewResponse {
+        private int id;
         private String customerName;
         private Date reviewDate;
         private String reviewTitle;
         private String reviewContent;
         private Integer reviewRating;
 
+        public int getId() {
+            return id;
+        }
+        public void setId(int id) {
+            this.id = id;
+        }
         public String getCustomerName() {
             return customerName;
         }

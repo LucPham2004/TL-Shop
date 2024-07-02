@@ -53,13 +53,13 @@ public class ReviewController {
 
     // PUT
     @PutMapping
-    public void updateReview(@RequestBody Review review) {
-        reviewService.updateReview(review);
+    public void updateReview(@RequestBody NewReviewRequest newReviewRequest) {
+        reviewService.updateReview(newReviewRequest);
     }
 
     // DELETE
-    @DeleteMapping
-    public void deleteReview(@RequestBody int id) {
+    @DeleteMapping(path = "/{id}")
+    public void deleteReview(@PathVariable int id) {
         reviewService.deleteReview(id);
     }
 }

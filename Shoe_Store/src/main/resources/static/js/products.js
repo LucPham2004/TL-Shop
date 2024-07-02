@@ -153,22 +153,24 @@ async function displayReviews(productId) {
         const response = await fetch('/api/v1/reviews/product/' + parseInt(productId));
         const reviews = await response.json();
 
-        const reviewContainer = document.querySelector(' #collapseReview .card-body');
+        const reviewContainer = document.querySelector('#collapseReview .card-body');
         reviewContainer.innerHTML = '';
 
-        if(reviews == null) {
+        if(reviews.length == 0) {
             reviewContainer.innerHTML = 'Chưa có bình luận, đánh giá nào về sản phẩm này.'
         } else {
             reviews.forEach(review => {
                 const reviewItem = document.createElement('div');
-                reviewItem.classList.add('review-item');
+                reviewItem.classList.add(`review-item-${review.id}`);
         
                 reviewItem.innerHTML = `
                     <div class="review-info">
                         <img class="user-icon" alt="user-icon" src="./img/logo/user.png">
                         <p class="customer-name">${review.customerName}</p>
                         <p class="review-date">${extractDate(review.reviewDate)}</p>
-                        <p class="star">${displayStars(review.reviewRating)}</p>
+                        <p class="star" data-rating=${review.reviewRating}>${displayStars(review.reviewRating)}</p>
+                        <span class="editReview" onclick="editReview(${review.id})">Sửa</span>
+                        <span class="deleteReview" onclick="deleteReview(${review.id})">Xóa</span>
                     </div>
                     <div>
                         <h6 class="review-title">${review.reviewTitle}</h6>
@@ -186,6 +188,79 @@ async function displayReviews(productId) {
     }
 }
 
+function editReview(reviewId) {
+    const reviewItem = document.querySelector(`.review-item-${reviewId}`);
+
+    if (!reviewItem) {
+        console.error(`Review item with ID ${reviewId} not found`);
+        return;
+    }
+
+    const reviewTitle = reviewItem.querySelector('.review-title').innerText;
+    const reviewContent = reviewItem.querySelector('.review-content').innerText;
+    const reviewRating = reviewItem.querySelector('.star').getAttribute('data-rating');
+
+    reviewItem.innerHTML = `
+        <div class="review-info">
+            <img class="user-icon" alt="user-icon" src="./img/logo/user.png">
+            <p class="customer-name">${reviewItem.querySelector('.customer-name').innerText}</p>
+            <p class="review-date">${reviewItem.querySelector('.review-date').innerText}</p>
+            <input type="number" class="star" value="${reviewRating}" min="1" max="5">
+        </div>
+        <div>
+            <input type="text" class="review-title" value="${reviewTitle}">
+            <textarea class="review-content">${reviewContent}</textarea>
+            <button class="saveReview" onclick="saveReview(${reviewId})">Lưu</button>
+        </div>
+        <div style="display: flex;justify-content:center;"><hr style="width:80%;"></div>
+    `;
+}
+
+// Save edited review
+function saveReview(reviewId) {
+    const reviewItem = document.querySelector(`.review-item-${reviewId}`);
+    const updatedReview = {
+        id: reviewId,
+        reviewDate: reviewItem.querySelector('.review-date').innerText,
+        reviewRating: reviewItem.querySelector('.star').value,
+        reviewTitle: reviewItem.querySelector('.review-title').value,
+        reviewContent: reviewItem.querySelector('.review-content').value
+    };
+    try {
+        fetch('/api/v1/reviews', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedReview)
+        })
+            alert('Cập nhật đánh giá thành công!');
+            location.reload();
+            
+    } catch(error) {
+        console.error('Error:', error);
+        alert('Có lỗi xảy ra. Vui lòng thử lại.');
+    };
+}
+
+// Delete review
+async function deleteReview(id) {
+    if(confirm("Bạn có chắc muốn xóa bình luận đánh giá này?")) {
+        const response = await fetch(`/api/v1/reviews/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            location.reload();
+        } else {
+            console.error('Failed to delete product');
+        }
+    } else {
+        return
+    }
+}
+
+// Small helping functions
 function extractDate(datetimeString) {
     let datePart = datetimeString.split('T')[0];
     
