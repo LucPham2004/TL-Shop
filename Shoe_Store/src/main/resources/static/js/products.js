@@ -13,7 +13,7 @@ document.getElementById('decrease').addEventListener('click', function() {
     }
 });
 
-
+// Display Product Infomation
 document.addEventListener("DOMContentLoaded", function() {
     const params = new URLSearchParams(window.location.search);
     const productId = params.get("id");
@@ -27,10 +27,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 return response.json();
             })
             .then(product => {
+
+                price = product.productPrice * (100 - product.discountPercent) / 100;
+
                 document.querySelector(".main-container .product-name").textContent = product.productName;
                 document.querySelector(".main-container .Type").textContent = product.categories; 
                 document.querySelector(".main-container .star span").textContent = product.reviewCount;
-                document.querySelector(".main-container .price").textContent = formatNumber(product.productPrice) + " đ";
+                document.querySelector(".main-container .price").textContent = formatNumber(price) + " đ";
+                document.querySelector(".main-container .originPrice").textContent = formatNumber(product.productPrice) + " đ";
                 document.querySelector(".main-container .description").innerHTML = `
                     <h6>Mô Tả Sản Phẩm:</h6>
                     <ul>
@@ -50,60 +54,68 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .catch(error => {
                 document.querySelector(".main-container").textContent = "Product not found. Error: " + error;
+                console.error(error);
             });
     } else {
         document.querySelector(".main-container").textContent = "No product selected";
     }
 });
 
+// Display Similar products
 document.addEventListener('DOMContentLoaded', () => {
     fetch('/api/v1/products')
         .then(response => response.json())
         .then(data => {
             const similarProductsTop = document.getElementById('similar-products-top');
             const carouselInner = document.getElementById('carousel-inner');
-            let carouselItems = '';
-            let activeSet = false;
+            let topProductsHTML = '';
+
+            const firstCarouselItem = carouselInner.querySelector('.carousel-item:nth-child(1)');
+            const secondCarouselItem = carouselInner.querySelector('.carousel-item:nth-child(2)');
+
+            let carouselItemInnerContainer1 = document.createElement('div');
+            carouselItemInnerContainer1.classList.add('carousel-item-innerContainer');
+
+            let carouselItemInnerContainer2 = document.createElement('div');
+            carouselItemInnerContainer2.classList.add('carousel-item-innerContainer');
 
             data.forEach((product, index) => {
-                const productHTML = `
-                    <div class="similar-item">
-                        <img alt="Giày similar" src="./img/homepage/favorite/favorite1.png">
-                        <p class="product-name">${product.productName}</p>
-                        <p class="description">${product.productDescription}</p>
-                        <p class="price">${formatNumber(product.productPrice)} đ</p>
-                    </div>
+                // Tạo một div mới để chứa thông tin sản phẩm
+                let productContainer = document.createElement('div');
+                productContainer.classList.add('similar-item');
+
+                price = product.productPrice * (100 - product.discountPercent) / 100;
+
+                // Thiết lập nội dung cho sản phẩm
+                productContainer.innerHTML = `
+                    <img alt="Giày similar" src="./img/homepage/favorite/favorite1.png">
+                    <p class="product-name">${product.productName}</p>
+                    <p class="description">${product.productDescription}</p>
+                    <p class="price">${formatNumber(price)} đ
+                        <span class="originPrice" style="text-decoration: line-through;">${formatNumber(product.productPrice)} đ</span>
+                    </p>
                 `;
 
                 if (index < 4) {
-                    similarProductsTop.innerHTML += productHTML;
-                }
-
-                if (index % 4 === 0) {
-                    if (index > 0) {
-                        carouselItems += '</div>';
-                    }
-                    carouselItems += `<div class="carousel-item ${!activeSet ? 'active' : ''}">
-                        <div class="similar-products">`;
-                    activeSet = true;
-                }
-
-                carouselItems += productHTML;
-
-                if (index === data.length - 1) {
-                    carouselItems += '</div></div>';
+                    topProductsHTML += productContainer.outerHTML;
+                } else if (index >= 4 && index < 8) {
+                    carouselItemInnerContainer1.appendChild(productContainer);
+                } else if (index >= 8 && index < 12) {
+                    carouselItemInnerContainer2.appendChild(productContainer);
                 }
             });
 
-            carouselInner.innerHTML = carouselItems;
+            similarProductsTop.innerHTML = topProductsHTML;
+            firstCarouselItem.appendChild(carouselItemInnerContainer1);
+            secondCarouselItem.appendChild(carouselItemInnerContainer2);
+
         })
         .catch(error => console.error('Error fetching products:', error));
 });
 
-function formatNumber(number) {
-    return number.toLocaleString('vi-VN');
-}
 
+
+// New Review Form
 document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const productId = params.get("id");
@@ -148,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+// Display Reviews
 async function displayReviews(productId) {
     try {
         const response = await fetch('/api/v1/reviews/product/' + parseInt(productId));
@@ -188,6 +201,7 @@ async function displayReviews(productId) {
     }
 }
 
+// Edit Review
 function editReview(reviewId) {
     const reviewItem = document.querySelector(`.review-item-${reviewId}`);
 
@@ -279,4 +293,8 @@ function displayStars(rating) {
     }
 
     return stars;
+}
+
+function formatNumber(number) {
+    return number.toLocaleString('vi-VN');
 }

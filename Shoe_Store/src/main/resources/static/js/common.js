@@ -8,10 +8,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 <a href="./index.html"><div class="header-item">Home</div></a>
                 <a href="./shop.html"><div class="header-item">Cửa Hàng</div></a>
                 <h5 style="margin-bottom: 15px;align-self:center; color:rgb(89, 89, 89);">|</h5>
-                <a href="./shop.html"><div class="header-item">Adidas</div></a>
-                <a href="./shop.html"><div class="header-item">Nike</div></a>
-                <a href="./shop.html"><div class="header-item">Thể Thao</div></a>
-                <a href="./shop.html"><div class="header-item">Giày Da</div></a>
+                <a href="./shop.html?category=Adidas"><div class="header-item">Adidas</div></a>
+                <a href="./shop.html?category=Nike"><div class="header-item">Nike</div></a>
+                <a href="./shop.html?category=Thể Thao"><div class="header-item">Thể Thao</div></a>
+                <a href="./shop.html?category=Giày Da"><div class="header-item">Giày Da</div></a>
             </div>
             <div class="header-rightPart">
                 <div class="search-box">

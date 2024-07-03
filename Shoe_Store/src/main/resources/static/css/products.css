@@ -215,3 +215,7 @@ body{
     margin-bottom: 10px;
     transition: opacity 0.2s ease;
 }
+.carousel-item-innerContainer{
+    display: flex;
+    flex-direction: row;
+}

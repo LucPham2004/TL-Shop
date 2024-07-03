@@ -37,11 +37,9 @@ public class AuthController {
 
             System.out.println(Integer.toString(customer.getId()));
             Cookie idCookie = new Cookie("id", Integer.toString(customer.getId()));
-            idCookie.setMaxAge(3600); 
             idCookie.setPath("/"); 
 
             Cookie loginCookie = new Cookie("userLoggedIn", "true");
-            loginCookie.setMaxAge(3600); 
             loginCookie.setPath("/"); 
 
             response.addCookie(idCookie);
@@ -77,14 +75,7 @@ public class AuthController {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("userLoggedIn")) {
-                    cookie.setValue("");
-                    cookie.setPath("/");
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                }
-
-                if (cookie.getName().equals("id")) {
+                if (cookie.getName().equals("userLoggedIn") || cookie.getName().equals("id")) {
                     cookie.setValue("");
                     cookie.setPath("/");
                     cookie.setMaxAge(0);

@@ -28,6 +28,30 @@ function getCustomerId() {
     return parseInt(getCookie("id"));
 }
 
+// Check if user is active or not
+let idleTime = 0;
+const idleLimit = 120 * 60; // 2 hours
+
+function resetIdleTime() {
+    idleTime = 0;
+}
+
+function checkIdleTime() {
+    idleTime += 600;
+    if (idleTime >= idleLimit) {
+        logout();
+    }
+}
+window.addEventListener('load', () => {
+    const resetEvents = ['mousemove', 'keydown'];
+  
+    resetEvents.forEach(event => {
+      document.addEventListener(event, resetIdleTime);
+    });
+  
+    setInterval(checkIdleTime, 600000); // Check every 10 minutes
+});
+
 // Log out
 async function logout() {
     try {

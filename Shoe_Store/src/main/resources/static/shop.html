@@ -17,21 +17,22 @@
         <div class="brand-category">
             <h5>Danh mục sản phẩm</h5>
             <ul>
-                <li class="category-item"><a href="">Adidas</a></li>
-                <li class="category-item"><a href="">Nike</a></li>
-                <li class="category-item"><a href="">Biti's</a></li>
-                <li class="category-item"><a href="">Puma</a></li>
-                <li class="category-item"><a href="">Vans</a></li>
-                <li class="category-item"><a href="">Converse</a></li>
-                <li class="category-item"><a href="">Louis Vuitton</a></li>
-                <li class="category-item"><a href="">New Balance</a></li>
-                <li class="category-item"><a href="">Thể Thao</a></li>
-                <li class="category-item"><a href="">Giày Nam</a></li>
-                <li class="category-item"><a href="">Giày Nữ</a></li>
-                <li class="category-item"><a href="">Giày Cao Gót</a></li>
-                <li class="category-item"><a href="">Giày Da</a></li>
-                <li class="category-item"><a href="">Dép</a></li>
-                <li class="category-item"><a href="">Hãng khác</a></li>
+                <li class="category-item" onclick="showAllProducts()" style="cursor: pointer;">Tất Cả</li>
+                <li class="category-item"><a href="#" data-category="Adidas">Adidas</a></li>
+                <li class="category-item"><a href="#" data-category="Nike">Nike</a></li>
+                <li class="category-item"><a href="#" data-category="Biti's">Biti's</a></li>
+                <li class="category-item"><a href="#" data-category="Puma">Puma</a></li>
+                <li class="category-item"><a href="#" data-category="Vans">Vans</a></li>
+                <li class="category-item"><a href="#" data-category="Converse">Converse</a></li>
+                <li class="category-item"><a href="#" data-category="Louis Vuitton">Louis Vuitton</a></li>
+                <li class="category-item"><a href="#" data-category="New Balance">New Balance</a></li>
+                <li class="category-item"><a href="#" data-category="Thể Thao">Thể Thao</a></li>
+                <li class="category-item"><a href="#" data-category="Giày Nam">Giày Nam</a></li>
+                <li class="category-item"><a href="#" data-category="Giày Nữ">Giày Nữ</a></li>
+                <li class="category-item"><a href="#" data-category="Giày Cao Gót">Giày Cao Gót</a></li>
+                <li class="category-item"><a href="#" data-category="Giày Da">Giày Da</a></li>
+                <li class="category-item"><a href="#" data-category="Dép">Dép</a></li>
+                <li class="category-item"><a href="#" data-category="HangKhac">Hãng khác</a></li>
             </ul>
             <hr style="width:80%;">
         </div>
@@ -39,12 +40,12 @@
             <div class="sorting">
                 <div class="form-group">
                     <select id="sort" name="sorting">
-                        <option value="red">Sắp xếp theo giá: Thấp đến Cao</option>
-                        <option value="blue">Sắp xếp theo giá: Cao đến Thấp</option>
-                        <option value="green">Sắp xếp theo độ phổ biến</option>
+                        <option value="low-to-high">Sắp xếp theo giá: Thấp đến Cao</option>
+                        <option value="high-to-low">Sắp xếp theo giá: Cao đến Thấp</option>
+                        <option value="popularity">Sắp xếp theo độ ưa thích</option>
                     </select>
                 </div>
-                <p style="margin-left: 30px;margin-bottom:0;color:gray;font-size:14px;">Hiển thị 10 sản phẩm</p>
+                <p id="productsCount" style="margin-left: 30px;margin-bottom:0;color:gray;font-size:14px;"></p>
             </div>
             <div class="Products">
                 <div id="products-container"></div>

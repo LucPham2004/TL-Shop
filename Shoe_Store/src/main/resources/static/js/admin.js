@@ -1,4 +1,7 @@
-
+document.addEventListener("DOMContentLoaded", async function() {
+    const products = await fetchProducts();
+    showProductsInAdminPage(products);
+});
 
 let detailCount = 1;
 
@@ -21,6 +24,33 @@ function addDetail() {
 }
 
 // Products Methods
+
+// Show Products In Admin Page
+function showProductsInAdminPage(products){
+    const tbody = document.querySelector('#product-table tbody');
+    tbody.innerHTML = '';
+
+    products.forEach(product => {
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+            <td>${product.id}</td>
+            <td>${product.productName}</td>
+            <td>${formatNumber(product.productPrice)} đ</td>
+            <td>${product.productDescription}</td>
+            <td>${product.productQuantity}</td>
+            <td>${product.brandName}, ${product.categories}</td>
+            <td>${product.averageRating}</td>
+            <td>
+                <button class="productBtn-edit" onclick="editProduct(${product})">Sửa</button>
+                <button class="productBtn-delete" onclick="deleteProduct(${product.id})">Xóa</button>
+                <button class="productBtn-details">Chi tiết</button>
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
 
 // Creare product and upload images
 document.getElementById('addproductForm').addEventListener('submit', function(event) {
@@ -123,7 +153,8 @@ async function deleteProduct(id) {
         });
 
         if (response.ok) {
-            fetchProducts();
+            const products = await fetchProducts();
+            showProductsInAdminPage(products);
         } else {
             console.error('Failed to delete product');
         }
