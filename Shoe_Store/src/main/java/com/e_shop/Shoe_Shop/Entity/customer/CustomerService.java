@@ -2,15 +2,24 @@ package com.e_shop.Shoe_Shop.Entity.customer;
 
 import java.util.*;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
+import com.e_shop.Shoe_Shop.Entity.role.Role;
+import com.e_shop.Shoe_Shop.Entity.role.RoleRepository;
 
 @Service
-public class CustomerService {
+public class CustomerService implements UserDetailsService{
     private final CustomerRepository customerRepository;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
@@ -18,6 +27,23 @@ public class CustomerService {
 
     public boolean checkPassword(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+    
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Customer customer = customerRepository.findByEmail(email);
+        if(customer == null) {
+            throw new IllegalStateException("Customer not found!");
+        }
+        Set<Role> customerRoles = customer.getAuthorities();
+        Optional<Role> userRole = roleRepository.findByAuthority("USER");
+
+        if (!customerRoles.contains(userRole.orElseThrow(() -> new IllegalStateException("USER role not found in database")))) {
+            customerRoles.add(userRole.get());
+            customer.setAuthorities(customerRoles);
+            customerRepository.save(customer);
+        }
+        return customer;
     }
 
     public Customer findCustomerById(Integer id) {

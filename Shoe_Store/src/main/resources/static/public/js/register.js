@@ -32,12 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             alert('Đăng ký thành công!');
 
-            if(window.location.href ==  '/admin.html'){
+            if(window.location.href ==  '/admin/admin.html'){
                 fetchCustomers();
             }
 
-            if(window.location.href ==  '/register.html'){
-                window.location.href = '/login.html';
+            if(window.location.href ==  '/public/register.html'){
+                window.location.href = '/public/login.html';
             }
 
         } catch (error) {

@@ -44,8 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function fetchCustomerInfo() {
     try {
-        const response = await fetch('/api/v1/customers/' + getCustomerId());
-        const customerInfo = await response.json();
+        let customerInfo = JSON.parse(localStorage.getItem('user')) || [];
 
         const nameSpan = document.getElementById('name');
         const emailSpan = document.getElementById('email');

@@ -96,7 +96,7 @@ async function createOrder(customerId, orderDetails) {
 
         const data = await response.json();
         window.alert("Đơn hàng được đặt thành công!")
-        window.location.href = '/account.html';
+        window.location.href = '/user/account.html';
         console.log('Order created successfully:', data);
         return data;
     } catch (error) {

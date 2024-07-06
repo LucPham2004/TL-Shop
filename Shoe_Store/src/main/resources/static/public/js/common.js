@@ -125,7 +125,7 @@ function changeLoginOrProfileHeaderPart() {
                     <i class="fas fa-user-circle"></i> Account
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="./account.html">Profile</a></li>
+                    <li><a class="dropdown-item" href="../user/account.html">Profile</a></li>
                     <li><a class="dropdown-item" href="#" onclick="logout()">Đăng xuất<i class="fas fa-arrow-circle-right" style="margin-left: 15px;"></i></a></li>
                 </ul>
             </div>

@@ -2,8 +2,11 @@ package com.e_shop.Shoe_Shop.Entity.customer;
 
 import java.util.*;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.e_shop.Shoe_Shop.Entity.order.Order;
 import com.e_shop.Shoe_Shop.Entity.review.Review;
+import com.e_shop.Shoe_Shop.Entity.role.Role;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -11,6 +14,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +24,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "customers")
-public class Customer {
+public class Customer implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +45,12 @@ public class Customer {
 
     @Column(name = "customer_address")
     private String address;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable( name = "user_role", 
+                joinColumns = @JoinColumn(name = "customer_id"), 
+                inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> authorities;
     
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -89,14 +101,17 @@ public class Customer {
     }
     
     // Constructor
-    public Customer(String name, String email, String phone, String address) {
+    public Customer(String name, String email, String phone, String address, Set<Role> authorities) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.address = address;
+        this.authorities = authorities;
     }
 
     public Customer() {
+        super();
+        this.authorities = new HashSet<Role>();
     }
 
     @Override
@@ -127,6 +142,46 @@ public class Customer {
 
     public void setReview(Set<Review> review) {
         this.review = review;
+    }
+
+    @Override
+    public Set<Role> getAuthorities() {
+        // TODO Auto-generated method stub
+        return this.authorities;
+    }
+
+    public void setAuthorities(Set<Role> authorities) {
+        this.authorities = authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        // TODO Auto-generated method stub
+        return this.name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        // TODO Auto-generated method stub
+        return true;
     }
 
 }

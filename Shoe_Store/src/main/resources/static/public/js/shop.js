@@ -50,8 +50,8 @@ function showProductsInShopPage(products){
 
         // Link ảnh tượng trưng
         productItem.innerHTML = `
-            <a href="/products.html?${convertProductName(product.productName)}&id=${product.id}">
-                <img alt="${product.productName}" src="../img/homepage/favorite/favorite1.png">
+            <a href="/public/products.html?${convertProductName(product.productName)}&id=${product.id}">
+                <img alt="${product.productName}" src="../public/img/homepage/favorite/favorite1.png">
                 <p class="product-name">${product.productName}</p>
                 <p class="price">${formatNumber(price)} đ 
                     <span class="originPrice" style="text-decoration: line-through;">${formatNumber(product.productPrice)} đ</span>

@@ -1,3 +1,4 @@
+// Read Cookies value
 function getCookie(name) {
     let cookieArr = document.cookie.split(";");
     
@@ -25,7 +26,8 @@ function checkLogin() {
 
 // Get user's id
 function getCustomerId() {
-    return parseInt(getCookie("id"));
+    let customerInfo = JSON.parse(localStorage.getItem('user')) || [];
+    return parseInt(customerInfo.id);
 }
 
 // Check if user is active or not
@@ -68,7 +70,7 @@ async function logout() {
         
         alert('Đăng xuất thành công!');
 
-        window.location.href = '/index.html';
+        window.location.href = '/public/index.html';
 
     } catch (error) {
         console.error('Có lỗi xảy ra:', error);

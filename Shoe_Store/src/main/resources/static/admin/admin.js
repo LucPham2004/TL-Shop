@@ -66,7 +66,7 @@ document.getElementById('addproductForm').addEventListener('submit', function(ev
         }
     }
 
-    formData.set('productImage', '/resources/static/img/products/' + formData.get('productName'));
+    formData.set('productImage', '../public/img/products/' + formData.get('productName'));
     formData.set('productQuantity', productQuantity);
     formData.set('reviewCount', 0);
     formData.set('averageRating', 0);
