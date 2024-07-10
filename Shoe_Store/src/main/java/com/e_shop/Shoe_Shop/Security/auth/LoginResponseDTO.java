@@ -1,22 +1,22 @@
 package com.e_shop.Shoe_Shop.Security.auth;
 
-import com.e_shop.Shoe_Shop.Entity.customer.Customer;
+import com.e_shop.Shoe_Shop.Entity.customer.CustomerDTO;
 
 public class LoginResponseDTO {
-    private Customer user;
+    private CustomerDTO user;
     private String jwt;
 
-    public LoginResponseDTO(Customer user, String jwt) {
+    public LoginResponseDTO(CustomerDTO user, String jwt) {
         this.user = user;
         this.jwt = jwt;
     }
     public LoginResponseDTO() {
     }
 
-    public Customer getUser() {
+    public CustomerDTO getUser() {
         return user;
     }
-    public void setUser(Customer user) {
+    public void setUser(CustomerDTO user) {
         this.user = user;
     }
     public String getJwt() {

@@ -57,10 +57,10 @@ public class CustomerController {
 
     // UPDATE
     @PutMapping
-    public void UpdateCustomer(@RequestBody UpdateRequest request)
+    public void UpdateCustomer(@RequestBody CustomerDTO customerDTO)
     {
-        customerService.UpdateCustomer(request.getId(), request.getEmail(), 
-        request.getName(), request.getPhone(), request.getAddress());
+        customerService.UpdateCustomer(customerDTO.getId(), customerDTO.getEmail(),
+        customerDTO.getName(), customerDTO.getPhone(), customerDTO.getAddress());
     }
 }
 

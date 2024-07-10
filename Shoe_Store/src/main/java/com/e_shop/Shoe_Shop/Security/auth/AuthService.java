@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.e_shop.Shoe_Shop.Entity.customer.Customer;
+import com.e_shop.Shoe_Shop.Entity.customer.CustomerDTO;
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerRepository;
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerService;
 import com.e_shop.Shoe_Shop.Entity.role.Role;
@@ -65,22 +66,21 @@ public class AuthService {
             Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(email, password)
             );
+            System.err.println("auth: " + auth);
             SecurityContextHolder.getContext().setAuthentication(auth);
 
             String token = tokenService.generateJwt(auth);
-            System.out.println("Token generated: " + token);
-
-            Cookie userLoggedIn = new Cookie("userLoggedIn", "true");
-            userLoggedIn.setMaxAge(987654321 * 60 * 60); 
-            userLoggedIn.setPath("/");
 
             Customer user = customerRepository.findByEmail(email);
             if (user == null) {
                 System.out.println("User not found for email: " + email);
                 throw new UsernameNotFoundException("User not found");
             }
-            Customer userDTO = user;
-            userDTO.setPassword(null);
+            CustomerDTO userDTO = customerService.ConvertToDTO(user);
+
+            Cookie userLoggedIn = new Cookie("userLoggedIn", "true");
+            userLoggedIn.setMaxAge(987654321 * 60 * 60); 
+            userLoggedIn.setPath("/");
 
             response.addCookie(userLoggedIn);
             response.setStatus(HttpServletResponse.SC_OK);
@@ -97,7 +97,7 @@ public class AuthService {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("userLoggedIn") || cookie.getName().equals("jwtToken")) {
+                if (cookie.getName().equals("userLoggedIn")) {
                     cookie.setValue("");
                     cookie.setPath("/");
                     cookie.setMaxAge(0);

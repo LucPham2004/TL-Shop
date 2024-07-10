@@ -156,7 +156,7 @@ public class ProductService {
     }
 
     public String uploadImages(String productName, MultipartFile[] files) {
-        String uploadDir =  "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/products/" + productName;
+        String uploadDir =  "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/public/img/products/" + productName;
 
         File uploadDirFile = new File(uploadDir);
         if (!uploadDirFile.exists()) {

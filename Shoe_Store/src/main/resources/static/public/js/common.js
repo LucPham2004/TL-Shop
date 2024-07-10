@@ -3,15 +3,15 @@ document.addEventListener("DOMContentLoaded", function() {
     const headerHTML = `
     <header>
         <div class="header-container">
-            <a href="./index.html"><div id="logo"><img src="./img/logo/TL.png">TL SHOP</div></a>
+            <a href="../public/index.html"><div id="logo"><img src="./img/logo/TL.png">TL SHOP</div></a>
             <div class="header-menu">
-                <a href="./index.html"><div class="header-item">Home</div></a>
-                <a href="./shop.html"><div class="header-item">Cửa Hàng</div></a>
+                <a href="../public/index.html"><div class="header-item">Home</div></a>
+                <a href="../public/shop.html"><div class="header-item">Cửa Hàng</div></a>
                 <h5 style="margin-bottom: 15px;align-self:center; color:rgb(89, 89, 89);">|</h5>
-                <a href="./shop.html?category=Adidas"><div class="header-item">Adidas</div></a>
-                <a href="./shop.html?category=Nike"><div class="header-item">Nike</div></a>
-                <a href="./shop.html?category=Thể Thao"><div class="header-item">Thể Thao</div></a>
-                <a href="./shop.html?category=Giày Da"><div class="header-item">Giày Da</div></a>
+                <a href="../public/shop.html?category=Adidas"><div class="header-item">Adidas</div></a>
+                <a href="../public/shop.html?category=Nike"><div class="header-item">Nike</div></a>
+                <a href="../public/shop.html?category=Thể Thao"><div class="header-item">Thể Thao</div></a>
+                <a href="../public/shop.html?category=Giày Da"><div class="header-item">Giày Da</div></a>
             </div>
             <div class="header-rightPart">
                 <div class="search-box">
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>
 
                 <div class="account">
-                    <a href="./login.html"><div id="login" style="width:max-content">
+                    <a href="../public/login.html"><div id="login" style="width:max-content">
                         <i class="fas fa-user" style="margin-right: 10px"></i>
                         Log in | Sign up</div>
                     </a>
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Giỏ Hàng</h5>
-            <a href="payment.html"><div class="orderBtn">Đặt hàng</div></a>
+            <a href="../public/payment.html"><div class="orderBtn">Đặt hàng</div></a>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <div style="background-color: black;display:flex;justify-content:center;margin-top:5%;">
             <div id="a-bar">
                 <p>Rất nhiều sản phẩm bạn có thể lựa chọn</p>
-                <a href="shop.html"><button class="shopNow-btn">Xem Tất Cả Sản Phẩm</button></a>
+                <a href="../public/shop.html"><button class="shopNow-btn">Xem Tất Cả Sản Phẩm</button></a>
             </div>
         </div>
         <div class="container-fluid p-0">
@@ -133,7 +133,7 @@ function changeLoginOrProfileHeaderPart() {
     } else {
         // Hiển thị nút đăng nhập
         accountDiv.innerHTML = `
-            <a href="./login.html">
+            <a href="../public/login.html">
                 <div id="login" style="width:max-content">
                     <i class="fas fa-user" style="margin-right: 10px"></i>
                     Log in | Sign up

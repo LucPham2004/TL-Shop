@@ -1,8 +1,12 @@
 package com.e_shop.Shoe_Shop.Entity.customer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,6 +29,23 @@ public class CustomerService implements UserDetailsService{
         this.customerRepository = customerRepository;
     }
 
+    public CustomerDTO ConvertToDTO(Customer customer) {
+        return new CustomerDTO(
+            customer.getId(),
+            customer.getEmail(),
+            customer.getName(),
+            customer.getPhone(),
+            customer.getAddress(),
+            customer.getRoles(),
+            customer.getOrder(),
+            customer.getReview(),
+            customer.isAccountNonExpired(),
+            customer.isCredentialsNonExpired(),
+            customer.isAccountNonLocked(),
+            customer.isEnabled()
+        );
+    }
+
     public boolean checkPassword(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
@@ -35,7 +56,8 @@ public class CustomerService implements UserDetailsService{
         if(customer == null) {
             throw new IllegalStateException("Customer not found!");
         }
-        Set<Role> customerRoles = customer.getAuthorities();
+
+        Set<Role> customerRoles = customer.getRoles();
         Optional<Role> userRole = roleRepository.findByAuthority("USER");
 
         if (!customerRoles.contains(userRole.orElseThrow(() -> new IllegalStateException("USER role not found in database")))) {
@@ -43,7 +65,14 @@ public class CustomerService implements UserDetailsService{
             customer.setAuthorities(customerRoles);
             customerRepository.save(customer);
         }
-        return customer;
+
+        return new User(customer.getUsername(), customer.getPassword(), getAuthorities(customer.getRoles()));
+    }
+
+    private Collection<? extends GrantedAuthority> getAuthorities(Set<Role> roles) {
+        return roles.stream()
+                    .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
+                    .collect(Collectors.toList());
     }
 
     public Customer findCustomerById(Integer id) {

@@ -2,6 +2,7 @@ package com.e_shop.Shoe_Shop.Entity.customer;
 
 import java.util.*;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.e_shop.Shoe_Shop.Entity.order.Order;
@@ -60,6 +61,11 @@ public class Customer implements UserDetails{
     @JsonManagedReference(value = "reference2")
     private Set<Review> review;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -116,10 +122,12 @@ public class Customer implements UserDetails{
 
     @Override
     public String toString() {
-        return "Customer [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", address="
-                + address + "]";
+        return "Customer [id=" + id + ", name=" + name + ", email=" + email + ", phone="
+                + phone + ", address=" + address + ", authorities=" + authorities + ", order=" + order + ", review="
+                + review + "]";
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -144,9 +152,7 @@ public class Customer implements UserDetails{
         this.review = review;
     }
 
-    @Override
-    public Set<Role> getAuthorities() {
-        // TODO Auto-generated method stub
+    public Set<Role> getRoles() {
         return this.authorities;
     }
 
