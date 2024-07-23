@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Thiết lập nội dung cho sản phẩm
                 productContainer.innerHTML = `
-                    <img alt="Giày similar" src="./img/homepage/favorite/favorite1.png">
+                    <img alt="Giày similar" src="${product.productImage}">
                     <p class="product-name">${product.productName}</p>
                     <p class="description">${product.productDescription}</p>
                     <p class="price">${formatNumber(price)} đ
@@ -178,7 +178,7 @@ async function displayReviews(productId) {
         
                 reviewItem.innerHTML = `
                     <div class="review-info">
-                        <img class="user-icon" alt="user-icon" src="./img/logo/user.png">
+                        <img class="user-icon" alt="user-icon" src="../public/img/logo/user.png">
                         <p class="customer-name">${review.customerName}</p>
                         <p class="review-date">${extractDate(review.reviewDate)}</p>
                         <p class="star" data-rating=${review.reviewRating}>${displayStars(review.reviewRating)}</p>
@@ -216,7 +216,7 @@ function editReview(reviewId) {
 
     reviewItem.innerHTML = `
         <div class="review-info">
-            <img class="user-icon" alt="user-icon" src="./img/logo/user.png">
+            <img class="user-icon" alt="user-icon" src="../public/img/logo/user.png">
             <p class="customer-name">${reviewItem.querySelector('.customer-name').innerText}</p>
             <p class="review-date">${reviewItem.querySelector('.review-date').innerText}</p>
             <input type="number" class="star" value="${reviewRating}" min="1" max="5">

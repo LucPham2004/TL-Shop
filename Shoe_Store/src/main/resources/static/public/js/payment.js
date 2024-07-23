@@ -18,7 +18,7 @@ function displayProductsInCart(cart) {
         sumPrice += product.quantity * product.price;
 
         cartItem.innerHTML = `
-            <img alt="Giày ${product.productName}" src="./img/homepage/favorite/favorite1.png">
+            <img alt="Giày ${product.productName}" src="${product.productImage}">
             <div class="productItem-info">
                 <div class="productInfo">
                     <p class="product-name">${product.productName}</p>
@@ -56,7 +56,8 @@ document.getElementById("placeOrderBtn").addEventListener("click", function() {
             unit_price: parseInt(product.price),
             size: parseInt(product.size),
             color: product.color,
-            categories: product.categories
+            categories: product.categories,
+            productImage: product.productImage
         };
 
         orderDetails.push(orderDetail);
@@ -77,7 +78,8 @@ async function createOrder(customerId, orderDetails) {
             productName: detail.productName,
             color: detail.color,
             size: detail.size,
-            categories: detail.categories
+            categories: detail.categories,
+            productImage: detail.productImage
         }))
     };
 

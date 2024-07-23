@@ -28,6 +28,9 @@ public class OrderDetail {
     @Column(name = "product_name")
     private String productName;
 
+    @Column(name = "product_imageURL")
+    private String productImage;
+
     @Column(name = "quantity")
     private Integer quantity;
 
@@ -55,6 +58,7 @@ public class OrderDetail {
     @JoinColumn(name = "order_id")
     @JsonBackReference
 	private Order order;
+
 
     public OrderDetail() {
     }
@@ -158,5 +162,13 @@ public class OrderDetail {
 
     public void setUnitPrice(Float unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 }

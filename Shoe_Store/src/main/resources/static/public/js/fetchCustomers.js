@@ -1,34 +1,12 @@
 async function fetchCustomers() {
     try {
         const response = await fetch('/api/v1/customers');
-        const customers = await response.json();
+        return await response.json();
 
-        const tbody = document.querySelector('#customer-table tbody');
-        tbody.innerHTML = '';
-
-        // Show data in admin page
-        customers.forEach(customer => {
-            const tr = document.createElement('tr');
-
-            tr.innerHTML = `
-                <td>${customer.id}</td>
-                <td>${customer.name}</td>
-                <td>${customer.email}</td>
-                <td>${customer.phone}</td>
-                <td>${customer.address}</td>
-                <td>
-                    <button class="customerBtn-edit" onclick="openEditModal(${customer.id}, '${customer.name}', '${customer.email}', '${customer.phone}', '${customer.address}')">Sửa</button>
-                    <button class="customerBtn-delete" onclick="deleteCustomer(${customer.id}, '${customer.email}')">Xóa</button>
-                    <button class="customerBtn-showOrders" onclick="showOrders(${customer.id})">Xem Đơn Hàng</button>
-                </td>
-            `;
-
-            tbody.appendChild(tr);
-        });
     } catch (error) {
         console.error('Error fetching customers:', error);
-    }
-}
+}}
+
 
 // Edit Customer's info
 function openEditModal(id, name, email, phone, address) {
@@ -63,36 +41,16 @@ async function updateCustomer(event) {
     });
 
     if (response.ok) {
-        fetchCustomers();
         closeEditModal();
     } else {
         console.error('Failed to update customer');
     }
 }
 
-// Delete Customer
-async function deleteCustomer(id, email) {
-    if(confirm("Bạn có chắc muốn xóa tài khoản của khách hàng này?")) {
-        const response = await fetch(`/api/v1/customers?id=${id}&email=${email}`, {
-            method: 'DELETE',
-        });
-
-        if (response.ok) {
-            fetchCustomers();
-        } else {
-            console.error('Failed to delete customer');
-        }
-    } else {
-        return
-    }
-}
 
 function showOrders(id) {
 
 }
-
-// Gọi hàm fetchCustomers khi trang được tải
-document.addEventListener('DOMContentLoaded', fetchCustomers);
 
 // Thêm sự kiện cho form chỉnh sửa
 document.getElementById('editCustomerForm').addEventListener('submit', updateCustomer);

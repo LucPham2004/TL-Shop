@@ -27,7 +27,7 @@ if(addToCartBtn) {
                     const quantity = document.getElementById("quantity").value;
 
                     cartItem.innerHTML = `
-                        <img alt="Giày ${product.productName}" src="./img/homepage/favorite/favorite1.png">
+                        <img alt="Giày ${product.productName}" src="${product.productImage}">
                         <div class="item-info">
                             <div class="cartItemInfo">
                                 <p class="product-name">${product.productName}</p>
@@ -46,7 +46,7 @@ if(addToCartBtn) {
                         addToCart({ id: `${product.id}`, productName: `${product.productName}`, 
                                     price: `${price}`, categories: `${product.categories}`, 
                                     color: `${color}`, size: `${size}`,
-                                    quantity: `${quantity}`})
+                                    quantity: `${quantity}`, productImage: `${product.productImage}`})
                     } else {
                         window.alert("Giỏ hàng chỉ được tối đa 5 sản phẩm!")
                     }
@@ -82,7 +82,7 @@ function displayCart(cart) {
         cartItem.classList.add("cart-item");
 
         cartItem.innerHTML = `
-            <img alt="Giày ${product.productName}" src="./img/homepage/favorite/favorite1.png">
+            <img alt="Giày ${product.productName}" src="${product.productImage}">
             <div class="item-info">
                 <div class="cartItemInfo">
                     <p class="product-name">${product.productName}</p>

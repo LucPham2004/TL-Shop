@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const headerHTML = `
     <header>
         <div class="header-container">
-            <a href="../public/index.html"><div id="logo"><img src="./img/logo/TL.png">TL SHOP</div></a>
+            <a href="../public/index.html"><div id="logo"><img src="../public/img/logo/TL.png">TL SHOP</div></a>
             <div class="header-menu">
                 <a href="../public/index.html"><div class="header-item">Home</div></a>
                 <a href="../public/shop.html"><div class="header-item">Cửa Hàng</div></a>
@@ -125,7 +125,7 @@ function changeLoginOrProfileHeaderPart() {
                     <i class="fas fa-user-circle"></i> Account
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="../user/account.html">Profile</a></li>
+                    <li><a class="dropdown-item" href="../user/account.html" onclick="redirectToAccountPageWithJWT()">Profile</a></li>
                     <li><a class="dropdown-item" href="#" onclick="logout()">Đăng xuất<i class="fas fa-arrow-circle-right" style="margin-left: 15px;"></i></a></li>
                 </ul>
             </div>

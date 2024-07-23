@@ -65,6 +65,7 @@ public class OrderService {
             orderDetail.setOrder(newOrder);
             orderDetail.setProduct(product);
             orderDetail.setProductName(detailRequest.getProductName());
+            orderDetail.setProductImage(detailRequest.getProductImage());
             orderDetail.setQuantity(detailRequest.getQuantity());
             orderDetail.setColor(detailRequest.getColor());
             orderDetail.setSize(detailRequest.getSize());
@@ -112,6 +113,7 @@ public class OrderService {
     static class OrderDetailRequest {
         private int productId;
         private String productName;
+        private String productImage;
         private int quantity;
         private Integer size;
         private String color;
@@ -147,6 +149,12 @@ public class OrderService {
         }
         public void setProductName(String productName) {
             this.productName = productName;
+        }
+        public String getProductImage() {
+            return productImage;
+        }
+        public void setProductImage(String productImage) {
+            this.productImage = productImage;
         }
         public Integer getSize() {
             return size;

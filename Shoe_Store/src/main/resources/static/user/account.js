@@ -81,7 +81,7 @@ async function fetchCustomerOrders() {
                 orderProduct.classList.add('orderProduct');
     
                 orderProduct.innerHTML = `
-                    <img alt="Giày ${orderDetails.productName}" src="./img/homepage/favorite/favorite1.png">
+                    <img alt="Giày ${orderDetails.productName}" src="${orderDetails.productImage}">
                     <div class="productItem-info">
                         <div class="productInfo">
                             <p class="product-name">${orderDetails.productName}</p>
@@ -137,4 +137,20 @@ async function deleteOrder(id) {
 
 function formatNumber(number) {
     return number.toLocaleString('vi-VN');
+}
+
+function removeVietnameseTones(str) {
+    str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    str = str.replace(/đ/g, 'd').replace(/Đ/g, 'D');
+    return str;
+}
+
+function convertProductName(productName) {
+    // Bỏ dấu tiếng Việt
+    let noToneName = removeVietnameseTones(productName);
+    
+    // Thay thế khoảng trắng bằng dấu gạch ngang
+    let convertedName = noToneName.replace(/\s+/g, '-');
+    
+    return convertedName;
 }
