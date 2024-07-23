@@ -10,6 +10,7 @@ import com.e_shop.Shoe_Shop.Entity.customer.CustomerRepository;
 import com.e_shop.Shoe_Shop.Entity.order.detail.OrderDetail;
 import com.e_shop.Shoe_Shop.Entity.product.Product;
 import com.e_shop.Shoe_Shop.Entity.product.ProductRepository;
+import com.e_shop.Shoe_Shop.Entity.product.detail.ProductDetail;
 
 @Service
 public class OrderService {
@@ -73,7 +74,15 @@ public class OrderService {
             orderDetail.setUnitPrice(detailRequest.getUnit_price());
             orderDetail.setSubtotal(detailRequest.getQuantity() * detailRequest.getUnit_price());
             TotalPrice += orderDetail.getSubtotal();
+
             newOrderDetails.add(orderDetail);
+            Set<ProductDetail> productDetail = product.getDetails();
+            for(ProductDetail detail: productDetail) {
+                if(detail.getColor() == orderDetail.getColor() && detail.getSize() == orderDetail.getSize()) {
+                    detail.setQuantitySold(detail.getQuantitySold() + 1);
+                    detail.setQuantity(detail.getQuantity() - 1);
+                }
+            }
         }
         newOrder.setTotal(TotalPrice * (1 + newOrder.getTax()) + newOrder.getShippingCost());
 

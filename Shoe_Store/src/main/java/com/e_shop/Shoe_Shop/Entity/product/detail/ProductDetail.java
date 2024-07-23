@@ -26,6 +26,9 @@ public class ProductDetail {
     private Integer size;
     private Integer quantity;
 
+    @Column(name = "quantity_sold")
+    private Integer quantitySold = 0;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     @JsonBackReference
@@ -63,6 +66,14 @@ public class ProductDetail {
         this.quantity = quantity;
     }
 
+    public Integer getQuantitySold() {
+        return quantitySold;
+    }
+
+    public void setQuantitySold(Integer quantitySold) {
+        this.quantitySold = quantitySold;
+    }
+
     public Product getProduct() {
         return product;
     }
@@ -73,17 +84,18 @@ public class ProductDetail {
     
     @Override
     public String toString() {
-        return "ProductDetail [id=" + id + ", color=" + color + ", size=" + size + ", quantity=" + quantity
-                + ", product=" + product + "]";
+        return "ProductDetail [id=" + id + ", color=" + color + ", size=" + size + 
+                ", quantity=" + quantity + ", quantitySold=" + quantitySold + ", product=" + product + "]";
     }
 
     public ProductDetail() {
     }
 
-    public ProductDetail(String color, Integer size, Integer quantity, Product product) {
+    public ProductDetail(String color, Integer size, Integer quantity, Integer quantitySold, Product product) {
         this.color = color;
         this.size = size;
         this.quantity = quantity;
+        this.quantitySold = quantitySold;
         this.product = product;
     }
 }

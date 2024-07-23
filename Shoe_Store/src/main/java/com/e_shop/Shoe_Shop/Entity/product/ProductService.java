@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,6 +50,8 @@ public class ProductService {
             product.getProductImage(),
             product.getProductPrice(),
             product.getProductQuantity(),
+            product.getProductQuantitySold(),
+            product.getProductDayCreated(),
             product.getDiscountPercent(),
             product.getReviewCount(),
             product.getAverageRating(),
@@ -61,7 +66,8 @@ public class ProductService {
             productDetail.getId(),
             productDetail.getColor(),
             productDetail.getSize(),
-            productDetail.getQuantity()
+            productDetail.getQuantity(),
+            productDetail.getQuantitySold()
         );
     }
 
@@ -74,6 +80,8 @@ public class ProductService {
         product.setProductImage(productDTO.getProductImage());
         product.setProductPrice(productDTO.getProductPrice());
         product.setProductQuantity(productDTO.getProductQuantity());
+        product.setProductQuantitySold(productDTO.getProductQuantitySold());
+        product.setProductDayCreated(new Date());
         product.setDiscountPercent(productDTO.getDiscountPercent());
         product.setReviewCount(productDTO.getReviewCount());
         product.setAverageRating(productDTO.getAverageRating());
@@ -102,6 +110,7 @@ public class ProductService {
         detail.setColor(productDetailDTO.getColor());
         detail.setSize(productDetailDTO.getSize());
         detail.setQuantity(productDetailDTO.getQuantity());
+        detail.setQuantitySold(productDetailDTO.getQuantitySold());
         return detail;
     }
 
@@ -139,6 +148,52 @@ public class ProductService {
         return products.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    // Return top-seller, favorite, on-sale and... most costly products
+    public List<ProductDTO> getTopProducts() {
+        List<ProductDTO> allproducts = productRepository.findAll().stream()
+        .map(this::convertToDTO)
+        .collect(Collectors.toList());
+        List<ProductDTO> resultList = new ArrayList<>();
+        int index = 0;
+
+        allproducts.sort(Comparator.comparingInt(product -> product.getProductQuantitySold()));
+        for(ProductDTO productDTO: allproducts) {
+            if(index >= 4)
+                break;
+            resultList.add(productDTO);
+            index++;
+        }
+
+        index = 0;
+        allproducts.sort(Comparator.comparingDouble(product -> product.getAverageRating()));
+        for(ProductDTO productDTO: allproducts) {
+            if(index >= 4)
+                break;
+            resultList.add(productDTO);
+            index++;
+        }
+
+        index = 0;
+        allproducts.sort(Comparator.comparingDouble(product -> product.getDiscountPercent()));
+        for(ProductDTO productDTO: allproducts) {
+            if(index >= 8)
+                break;
+            resultList.add(productDTO);
+            index++;
+        }
+
+        index = 0;
+        allproducts.sort(Comparator.comparingDouble(product -> product.getProductPrice()));
+        for(ProductDTO productDTO: allproducts) {
+            if(index >= 4)
+                break;
+            resultList.add(productDTO);
+            index++;
+        }
+        
+        return resultList;
     }
 
     // POST

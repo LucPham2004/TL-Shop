@@ -11,6 +11,19 @@ async function fetchProducts() {
     }
 }
 
+// Fetching TOP products
+async function fetchTopProducts() {
+    try {
+        const response = await fetch('/api/v1/products/topproducts');
+        const products = await response.json();
+
+        return products;
+
+    } catch (error) {
+        console.error('Error fetching products:', error);
+    }
+}
+
 // Minor functions
 
 function removeVietnameseTones(str) {

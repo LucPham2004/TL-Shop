@@ -47,6 +47,12 @@ public class Product {
     @Column(name = "product_quantity")
     private Integer productQuantity;
 
+    @Column(name = "product_quantity_sold")
+    private Integer productQuantitySold = 0;
+
+    @Column(name = "day_created")
+    private Date productDayCreated;
+
     @Column(name = "discount_percent")
 	private Float discountPercent;
 
@@ -124,6 +130,26 @@ public class Product {
         this.productQuantity = productQuantity;
     }
 
+    public Integer getProductQuantitySold() {
+        productQuantitySold = 0;
+        for(ProductDetail detail: details) {
+            productQuantitySold += detail.getQuantitySold();
+        }
+        return productQuantitySold;
+    }
+
+    public void setProductQuantitySold(Integer productQuantitySold) {
+        this.productQuantitySold = productQuantitySold;
+    }
+
+    public Date getProductDayCreated() {
+        return productDayCreated;
+    }
+
+    public void setProductDayCreated(Date productDayCreated) {
+        this.productDayCreated = productDayCreated;
+    }
+
     public Float getDiscountPercent() {
         return discountPercent;
     }
@@ -190,7 +216,7 @@ public class Product {
     }
 
     public boolean isReviewedByCustomer() {
-        return reviewedByCustomer;
+        return reviewedByCustomer = (this.reviews != null) ? true : false;
     }
 
     public void setReviewedByCustomer(boolean reviewedByCustomer) {
@@ -202,7 +228,7 @@ public class Product {
     }
        
     public Product(Integer id, String productName, String productDescription, String productImage, Float productPrice,
-            Integer productQuantity, Float discountPercent, Integer reviewCount, Float averageRating, Brand brand,
+            Integer productQuantity, Integer productQuantitySold, Date productDayCreated, Float discountPercent, Integer reviewCount, Float averageRating, Brand brand,
             Set<Category> category, Set<Review> reviews, Set<ProductDetail> details, boolean reviewedByCustomer) {
         this.id = id;
         this.productName = productName;
@@ -210,6 +236,8 @@ public class Product {
         this.productImage = productImage;
         this.productPrice = productPrice;
         this.productQuantity = productQuantity;
+        this.productQuantitySold = productQuantitySold;
+        this.productDayCreated = productDayCreated;
         this.discountPercent = discountPercent;
         this.reviewCount = reviewCount;
         this.averageRating = averageRating;
@@ -222,10 +250,10 @@ public class Product {
     
     @Override
     public String toString() {
-        return "Product [id=" + id + ", productName=" + productName + ", productPrice=" + productPrice
-                + ", productQuantity=" + productQuantity + ", discountPercent=" + discountPercent + ", category="
-                + category + ", brand=" + brand + ", reviewCount=" + reviewCount + ", averageRating=" + averageRating
-                + "]";
+        return "Product [id=" + id + ", productName=" + productName + ", productPrice=" + productPrice+ 
+                ", productQuantity=" + productQuantity + ", productQuantitySold=" + productQuantitySold + 
+                ", discountPercent=" + discountPercent + ", category="+ category + ", brand=" + brand + 
+                ", reviewCount=" + reviewCount + ", averageRating=" + averageRating + ", day-created=" + productDayCreated +"]";
     }
 
 }

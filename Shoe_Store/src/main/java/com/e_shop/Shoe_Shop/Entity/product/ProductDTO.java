@@ -1,5 +1,6 @@
 package com.e_shop.Shoe_Shop.Entity.product;
 
+import java.util.Date;
 import java.util.Set;
 
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +17,8 @@ public class ProductDTO {
     private String productImage;
     private Float productPrice;
     private Integer productQuantity;
+    private Integer productQuantitySold;
+    private Date productDayCreated;
     private Float discountPercent;
     private Integer reviewCount;
     private Float averageRating;
@@ -27,14 +30,17 @@ public class ProductDTO {
     }
 
     public ProductDTO(Integer id, String productName, String productDescription, String productImage,
-            Float productPrice, Integer productQuantity, Float discountPercent, Integer reviewCount,
-            Float averageRating, String brandName, Set<String> categories, Set<ProductDetailDTO> details) {
+            Float productPrice, Integer productQuantity, Integer productQuantitySold, Date productDayCreated,
+            Float discountPercent, Integer reviewCount, Float averageRating, String brandName, Set<String> categories,
+            Set<ProductDetailDTO> details) {
         this.id = id;
         this.productName = productName;
         this.productDescription = productDescription;
         this.productImage = productImage;
         this.productPrice = productPrice;
         this.productQuantity = productQuantity;
+        this.productQuantitySold = productQuantitySold;
+        this.productDayCreated = productDayCreated;
         this.discountPercent = discountPercent;
         this.reviewCount = reviewCount;
         this.averageRating = averageRating;
@@ -42,6 +48,7 @@ public class ProductDTO {
         this.categories = categories;
         this.details = details;
     }
+
 
     // Inner class for ProductDetailDTO
     public static class ProductDetailDTO {
@@ -52,15 +59,17 @@ public class ProductDTO {
         private String color;
         private Integer size;
         private Integer quantity;
+        private Integer quantitySold;
 
         public ProductDetailDTO() {
         }
-        
-        public ProductDetailDTO(Integer id, String color, Integer size, Integer quantity) {
+
+        public ProductDetailDTO(Integer id, String color, Integer size, Integer quantity, Integer quantitySold) {
             this.id = id;
             this.color = color;
             this.size = size;
             this.quantity = quantity;
+            this.quantitySold = quantitySold;
         }
         
         public Integer getId() {
@@ -93,13 +102,22 @@ public class ProductDTO {
             return "ProductDetailDTO [id=" + id + ", color=" + color + ", size=" + size + ", quantity=" + quantity
                     + "]";
         }
+
+        public Integer getQuantitySold() {
+            return quantitySold;
+        }
+
+        public void setQuantitySold(Integer quantitySold) {
+            this.quantitySold = quantitySold;
+        }
     }
-        
+
     @Override
     public String toString() {
         return "ProductDTO [id=" + id + ", productName=" + productName + ", productDescription=" + productDescription
                 + ", productImage=" + productImage + ", productPrice=" + productPrice + ", productQuantity="
-                + productQuantity + ", discountPercent=" + discountPercent + ", reviewCount=" + reviewCount
+                + productQuantity + ", productQuantitySold=" + productQuantitySold + ", productDayCreated="
+                + productDayCreated + ", discountPercent=" + discountPercent + ", reviewCount=" + reviewCount
                 + ", averageRating=" + averageRating + ", brandName=" + brandName + ", categories=" + categories
                 + ", details=" + details + "]";
     }
@@ -198,5 +216,21 @@ public class ProductDTO {
 
     public void setDetails(Set<ProductDetailDTO> details) {
         this.details = details;
+    }
+
+    public Integer getProductQuantitySold() {
+        return productQuantitySold;
+    }
+
+    public void setProductQuantitySold(Integer productQuantitySold) {
+        this.productQuantitySold = productQuantitySold;
+    }
+
+    public Date getProductDayCreated() {
+        return productDayCreated;
+    }
+
+    public void setProductDayCreated(Date productDayCreated) {
+        this.productDayCreated = productDayCreated;
     }
 }

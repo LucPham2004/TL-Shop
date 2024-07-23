@@ -1,4 +1,39 @@
-// Hàm Hiệu ứng cho các ảnh sản phẩm
+document.addEventListener("DOMContentLoaded", function() {
+    displayProducts();
+});
+
+// Display products in homepage
+async function displayProducts() {
+    const products = await fetchTopProducts();
+
+    const topSellerProducts = products.slice(0, 4);
+    const favoriteProducts = products.slice(4, 8);
+    const onSaleProducts = products.slice(8, 16);
+    const featureProducts = products.slice(16, 20);
+
+    function createProductHTML(product) {
+        return `
+            <div class="product-item">
+                <img alt="${product.productName}" src="${product.productImage}">
+                <p class="product-name">${product.productName}</p>
+                <p class="description">${product.categories}</p>
+                <p class="price">${product.productPrice}</p>
+            </div>
+        `;
+    }
+
+    function insertProducts(selector, products) {
+        const container = document.querySelector(selector);
+        container.innerHTML = products.map(createProductHTML).join('');
+    }
+
+    insertProducts('.top-seller-products', topSellerProducts);
+    insertProducts('.favorite-products', favoriteProducts);
+    insertProducts('.onSale-products', onSaleProducts);
+    insertProducts('.feature-products', featureProducts);
+}
+
+// Effect for product images
 function applyFadeEffect(imgElement, hoverSrc, originSrc) {
     imgElement.addEventListener('mouseover', function () {
         imgElement.classList.add('fade-out');
@@ -16,14 +51,12 @@ function applyFadeEffect(imgElement, hoverSrc, originSrc) {
         }, 200); 
     });
 }
+
 function createHoverSrc(originSrc) {
-    // Tìm vị trí của ".png"
-    const extensionIndex = originSrc.lastIndexOf('.png');
-    // Nếu tìm thấy ".png", thêm "-2" trước ".png"
+    const extensionIndex = originSrc.lastIndexOf('.');
     if (extensionIndex !== -1) {
         return originSrc.slice(0, extensionIndex) + '-2' + originSrc.slice(extensionIndex);
     }
-    // Trả về originSrc nếu không tìm thấy ".png"
     return originSrc;
 }
 

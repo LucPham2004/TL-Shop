@@ -47,6 +47,11 @@ public class ProductController {
         return productService.getProductsByCategory(categoryName);
     }
 
+    @GetMapping("/topproducts")
+    public List<ProductDTO> getTopProducts() {
+        return productService.getTopProducts();
+    }
+
     // POST
     @PostMapping
     public ProductDTO createProduct(@RequestBody ProductDTO productDTO) {
