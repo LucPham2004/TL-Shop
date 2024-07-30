@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.Entity.utils;
+package com.e_shop.Shoe_Shop.Config.utils;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;

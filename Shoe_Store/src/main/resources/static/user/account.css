@@ -12,12 +12,7 @@
     height: max-content;
     margin-right: 5%;
 }
-.user-info input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    box-sizing: border-box;
-}
+
 .user-info h2 {
     margin-top: 0;
 }
@@ -33,23 +28,43 @@
     width: 60%;
 }
 
-.changeInfo-btn, #submitBtn{
+#userInfoForm input {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    border: 1px solid black;
+}
+
+.changeInfo-btn, #submitBtn, .deleteOrderBtn, #cancelBtn{
     text-align: center;
-    width: 180px;
-    height: 40px;
-    margin-top: 20px;
-    margin-left: 50px;
-    margin-bottom: 20px;
     border: 1px solid red;
     color: rgb(0, 0, 0);
     background-color: rgb(255, 255, 255);
     transition: transform 0.3s ease;
 }
-.changeInfo-btn:hover, #submitBtn:hover{
+.changeInfo-btn:hover, #submitBtn:hover, #cancelBtn:hover, .deleteOrderBtn:hover{
     color: white;
     background-color: red;
     transform: scale(1.02);
 }
+.changeInfo-btn, #submitBtn{
+    width: 180px;
+    height: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.changeInfo-btn {
+    margin-left: 50px;
+}
+#cancelBtn {
+    width: 80px;
+    height: 40px;
+    margin-top: 20px;
+    margin-left: 15px;
+    margin-bottom: 20px;
+}
+
 .hidden {
     display: none;
 }
@@ -59,8 +74,8 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 70%;
-    max-width: 850px;
+    width: 80%;
+    max-width: 900px;
 }
 #orders-container {
     display: flex;
@@ -80,6 +95,7 @@
 .orderInfo{
     display: flex;
     flex-direction: row;
+    gap: 30px;
 }
 .orderProducts{
     display: flex;

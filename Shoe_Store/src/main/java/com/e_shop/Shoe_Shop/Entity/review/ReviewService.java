@@ -76,7 +76,7 @@ public class ReviewService {
     }
 
     // POST
-    public void addNewReview(NewReviewRequest newReviewRequest) {
+    public ReviewResponse addNewReview(NewReviewRequest newReviewRequest) {
     
         Product product = productRepository.findById(newReviewRequest.getProductId());
         Customer customer = customerRepository.findById(newReviewRequest.getCustomerId());
@@ -87,9 +87,24 @@ public class ReviewService {
         newReview.setReviewRating(newReviewRequest.getReviewRating());
         newReview.setReviewTitle(newReviewRequest.getReviewTitle());
         newReview.setCustomer(customer);
+
+        Set<Review> reviews = product.getReviews();
+        Float avgRating = 0.0f;
+        for(Review review: reviews) {
+            avgRating += review.getReviewRating();
+        }
+        if (!reviews.isEmpty()) {
+            avgRating /= reviews.size();
+        }
+        
         newReview.setProduct(product);
 
-        reviewRepository.save(newReview);
+        Review reviewSave = reviewRepository.save(newReview);
+        product.setAverageRating(product.getAverageRating());
+        product.setReviewCount(product.getReviews().size());
+        productRepository.save(product);
+
+        return convertToResponse(reviewSave);
     }
 
     // DELETE
@@ -99,7 +114,7 @@ public class ReviewService {
 
     // PUT
     @Transactional
-    public void updateReview(NewReviewRequest newReviewRequest) {
+    public ReviewResponse updateReview(NewReviewRequest newReviewRequest) {
         Review reviewToUpdate = reviewRepository.findById(newReviewRequest.getId())
         .orElseThrow(() -> new EntityNotFoundException("Review not found"));
 
@@ -107,7 +122,7 @@ public class ReviewService {
         reviewToUpdate.setReviewContent(newReviewRequest.getReviewContent());
         reviewToUpdate.setReviewRating(newReviewRequest.getReviewRating());
 
-        reviewRepository.save(reviewToUpdate);
+        return convertToResponse(reviewRepository.save(reviewToUpdate));
     }
 
     static class NewReviewRequest {

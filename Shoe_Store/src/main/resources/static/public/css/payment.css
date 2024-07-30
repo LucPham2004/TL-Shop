@@ -83,19 +83,24 @@
 
 .summary {
     display: flex;
+    flex-direction: column;
     margin-top: 20px;
 }
-.summary * {
-    display: flexbox;
-    text-align: center;
+.customer_info {
+    display: flex;
+    flex-direction: row;
+    gap: 20%;
+}
+.order_total {
+    display: flex;
 }
 .summary h6 {
     margin-left: 61%;
-    width: 12%;
+    width: 15%;
     font-weight: bold;
 }
-.summary p {
-    width: 9%;
+.order_total p {
+    width: 8%;
 }
 #sumPrice {
     color: red;

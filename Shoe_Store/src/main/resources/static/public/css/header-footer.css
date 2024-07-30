@@ -85,7 +85,7 @@ header a:hover{
 	width: 350px;
 }
 
-.search-input {
+#searchInput {
 	width: 100%;
     height: 110%;
 	border: none;
@@ -98,7 +98,7 @@ header a:hover{
     margin-left: -5px;
 }
 
-.search-btn {
+#searchButton {
 	color: #000000;
 	outline: none;
 	border: none;
@@ -110,7 +110,7 @@ header a:hover{
 	cursor: pointer;
 	font-size: 15px;
 }
-.search-btn:hover{
+#searchButton:hover{
     color: red;
 }
 

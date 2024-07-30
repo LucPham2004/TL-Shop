@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         filteredProducts = sortProducts(filteredProducts, sortBy);
     }
 
-    showProductsInShopPage(filteredProducts);
+    await showProductsInShopPage(filteredProducts);
 
     const categoryItems = document.querySelectorAll('.category-item a');
     categoryItems.forEach(item => {
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 });
 
 // Show Products In Shop Page
-function showProductsInShopPage(products){
+async function showProductsInShopPage(products){
     const productsContainer = document.querySelector('.main #products-container');
     productsContainer.innerHTML = '';
 

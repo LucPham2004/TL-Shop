@@ -5,18 +5,19 @@ function redirectToAccountPageWithJWT() {
     fetch('/user/account.html', {
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer ' + jwtToken,
-            'Content-Type': 'application/json'
+          'Authorization': 'Bearer ' + jwtToken
         }
-    })
-    .then(response => {
+      })
+      .then(response => {
         if (response.ok) {
-            window.location.href = '/user/account.html';
-            return response.text();
+          return response.text(); // Hoặc response.json() nếu bạn nhận JSON
         }
         throw new Error('Network response was not ok.');
-    })
-    .catch(error => {
-        console.error('There was a problem with your fetch operation:', error);
-    });
+      })
+      .then(data => {
+        document.body.innerHTML = data; // Hiển thị nội dung của trang account.html
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
 }

@@ -26,9 +26,21 @@
             </div>
             <div id="products"></div>
             <div class="summary">
-                <h6>Tổng cộng:</h6>
-                <p id="sumQuantity"></p>
-                <p id="sumPrice"></p>
+                <div class="order_total">
+                    <h6>Tổng cộng:</h6>
+                    <p id="sumQuantity"></p>
+                    <p id="sumPrice"></p>
+                </div>
+                <div class="customer_info">
+                    <p>
+                        <span class="info-label"><strong>Số điện thoại:</strong></span> 
+                        <span class="info-text" id="phone"></span>
+                    </p>
+                    <p>
+                        <span class="info-label"><strong>Địa chỉ:</strong></span> 
+                        <span class="info-text" id="address"></span>
+                    </p>
+                </div>
             </div>
             <div id="placeOrder">
                 <button type="button" id="placeOrderBtn">Đặt Hàng</button>
@@ -63,6 +75,7 @@
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="./js/payment.js"></script>
     <script src="./js/common.js"></script>
+    <script src="./js/seachProducts.js"></script>
     <script src="./js/cart.js"></script>
     <script src="./js/redirectToAccountPage.js"></script>
 </body>

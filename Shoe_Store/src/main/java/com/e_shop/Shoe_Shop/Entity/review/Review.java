@@ -40,12 +40,12 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    @JsonBackReference(value = "reference1")
+    @JsonBackReference(value = "productReference1")
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    @JsonBackReference(value = "reference2")
+    @JsonBackReference(value = "customerReference2")
     private Customer customer;
 
     public Integer getId() {

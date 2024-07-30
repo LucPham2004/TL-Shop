@@ -1,4 +1,33 @@
-// Show data in admin page
+document.addEventListener("DOMContentLoaded", function() {
+
+    // Searching customers
+    const searchBtn = document.getElementById('CustomerSearchBtn');
+    if(searchBtn) {
+        document.getElementById('CustomerSearchBtn').addEventListener('click', function() {
+            this.parentElement.classList.toggle('open');
+            this.previousElementSibling.focus();
+
+            const keyword = document.getElementById('CustomerSearchInput').value;
+
+            if(keyword) {
+                fetch(`/api/v1/customers/search?keyword=${encodeURIComponent(keyword)}`)
+                .then(response => response.json())
+                .then(data => {
+                    showCustomersInAdminPage(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching customers:', error);
+                });
+            }
+        })
+    } else {
+        console.log("not found search button")
+    }
+})
+
+
+
+// Show customers data in admin page
 function showCustomersInAdminPage(customers) {
     const tbody = document.querySelector('#customer-table tbody');
     tbody.innerHTML = '';

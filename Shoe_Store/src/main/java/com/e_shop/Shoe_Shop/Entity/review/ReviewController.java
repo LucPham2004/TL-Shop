@@ -47,14 +47,14 @@ public class ReviewController {
 
     // POST
     @PostMapping
-    public void addNewReview(@RequestBody NewReviewRequest newReviewRequest) {
-        reviewService.addNewReview(newReviewRequest);
+    public ReviewResponse addNewReview(@RequestBody NewReviewRequest newReviewRequest) {
+        return reviewService.addNewReview(newReviewRequest);
     }
 
     // PUT
     @PutMapping
-    public void updateReview(@RequestBody NewReviewRequest newReviewRequest) {
-        reviewService.updateReview(newReviewRequest);
+    public ReviewResponse updateReview(@RequestBody NewReviewRequest newReviewRequest) {
+        return reviewService.updateReview(newReviewRequest);
     }
 
     // DELETE

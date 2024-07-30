@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.Security;
+package com.e_shop.Shoe_Shop.Config.Security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

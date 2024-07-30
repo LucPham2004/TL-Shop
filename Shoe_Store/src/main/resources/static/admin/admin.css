@@ -143,7 +143,7 @@ th {
 }
 
 
-
+/* Search button */
 
 .search-box {
     display: flex;
@@ -162,7 +162,7 @@ th {
 	width: 350px;
 }
 
-.search-input {
+#CustomerSearchInput, #searchInput {
 	width: 100%;
     height: 40px;
 	border: none;
@@ -175,7 +175,7 @@ th {
     margin-left: -5px;
 }
 
-.search-btn {
+#CustomerSearchBtn, #searchButton {
 	color: #000000;
 	outline: none;
 	border: none;
@@ -187,6 +187,44 @@ th {
 	cursor: pointer;
 	font-size: 15px;
 }
-.search-btn:hover{
+#CustomerSearchBtn:hover, #searchButton:hover{
     color: red;
+}
+
+.search-box.open {
+	width: 350px;
+}
+
+/*******/
+.shopNow-btn {
+    text-align:center;
+    width: 180px;
+    height: 45px;
+    margin: 20px;
+    border: none;
+    background-color: rgb(210, 0, 0);
+    transition: transform 0.3s ease;
+}
+.shopNow-btn{
+    text-decoration: none;
+    color: white;
+}
+.shopNow-btn:hover{
+    transform: scale(1.02)
+}
+
+/*******/
+.changeBtn {
+    text-align:center;
+    width: 180px;
+    height: 45px;
+    margin: 20px;
+    border: none;
+    background-color: rgb(210, 0, 0);
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    color: white;
+}
+.changeBtn:hover{
+    transform: scale(1.02)
 }

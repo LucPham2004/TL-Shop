@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
             <div class="header-rightPart">
                 <div class="search-box">
-                    <input type="text" class="search-input" placeholder="seach..."/>
-                    <button class="search-btn" title="search" type="button">
+                    <input type="text" id="searchInput" placeholder="seach..."/>
+                    <button id="searchButton" title="search" type="button">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
@@ -103,13 +103,13 @@ document.addEventListener("DOMContentLoaded", function() {
     changeLoginOrProfileHeaderPart();
 
     // Mã điều khiển thanh search
-    const searchButton = document.querySelector('.search-btn');
-    if (searchButton) {
-        searchButton.addEventListener('click', function(){
-            this.parentElement.classList.toggle('open');
-            this.previousElementSibling.focus();
-        });
-    }
+    // const searchButton = document.querySelector('#searchButton');
+    // if (searchButton) {
+    //     searchButton.addEventListener('click', function(){
+    //         this.parentElement.classList.toggle('open');
+    //         this.previousElementSibling.focus();
+    //     });
+    // }
 });
 
 

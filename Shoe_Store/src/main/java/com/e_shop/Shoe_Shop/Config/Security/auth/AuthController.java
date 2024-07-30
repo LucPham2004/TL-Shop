@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.Security.auth;
+package com.e_shop.Shoe_Shop.Config.Security.auth;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.e_shop.Shoe_Shop.Config.Security.requestsAndResponses.LoginRequest;
+import com.e_shop.Shoe_Shop.Config.Security.requestsAndResponses.LoginResponseDTO;
+import com.e_shop.Shoe_Shop.Config.Security.requestsAndResponses.RegisterRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 

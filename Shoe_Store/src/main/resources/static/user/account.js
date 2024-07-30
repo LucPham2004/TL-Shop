@@ -30,13 +30,45 @@ document.addEventListener('DOMContentLoaded', function() {
     userInfoForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Update info
-        nameSpan.textContent = nameInput.value;
-        emailSpan.textContent = emailInput.value;
-        phoneSpan.textContent = phoneInput.value;
-        addressSpan.textContent = addressInput.value;
+        const customerDTO = {
+            id: getCustomerId(),
+            email: emailInput.value,
+            name: nameInput.value,
+            phone: phoneInput.value,
+            address: addressInput.value
+        };
 
-        // Hide form, show button
+        fetch('/api/v1/customers', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(customerDTO)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+        })
+        .then(data => {
+            // Update info
+            let customerInfo = JSON.parse(localStorage.getItem('user')) || [];
+            nameSpan.textContent = customerInfo.name;
+            emailSpan.textContent = customerInfo.email;
+            phoneSpan.textContent = customerInfo.phone;
+            addressSpan.textContent = customerInfo.address;
+
+            // Hide form, show info
+            editForms.classList.add('hidden');
+            changeInfo.classList.remove('hidden');
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    });
+
+    cancelBtn.addEventListener('click', function() {
+        // Hide form, show info
         editForms.classList.add('hidden');
         changeInfo.classList.remove('hidden');
     });
@@ -101,10 +133,10 @@ async function fetchCustomerOrders() {
             orderItem.innerHTML = `
                 <div class="orderInfo">
                     <p><strong>Mã đơn hàng:</strong> ${order.id}</p>
-                    <p><strong>Ngày đặt hàng:</strong> ${order.date}</p>
-                    <p><strong>Tổng tiền:</strong> ${formatNumber(parseInt(order.total))} VNĐ</p>
+                    <p><strong>Ngày đặt hàng:</strong> ${extractDate(order.date)}</p>
+                    <p style="color:red;"><strong>Tổng tiền:</strong> ${formatNumber(parseInt(order.total))} VNĐ</p>
                     <p><strong>Trạng thái:</strong> ${order.status}</p>
-                    <button type="button" id="deleteOrder" onclick="deleteOrder(${order.id})">Xóa</button>
+                    <button type="button" class="deleteOrderBtn" onclick="deleteOrder(${order.id})">Xóa</button>
                 </div>
             `
             orderItem.appendChild(orderProducts);
@@ -153,4 +185,10 @@ function convertProductName(productName) {
     let convertedName = noToneName.replace(/\s+/g, '-');
     
     return convertedName;
+}
+
+function extractDate(datetimeString) {
+    let datePart = datetimeString.split('T')[0];
+    
+    return datePart;
 }

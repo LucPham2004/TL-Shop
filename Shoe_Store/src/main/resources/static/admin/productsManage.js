@@ -1,25 +1,31 @@
-let detailCount = 1;
-
-function addDetail() {
-    const detailsDiv = document.getElementById('productDetails');
-    const newDetail = document.createElement('div');
-    newDetail.classList.add('productDetail');
-    newDetail.innerHTML = `
-        <label for="detailColor${detailCount}">Màu Sắc:</label>
-        <input type="text" id="detailColor${detailCount}" name="details[${detailCount}].color"><br>
-
-        <label for="detailSize${detailCount}">Kích Thước:</label>
-        <input type="number" id="detailSize${detailCount}" name="details[${detailCount}].size"><br>
-
-        <label for="detailQuantity${detailCount}">Số Lượng:</label>
-        <input type="number" id="detailQuantity${detailCount}" name="details[${detailCount}].quantity"><br>
-    `;
-    detailsDiv.appendChild(newDetail);
-    detailCount++;
-}
 
 // Products Methods
 
+// Search products
+document.addEventListener("DOMContentLoaded", function() {
+    const searchBtn = document.getElementById('searchButton');
+    if(searchBtn) {
+        document.getElementById('searchButton').addEventListener('click', function() {
+            this.parentElement.classList.toggle('open');
+            this.previousElementSibling.focus();
+
+            const keyword = document.getElementById('searchInput').value;
+
+            if(keyword) {
+                fetch(`/api/v1/products/search?keyword=${encodeURIComponent(keyword)}`)
+                .then(response => response.json())
+                .then(data => {
+                    showProductsInAdminPage(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching products:', error);
+                });
+            }
+        })
+    } else {
+        console.log("not found search button")
+    }
+})
 // Show Products In Admin Page
 function showProductsInAdminPage(products){
     const tbody = document.querySelector('#product-table tbody');
@@ -161,4 +167,24 @@ async function deleteProduct(id) {
     } else {
         return
     }
+}
+
+let detailCount = 1;
+
+function addDetail() {
+    const detailsDiv = document.getElementById('productDetails');
+    const newDetail = document.createElement('div');
+    newDetail.classList.add('productDetail');
+    newDetail.innerHTML = `
+        <label for="detailColor${detailCount}">Màu Sắc:</label>
+        <input type="text" id="detailColor${detailCount}" name="details[${detailCount}].color"><br>
+
+        <label for="detailSize${detailCount}">Kích Thước:</label>
+        <input type="number" id="detailSize${detailCount}" name="details[${detailCount}].size"><br>
+
+        <label for="detailQuantity${detailCount}">Số Lượng:</label>
+        <input type="number" id="detailQuantity${detailCount}" name="details[${detailCount}].quantity"><br>
+    `;
+    detailsDiv.appendChild(newDetail);
+    detailCount++;
 }

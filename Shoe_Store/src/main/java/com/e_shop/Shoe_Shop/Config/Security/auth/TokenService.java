@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.Security.auth;
+package com.e_shop.Shoe_Shop.Config.Security.auth;
 
 import java.time.Instant;
 import java.util.stream.Collectors;

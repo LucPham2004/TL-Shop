@@ -54,11 +54,11 @@ public class Customer implements UserDetails{
 	private Set<Role> authorities;
     
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "customerReference1")
     private Set<Order> order;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "reference2")
+    @JsonManagedReference(value = "customerReference2")
     private Set<Review> review;
 
     @Override

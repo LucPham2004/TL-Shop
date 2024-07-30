@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.e_shop.Shoe_Shop.Entity.customer.CustomerService.UpdateUserInfoRequest;
 
 @RestController
 @RequestMapping(path = "api/v1/customers")
@@ -22,21 +25,26 @@ public class CustomerController {
 
     // GET
     @GetMapping
-    public List<Customer> getAllCustomer()
+    public List<CustomerDTO> getAllCustomer()
     {
         return customerService.getAllCustomers();
     }
 
     @GetMapping(path = "/{id}")
-    public Customer getCustomerById(@PathVariable Integer id)
+    public CustomerDTO getCustomerById(@PathVariable Integer id)
     {
         return customerService.getCustomerById(id);
     }
 
     @GetMapping(path = "/Email/{email}")
-    public Customer getCustomerByEmail(@PathVariable String email)
+    public CustomerDTO getCustomerByEmail(@PathVariable String email)
     {
         return customerService.getCustomerByEmail(email);
+    }
+
+    @GetMapping("/search")
+    public List<CustomerDTO> searchCustomer(@RequestParam("keyword") String keywword) {
+        return customerService.searchCustomer(keywword);
     }
     
     // DELETE
@@ -48,10 +56,10 @@ public class CustomerController {
 
     // UPDATE
     @PutMapping
-    public void UpdateCustomer(@RequestBody CustomerDTO customerDTO)
+    public void UpdateCustomer(@RequestBody UpdateUserInfoRequest UpdateUserInfoRequest)
     {
-        customerService.UpdateCustomer(customerDTO.getId(), customerDTO.getEmail(),
-        customerDTO.getName(), customerDTO.getPhone(), customerDTO.getAddress());
+        customerService.UpdateCustomer(UpdateUserInfoRequest.getId(), UpdateUserInfoRequest.getEmail(),
+        UpdateUserInfoRequest.getName(), UpdateUserInfoRequest.getPhone(), UpdateUserInfoRequest.getAddress());
     }
 }
 

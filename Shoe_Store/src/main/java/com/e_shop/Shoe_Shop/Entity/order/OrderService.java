@@ -11,16 +11,17 @@ import com.e_shop.Shoe_Shop.Entity.order.detail.OrderDetail;
 import com.e_shop.Shoe_Shop.Entity.product.Product;
 import com.e_shop.Shoe_Shop.Entity.product.ProductRepository;
 import com.e_shop.Shoe_Shop.Entity.product.detail.ProductDetail;
+import com.e_shop.Shoe_Shop.Entity.product.detail.ProductDetailRepository;
 
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
-
 	@Autowired
 	private CustomerRepository customerRepository;
-	
 	@Autowired
 	private ProductRepository productRepository;
+    @Autowired
+    private ProductDetailRepository productDetailRepository;
 
 	private final Float ShippingCostCurrent = 15000.0f;
     private final Float TaxCurrent = 0.08f;
@@ -31,7 +32,16 @@ public class OrderService {
 
     // GET
 	public List<Order> getOrdersByCustomer(int customerId) {
-		return orderRepository.findByCustomerId(customerId);
+		List<Order> orders = orderRepository.findByCustomerId(customerId);
+
+        Collections.sort(orders, new Comparator<Order>() {
+            @Override
+            public int compare(Order order1, Order order2) {
+                return order2.getDate().compareTo(order1.getDate());
+            }
+        });
+
+        return orders;
 	}
 
     public Order getOrderByIdAndCustomer(Integer id, Customer customer) {
@@ -78,11 +88,15 @@ public class OrderService {
             newOrderDetails.add(orderDetail);
             Set<ProductDetail> productDetail = product.getDetails();
             for(ProductDetail detail: productDetail) {
-                if(detail.getColor() == orderDetail.getColor() && detail.getSize() == orderDetail.getSize()) {
-                    detail.setQuantitySold(detail.getQuantitySold() + 1);
-                    detail.setQuantity(detail.getQuantity() - 1);
+                if(detail.getColor().equals(orderDetail.getColor()) && detail.getSize().equals(orderDetail.getSize())) {
+                    detail.setQuantitySold(detail.getQuantitySold() + orderDetail.getQuantity());
+                    detail.setQuantity(detail.getQuantity() - orderDetail.getQuantity());
+                    productDetailRepository.save(detail);
                 }
             }
+            product.setProductQuantitySold(product.getProductQuantitySold());
+            product.setProductQuantity(product.getProductQuantity());
+            productRepository.save(product);
         }
         newOrder.setTotal(TotalPrice * (1 + newOrder.getTax()) + newOrder.getShippingCost());
 

@@ -73,11 +73,11 @@ public class Product {
 	private Set<Category> category;
     
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "reference1")
+    @JsonManagedReference(value = "productReference1")
     private Set<Review> reviews;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "productReference2")
     private Set<ProductDetail> details;
 
     @Transient private boolean reviewedByCustomer;
@@ -123,6 +123,10 @@ public class Product {
     }
 
     public Integer getProductQuantity() {
+        productQuantity = 0;
+        for(ProductDetail detail: details) {
+            productQuantity += detail.getQuantity();
+        }
         return productQuantity;
     }
 
@@ -200,7 +204,7 @@ public class Product {
     }
 
     public Integer getReviewCount() {
-        return reviewCount;
+        return reviews.size();
     }
 
     public void setReviewCount(Integer reviewCount) {
@@ -208,6 +212,12 @@ public class Product {
     }
 
     public Float getAverageRating() {
+        averageRating = 0.0f;
+        for(Review review: reviews) {
+            averageRating += review.getReviewRating();
+        }
+        if(reviews.size() > 0)
+            averageRating /= reviews.size();
         return averageRating;
     }
 

@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     displayProductsInCart(cart);
+
+    displayCustomerInfo();
 });
 
 function displayProductsInCart(cart) {
@@ -43,6 +45,14 @@ function displayProductsInCart(cart) {
 }
 
 document.getElementById("placeOrderBtn").addEventListener("click", function() {
+
+    let customerInfo = JSON.parse(localStorage.getItem('user')) || [];
+    if(customerInfo.address == null) {
+        confirm("Quý khách vui lòng nhập địa chỉ trước khi đặt hàng");
+        window.location.href = "/user/account.html";
+        return;
+    }
+
 
     let customerId = getCustomerId();
     let orderDetails = [];
@@ -103,6 +113,26 @@ async function createOrder(customerId, orderDetails) {
         return data;
     } catch (error) {
         console.error('Error creating order:', error);
+    }
+}
+
+function displayCustomerInfo() {
+    try {
+        let customerInfo = JSON.parse(localStorage.getItem('user')) || [];
+
+        const phoneSpan = document.getElementById('phone');
+        const addressSpan = document.getElementById('address');
+
+        let address = customerInfo.address;
+        if(address == null) {
+            address = "Chưa có địa chỉ";
+        }
+
+        phoneSpan.innerHTML = `${customerInfo.phone}`;
+        addressSpan.innerHTML = `${address}`;
+
+    } catch (error) {
+        console.error('Error fetching customer infomation:', error);
     }
 }
 

@@ -35,6 +35,16 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
+    @GetMapping("/topproducts")
+    public List<ProductDTO> getTopProducts() {
+        return productService.getTopProducts();
+    }
+
+    @GetMapping("/search")
+    public List<ProductDTO> searchProducts(@RequestParam("keyword") String keywword) {
+        return productService.searchProducts(keywword);
+    }
+
     @GetMapping(path = "/brand/{brandName}")
     public List<ProductDTO> getProductsByBrand(@PathVariable String brandName)
     {
@@ -45,11 +55,6 @@ public class ProductController {
     public List<ProductDTO> getProductsByCategory(@PathVariable String categoryName)
     {
         return productService.getProductsByCategory(categoryName);
-    }
-
-    @GetMapping("/topproducts")
-    public List<ProductDTO> getTopProducts() {
-        return productService.getTopProducts();
     }
 
     // POST

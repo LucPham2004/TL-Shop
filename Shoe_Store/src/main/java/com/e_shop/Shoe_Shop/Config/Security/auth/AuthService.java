@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.Security.auth;
+package com.e_shop.Shoe_Shop.Config.Security.auth;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +20,9 @@ import com.e_shop.Shoe_Shop.Entity.customer.CustomerRepository;
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerService;
 import com.e_shop.Shoe_Shop.Entity.role.Role;
 import com.e_shop.Shoe_Shop.Entity.role.RoleRepository;
+
+import com.e_shop.Shoe_Shop.Config.Security.requestsAndResponses.LoginResponseDTO;
+import com.e_shop.Shoe_Shop.Config.Security.requestsAndResponses.RegisterRequest;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -79,7 +82,7 @@ public class AuthService {
             CustomerDTO userDTO = customerService.ConvertToDTO(user);
 
             Cookie userLoggedIn = new Cookie("userLoggedIn", "true");
-            userLoggedIn.setMaxAge(987654321 * 60 * 60); 
+            userLoggedIn.setMaxAge(6 * 60 * 60); 
             userLoggedIn.setPath("/");
 
             response.addCookie(userLoggedIn);

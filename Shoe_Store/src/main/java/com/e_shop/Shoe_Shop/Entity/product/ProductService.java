@@ -196,6 +196,14 @@ public class ProductService {
         return resultList;
     }
 
+    // Search products
+    public List<ProductDTO> searchProducts(String keywword) {
+        return productRepository.findByProductNameContainingOrProductDescriptionContainingOrCategoryName(
+            keywword, keywword, keywword).stream()
+        .map(this::convertToDTO)
+        .collect(Collectors.toList());
+    }
+
     // POST
     public ProductDTO saveProduct(ProductDTO productDTO) {
         Product product = convertToEntity(productDTO);

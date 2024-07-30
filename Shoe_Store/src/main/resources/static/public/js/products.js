@@ -1,17 +1,4 @@
 
-document.getElementById('increase').addEventListener('click', function() {
-    const quantityInput = document.getElementById('quantity');
-    let currentValue = parseInt(quantityInput.value);
-    quantityInput.value = currentValue + 1;
-});
-
-document.getElementById('decrease').addEventListener('click', function() {
-    const quantityInput = document.getElementById('quantity');
-    let currentValue = parseInt(quantityInput.value);
-    if (currentValue > 1) {
-        quantityInput.value = currentValue - 1;
-    }
-});
 
 // Display Product Infomation
 document.addEventListener("DOMContentLoaded", function() {
@@ -20,42 +7,86 @@ document.addEventListener("DOMContentLoaded", function() {
     
     if (productId) {
         fetch("/api/v1/products/" + productId)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Product not found');
-                }
-                return response.json();
-            })
-            .then(product => {
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Product not found');
+            }
+            return response.json();
+        })
+        .then(product => {
+            console.log(product);
 
-                price = product.productPrice * (100 - product.discountPercent) / 100;
+            price = product.productPrice * (100 - product.discountPercent) / 100;
 
-                document.querySelector(".main-container .product-name").textContent = product.productName;
-                document.querySelector(".main-container .Type").textContent = product.categories; 
-                document.querySelector(".main-container .star span").textContent = product.reviewCount;
-                document.querySelector(".main-container .price").textContent = formatNumber(price) + " đ";
-                document.querySelector(".main-container .originPrice").textContent = formatNumber(product.productPrice) + " đ";
-                document.querySelector(".main-container .description").innerHTML = `
-                    <h6>Mô Tả Sản Phẩm:</h6>
-                    <ul>
-                        <li>${product.productDescription}</li>
-                        <!-- Add more description if available -->
-                    </ul>
-                `;
+            document.querySelector(".main-container .product-name").textContent = product.productName;
+            document.querySelector(".main-container .Type").textContent = product.categories;
+            document.querySelector(".main-container .avgRating .rating").textContent = product.averageRating ;
+            document.querySelector(".main-container .productReview .reviewCount").textContent = product.reviewCount + " đánh giá";
+            document.querySelector(".main-container .price").textContent = formatNumber(price) + " đ";
+            document.querySelector(".main-container .originPrice").textContent = formatNumber(product.productPrice) + " đ";
+            document.querySelector(".main-container .description").innerHTML = `
+                <h6>Mô Tả Sản Phẩm:</h6>
+                <ul>
+                    <li>${product.productDescription}</li>
+                    <!-- Add more description if available -->
+                </ul>
+            `;
 
-                // const picsContainer = document.querySelector(".pics");
-                // picsContainer.innerHTML = ''; 
-                // product.images.forEach(image => {
-                //     const imgElement = document.createElement("img");
-                //     imgElement.src = image;
-                //     imgElement.alt = "products pictures";
-                //     picsContainer.appendChild(imgElement);
-                // });
-            })
-            .catch(error => {
-                document.querySelector(".main-container").textContent = "Product not found. Error: " + error;
-                console.error(error);
+            const colorSelect = document.getElementById('color');
+            const sizeSelect = document.getElementById('size');
+
+            colorSelect.innerHTML = '';
+            sizeSelect.innerHTML = '';
+
+            let colors = new Set();
+            product.details.forEach(detail => {
+                colors.add(detail.color);
             });
+
+            colors.forEach(color => {
+                let option = document.createElement('option');
+                option.value = color;
+                option.textContent = color;
+                colorSelect.appendChild(option);
+            });
+
+            const updateSizeOptions = (selectedColor) => {
+                sizeSelect.innerHTML = '';
+                let sizes = new Set();
+                product.details.forEach(detail => {
+                    if (detail.color === selectedColor) {
+                        sizes.add(detail.size);
+                    }
+                });
+                sizes.forEach(size => {
+                    let option = document.createElement('option');
+                    option.value = size;
+                    option.textContent = size;
+                    sizeSelect.appendChild(option);
+                });
+            };
+
+            if (colorSelect.value) {
+                updateSizeOptions(colorSelect.value);
+            }
+
+            colorSelect.addEventListener('change', (event) => {
+                updateSizeOptions(event.target.value);
+            });
+
+            // const picsContainer = document.querySelector(".pics");
+            // picsContainer.innerHTML = ''; 
+            // product.images.forEach(image => {
+            //     const imgElement = document.createElement("img");
+            //     imgElement.src = image;
+            //     imgElement.alt = "products pictures";
+            //     picsContainer.appendChild(imgElement);
+            // });
+        })
+        .catch(error => {
+            document.querySelector(".main-container").textContent = "Product not found. Error: " + error;
+            console.error(error);
+        });
     } else {
         document.querySelector(".main-container").textContent = "No product selected";
     }
@@ -134,10 +165,11 @@ document.addEventListener('DOMContentLoaded', () => {
             reviewTitle: reviewTitle,
             reviewContent: comment,
             reviewDate: new Date(),
-            reviewRating: rating,
+            reviewRating: parseInt(rating),
             productId: parseInt(productId),
             customerId: customerId
         }
+        console.log(reviewData);
         
         try {
             const response = fetch('/api/v1/reviews', {
@@ -149,15 +181,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             reviewForm.reset();
-            displayReviews(productId);
-            window.alert('Đánh giá thành công!')
+            
+            window.alert('Đánh giá thành công!');
+            displayReviews();
 
         } catch (error) {
             console.error('Error while creating review: ' + error);
         }
         
     });
-
 });
 
 // Display Reviews
@@ -275,6 +307,20 @@ async function deleteReview(id) {
 }
 
 // Small helping functions
+document.getElementById('increase').addEventListener('click', function() {
+    const quantityInput = document.getElementById('quantity');
+    let currentValue = parseInt(quantityInput.value);
+    quantityInput.value = currentValue + 1;
+});
+
+document.getElementById('decrease').addEventListener('click', function() {
+    const quantityInput = document.getElementById('quantity');
+    let currentValue = parseInt(quantityInput.value);
+    if (currentValue > 1) {
+        quantityInput.value = currentValue - 1;
+    }
+});
+
 function extractDate(datetimeString) {
     let datePart = datetimeString.split('T')[0];
     

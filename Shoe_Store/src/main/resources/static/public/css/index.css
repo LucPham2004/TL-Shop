@@ -77,6 +77,10 @@
     transition: opacity 0.3s ease;
 }
 
+.product-item a {
+    text-decoration: none;
+}
+
 /* Poster */
 .poster-main {
     display: flex;

@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.Security;
+package com.e_shop.Shoe_Shop.Config.Security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +20,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.e_shop.Shoe_Shop.Config.utils.RSAKeyProperties;
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerService;
-import com.e_shop.Shoe_Shop.Entity.utils.RSAKeyProperties;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
