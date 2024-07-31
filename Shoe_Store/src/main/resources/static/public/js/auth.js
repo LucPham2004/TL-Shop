@@ -67,9 +67,6 @@ async function logout() {
         if (!response.ok) {
             throw new Error('Đăng xuất thất bại');
         }
-        
-        alert('Đăng xuất thành công!');
-
         window.location.href = '/public/index.html';
 
     } catch (error) {

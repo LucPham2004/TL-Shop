@@ -60,6 +60,12 @@ public class Customer implements UserDetails{
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference(value = "customerReference2")
     private Set<Review> review;
+    
+    @Column(name = "is_account_non_locked")
+    private boolean isAccountNonLocked = true;
+    
+    @Column(name = "is_enabled")
+    private boolean isEnabled = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -162,7 +168,7 @@ public class Customer implements UserDetails{
 
     @Override
     public String getUsername() {
-        return this.name;
+        return this.email;
     }
 
     @Override
@@ -172,7 +178,11 @@ public class Customer implements UserDetails{
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isAccountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean isAccountNonLocked) {
+        this.isAccountNonLocked = isAccountNonLocked;
     }
 
     @Override
@@ -182,7 +192,11 @@ public class Customer implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
     }
 
 }

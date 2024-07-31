@@ -5,7 +5,6 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.e_shop.Shoe_Shop.Entity.customer.Customer;
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerRepository;
 import com.e_shop.Shoe_Shop.Entity.order.detail.OrderDetail;
 import com.e_shop.Shoe_Shop.Entity.product.Product;
@@ -31,6 +30,10 @@ public class OrderService {
     }
 
     // GET
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
 	public List<Order> getOrdersByCustomer(int customerId) {
 		List<Order> orders = orderRepository.findByCustomerId(customerId);
 
@@ -44,12 +47,12 @@ public class OrderService {
         return orders;
 	}
 
-    public Order getOrderByIdAndCustomer(Integer id, Customer customer) {
-		boolean exist = orderRepository.existsByIdAndCustomer(id, customer);
+    public Order getOrderById(Integer id) {
+		boolean exist = orderRepository.existsById(id);
         if(exist){
             throw new IllegalStateException("Order does not exists!");
         }
-		return orderRepository.findByIdAndCustomer(id, customer);
+		return orderRepository.findById(id).get();
 	}
 
     // POST
@@ -111,6 +114,17 @@ public class OrderService {
 		}
         orderRepository.delete(order);
     }
+
+    // PUT
+    public void UpdateStatus(int id, String status) {
+        Order order = orderRepository.findById(id);
+        if(!order.getStatus().equals(status)) {
+            order.setStatus(status);
+            orderRepository.save(order);
+        }
+    }
+
+
 	
 
 	// Create Order Request

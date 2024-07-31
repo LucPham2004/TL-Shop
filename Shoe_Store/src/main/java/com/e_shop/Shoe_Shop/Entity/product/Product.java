@@ -80,6 +80,9 @@ public class Product {
     @JsonManagedReference(value = "productReference2")
     private Set<ProductDetail> details;
 
+    @Column(name = "product_is_enabled")
+	private boolean isEnabled = true;
+
     @Transient private boolean reviewedByCustomer;
 
     public Integer getId() {
@@ -223,6 +226,14 @@ public class Product {
 
     public void setAverageRating(Float averageRating) {
         this.averageRating = averageRating;
+    }
+    
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
     }
 
     public boolean isReviewedByCustomer() {

@@ -59,11 +59,10 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/public/**").permitAll();
-                    auth.requestMatchers("/api/**").permitAll();
-                    auth.requestMatchers("/admin/**").permitAll();//.hasAuthority("ADMIN");
-                    auth.requestMatchers("/user/**").permitAll();//.hasAnyAuthority("ADMIN", "USER");
-                    auth.requestMatchers("/private/**").permitAll();//.hasAuthority("ADMIN");
+                    auth.requestMatchers("/public/**", "/api/**").permitAll();
+                    auth.requestMatchers("/admin/**").permitAll();//.hasRole("ADMIN");
+                    auth.requestMatchers("/user/**").hasRole("USER");
+                    auth.requestMatchers("/private/**").permitAll();//.hasRole("ADMIN");
                     auth.anyRequest().authenticated();
                 })
                 .oauth2ResourceServer((oauth2) -> oauth2

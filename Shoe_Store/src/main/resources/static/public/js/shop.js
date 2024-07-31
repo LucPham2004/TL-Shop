@@ -35,6 +35,44 @@ document.addEventListener("DOMContentLoaded", async function() {
         const sortedProducts = sortProducts(filteredProducts, this.value);
         showProductsInShopPage(sortedProducts);
     });
+
+    // Search products
+    const params = new URLSearchParams(window.location.search);
+    const keyword = params.get('keyword');
+
+    if(keyword) {
+        fetch(`/api/v1/products/search?keyword=${encodeURIComponent(keyword)}`)
+        .then(response => response.json())
+        .then(data => {
+            showProductsInShopPage(data);
+        })
+        .catch(error => {
+            console.error('Error fetching products:', error);
+        });
+    }
+
+    const searchBtn = document.getElementById('searchButton');
+    if(searchBtn) {
+        searchBtn.addEventListener('click', function() {
+            this.parentElement.classList.toggle('open');
+            this.previousElementSibling.focus();
+
+            const keyword = document.getElementById('searchInput').value;
+
+            if(keyword) {
+                fetch(`/api/v1/products/search?keyword=${encodeURIComponent(keyword)}`)
+                .then(response => response.json())
+                .then(data => {
+                    showProductsInShopPage(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching products:', error);
+                });
+            }
+        })
+    } else {
+        console.log("not found search button")
+    }
 });
 
 // Show Products In Shop Page

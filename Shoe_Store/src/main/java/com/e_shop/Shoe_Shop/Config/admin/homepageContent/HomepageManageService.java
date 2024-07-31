@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.Config.admin;
+package com.e_shop.Shoe_Shop.Config.admin.homepageContent;
 
 import java.io.File;
 import java.io.IOException;

@@ -122,10 +122,10 @@ function changeLoginOrProfileHeaderPart() {
         accountDiv.innerHTML = `
             <div class="dropdown">
                 <a class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-user-circle"></i> Account
+                    <i class="fas fa-user-circle"></i> Profile
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="../user/account.html" onclick="redirectToAccountPageWithJWT()">Profile</a></li>
+                    <li><a class="dropdown-item" href="../user/profile.html" onclick="redirectToProfilePageWithJWT()">Profile</a></li>
                     <li><a class="dropdown-item" href="#" onclick="logout()">Đăng xuất<i class="fas fa-arrow-circle-right" style="margin-left: 15px;"></i></a></li>
                 </ul>
             </div>
