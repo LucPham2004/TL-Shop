@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerService.UpdateUserInfoRequest;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping(path = "api/v1/customers")
 public class CustomerController {

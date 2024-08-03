@@ -1,9 +1,10 @@
-package com.e_shop.Shoe_Shop.Config.admin.dashboard;
+package com.e_shop.Shoe_Shop.Entity.admin.dashboard;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/admin/api/dashboard")
 public class DashboardController {

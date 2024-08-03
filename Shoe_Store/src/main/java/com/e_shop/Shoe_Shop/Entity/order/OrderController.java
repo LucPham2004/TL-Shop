@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e_shop.Shoe_Shop.Entity.order.OrderService.OrderRequest;
-
+import com.e_shop.Shoe_Shop.Entity.order.OrderService.UpdateStatusRequest;
+import org.springframework.web.bind.annotation.CrossOrigin;
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping(path = "/api/v1/orders")
 public class OrderController {
@@ -53,9 +55,9 @@ public class OrderController {
 
     // PUT
     @PutMapping
-    public void UpdateStatus(int id, String status) {
-        if(id > 0 && status != null) {
-            orderService.UpdateStatus(id, status);
+    public void UpdateStatus(@RequestBody UpdateStatusRequest request) {
+        if(request.getId() > 0 && request.getStatus() != null) {
+            orderService.UpdateStatus(request.getId(), request.getStatus());
         }
     }
 }

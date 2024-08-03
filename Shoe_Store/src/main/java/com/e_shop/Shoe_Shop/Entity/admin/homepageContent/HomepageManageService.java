@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.Config.admin.homepageContent;
+package com.e_shop.Shoe_Shop.Entity.admin.homepageContent;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class HomepageManageService {
 
     public FileNameResponse getHomepageBanners_PosterFileNames() {
-        String bannerDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/public/img/homepage/banner";
-        String posterDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/public/img/homepage/poster";
-        String sampleDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/public/img/homepage/sample";
+        String bannerDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/banner";
+        String posterDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/poster";
+        String sampleDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/sample";
         
         File bannerDirFile = new File(bannerDir);
         if (!bannerDirFile.exists()) {
@@ -52,7 +52,7 @@ public class HomepageManageService {
     }
 
     public String changeBanners(MultipartFile[] files) {
-        String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/public/img/homepage/banner";
+        String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/banner";
         File uploadDirFile = new File(uploadDir);
         if (!uploadDirFile.exists()) {
             uploadDirFile.mkdirs();
@@ -99,7 +99,7 @@ public class HomepageManageService {
     }
 
     public String changePosters(MultipartFile[] files) {
-        String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/public/img/homepage/poster";
+        String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/poster";
         File uploadDirFile = new File(uploadDir);
         if (!uploadDirFile.exists()) {
             uploadDirFile.mkdirs();
@@ -151,7 +151,7 @@ public class HomepageManageService {
     }
 
     public String changeSample(MultipartFile image, int index) {
-        String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/public/img/homepage/sample";
+        String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/sample";
         File uploadDirFile = new File(uploadDir);
         if (!uploadDirFile.exists()) {
             uploadDirFile.mkdirs();

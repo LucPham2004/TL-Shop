@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.Config.admin.homepageContent;
+package com.e_shop.Shoe_Shop.Entity.admin.homepageContent;
 
 public class FileNameResponse {
     private String banner;

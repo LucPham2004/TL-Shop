@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.Config.admin.dashboard;
+package com.e_shop.Shoe_Shop.Entity.admin.dashboard;
 
 import java.util.List;
 
