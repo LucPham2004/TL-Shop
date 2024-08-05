@@ -2,6 +2,8 @@ package com.e_shop.Shoe_Shop.Config.Security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -48,7 +50,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authManager(CustomerService customerService) {
+    public AuthenticationManager authManager(@Lazy CustomerService customerService) {
         DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
         daoProvider.setUserDetailsService(customerService);
         return new ProviderManager(daoProvider);
@@ -59,9 +61,21 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/public/**", "/api/**").permitAll();
-                    auth.requestMatchers("/admin/**", "/private/**").permitAll();//.hasRole("ADMIN");
-                    auth.requestMatchers("/user/**").hasRole("USER");
+                    auth.requestMatchers("/api/**").permitAll();
+
+                    auth.requestMatchers("/admin/**").hasRole("ADMIN");
+
+                    auth.requestMatchers("/customers/**").hasAnyRole("USER", "ADMIN");
+                    auth.requestMatchers("/orders/**").hasAnyRole("USER", "ADMIN");
+
+                    auth.requestMatchers("/products/**").hasRole("ADMIN");
+                    auth.requestMatchers("/brand/**").hasRole("ADMIN");
+                    auth.requestMatchers("/category/**").hasRole("ADMIN");
+
+                    auth.requestMatchers(HttpMethod.GET, "/products/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/brand/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/category/**").permitAll();
+
                     auth.anyRequest().authenticated();
                 })
                 .oauth2ResourceServer((oauth2) -> oauth2

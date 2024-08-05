@@ -3,6 +3,7 @@ package com.e_shop.Shoe_Shop.Entity.product;
 import java.util.List;
 
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.e_shop.Shoe_Shop.DTO.dto.ProductDTO;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin(maxAge = 3600)
@@ -44,6 +47,11 @@ public class ProductController {
     @GetMapping("/search")
     public List<ProductDTO> searchProducts(@RequestParam("keyword") String keywword) {
         return productService.searchProducts(keywword);
+    }
+
+    @GetMapping("/images/{productName}")
+    public ResponseEntity<byte[]> getProductImages(@PathVariable String productName) {
+        return productService.getProductImages(productName);
     }
 
     @GetMapping(path = "/brand/{brandName}")

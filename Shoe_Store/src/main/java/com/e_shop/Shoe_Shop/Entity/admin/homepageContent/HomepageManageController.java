@@ -1,7 +1,6 @@
 package com.e_shop.Shoe_Shop.Entity.admin.homepageContent;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,15 +8,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/admin/api/managehomepage")
+@RequestMapping("/api/v1/admin/managehomepage")
 public class HomepageManageController {
     
     private HomepageManageService homepageManageService;
-
-    @GetMapping("/getfilenames")
-    public FileNameResponse getHomepageBanners_PosterFileNames() {
-        return homepageManageService.getHomepageBanners_PosterFileNames();
-    }
 
     @PostMapping("/changebanners")
     public String changeBanners(MultipartFile[] files) {

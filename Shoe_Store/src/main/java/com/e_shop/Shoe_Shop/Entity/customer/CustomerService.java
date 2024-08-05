@@ -3,9 +3,13 @@ package com.e_shop.Shoe_Shop.Entity.customer;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,20 +20,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.e_shop.Shoe_Shop.Entity.role.Role;
 import com.e_shop.Shoe_Shop.Entity.role.RoleRepository;
+import com.e_shop.Shoe_Shop.DTO.dto.CustomerDTO;
+import com.e_shop.Shoe_Shop.DTO.request.ChangePasswordRequest;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class CustomerService implements UserDetailsService{
     private final CustomerRepository customerRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    public CustomerService(CustomerRepository customerRepository) {
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    
+    public CustomerService(CustomerRepository customerRepository, RoleRepository roleRepository,
+            PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.customerRepository = customerRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
-    public CustomerDTO ConvertToDTO(Customer customer) {
+    public CustomerDTO convertToDTO(Customer customer) {
         return new CustomerDTO(
             customer.getId(),
             customer.getEmail(),
@@ -78,7 +89,7 @@ public class CustomerService implements UserDetailsService{
     public CustomerDTO findCustomerById(Integer id) {
         Customer customer = customerRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Customer with id: " + id + " does not exist!"));
-        return ConvertToDTO(customer);
+        return convertToDTO(customer);
     }
 
     public CustomerDTO findCustomerByEmail(String email) {
@@ -86,13 +97,13 @@ public class CustomerService implements UserDetailsService{
         if (customer == null) {
             throw new IllegalStateException("Customer with email: " + email + " does not exist!");
         }
-        return ConvertToDTO(customer);
+        return convertToDTO(customer);
     }
 
     // GET
     public List<CustomerDTO> getAllCustomers() {
         return customerRepository.findAll().stream()
-        .map(this::ConvertToDTO).collect(Collectors.toList());
+        .map(this::convertToDTO).collect(Collectors.toList());
     }
 
     public CustomerDTO getCustomerById(int id) {
@@ -105,16 +116,53 @@ public class CustomerService implements UserDetailsService{
 
     public List<CustomerDTO> searchCustomer(String keywword) {
         return customerRepository.findByNameContainingOrAddressContaining(keywword, keywword).stream()
-        .map(this::ConvertToDTO).collect(Collectors.toList());
+        .map(this::convertToDTO).collect(Collectors.toList());
     }
 
     // POST
+    
+    // Create Customer
     public CustomerDTO createCustomer(Customer customer) {
         if(customerRepository.existsByEmail(customer.getEmail())){
             throw new IllegalStateException("Customer with email: " + customer.getEmail() + " already exists!");
         }
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
-        return ConvertToDTO(customerRepository.save(customer));
+        return convertToDTO(customerRepository.save(customer));
+    }
+
+    // Change Customer password
+    @Transactional
+    public CustomerDTO ChangePassword(ChangePasswordRequest changePasswordRequest, HttpServletResponse response) {
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(changePasswordRequest.getEmail(), changePasswordRequest.getOldPassword())
+            );
+            
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+            Customer customer = customerRepository.findById(changePasswordRequest.getId());
+
+            if(customer == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return null;
+            }
+            boolean checkPassword = checkPassword(changePasswordRequest.getOldPassword(), customer.getPassword());
+
+            String newPassword = changePasswordRequest.getNewPassword();
+            if(newPassword != null && newPassword.length() > 0 && newPassword.equals(changePasswordRequest.getOldPassword()) && checkPassword) {
+                customerRepository.changeCustomerPassword(changePasswordRequest.getId(), passwordEncoder.encode(newPassword));
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return null;
+            }
+
+            response.setStatus(HttpServletResponse.SC_OK);
+            return convertToDTO(customer);
+        } catch (AuthenticationException e) {
+            System.out.println("Authentication failed for email: " + changePasswordRequest.getEmail());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return null;
+        }
     }
 
     // DELETE
@@ -129,7 +177,7 @@ public class CustomerService implements UserDetailsService{
 
     // PUT
     @Transactional
-    public void UpdateCustomer(int id, String newEmail, String newName, String newPhone, String newAddress)
+    public CustomerDTO UpdateCustomer(int id, String newEmail, String newName, String newPhone, String newAddress)
     {
         Customer customer = customerRepository.findById(id);
 
@@ -150,62 +198,7 @@ public class CustomerService implements UserDetailsService{
         if(newAddress != null && !newAddress.isBlank() && !Objects.equals(customer.getAddress(), newAddress))
             customer.setAddress(newAddress);
 
-        customerRepository.save(customer);
+        return convertToDTO(customerRepository.save(customer));
     }
 
-    static class UpdateUserInfoRequest {
-        private Integer id;
-        private String email;
-        private String name;
-        private String phone;
-        private String address;
-
-        @Override
-        public String toString() {
-            return "UpdateUserInfoRequest [id=" + id + ", email=" + email + ", name=" + name + ", phone=" + phone
-                    + ", address=" + address + "]";
-        }
-
-        public UpdateUserInfoRequest(Integer id, String email, String name, String phone, String address) {
-            this.id = id;
-            this.email = email;
-            this.name = name;
-            this.phone = phone;
-            this.address = address;
-        }
-
-        public UpdateUserInfoRequest() {
-        }
-
-        public Integer getId() {
-            return id;
-        }
-        public void setId(Integer id) {
-            this.id = id;
-        }
-        public String getEmail() {
-            return email;
-        }
-        public void setEmail(String email) {
-            this.email = email;
-        }
-        public String getName() {
-            return name;
-        }
-        public void setName(String name) {
-            this.name = name;
-        }
-        public String getPhone() {
-            return phone;
-        }
-        public void setPhone(String phone) {
-            this.phone = phone;
-        }
-        public String getAddress() {
-            return address;
-        }
-        public void setAddress(String address) {
-            this.address = address;
-        }
-    }
 }

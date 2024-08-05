@@ -14,6 +14,8 @@ import com.e_shop.Shoe_Shop.Entity.customer.CustomerRepository;
 import com.e_shop.Shoe_Shop.Entity.role.Role;
 import com.e_shop.Shoe_Shop.Entity.role.RoleRepository;
 
+import jakarta.persistence.EntityManager;
+
 @SpringBootApplication
 public class ShoeShopApplication {
 
@@ -22,18 +24,32 @@ public class ShoeShopApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(RoleRepository roleRepository, CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
+	CommandLineRunner run(	RoleRepository roleRepository, CustomerRepository customerRepository, 
+							PasswordEncoder passwordEncoder, EntityManager entityManager) {
 		return args -> {
-			if(roleRepository.findByAuthority("ADMIN").isPresent()) return;
+			entityManager.clear();
+			Role adminRole = roleRepository.findByAuthority("ADMIN").orElse(null);
+			Role userRole = roleRepository.findByAuthority("USER").orElse(null);
+	
+			if (adminRole == null) {
+				adminRole = roleRepository.save(new Role("ADMIN"));
+			}
+			if (userRole == null) {
+				userRole = roleRepository.save(new Role("USER"));
+			}
+	
+			if (!customerRepository.existsByName("admin")) {
+				Set<Role> roles = new HashSet<>();
+				roles.add(adminRole);
+				roles.add(userRole);
+		
+				String rawPassword = "adminPassword";
+				String encodedPassword = passwordEncoder.encode(rawPassword);
 
-			Role adminRole = roleRepository.save(new Role("ADMIN"));
-			roleRepository.save(new Role("USER"));
-
-			Set<Role> roles = new HashSet<>();
-			roles.add(adminRole);
-
-			Customer admin  = new Customer("admin", null, null, null, roles);
-			customerRepository.save(admin);
+				Customer admin = new Customer("admin", encodedPassword, 
+					"phamtienluc0601@gmail.com", "0383132114", "Ha Noi, Viet Nam", roles);
+				customerRepository.save(admin);
+			}
 		};
 	}
 

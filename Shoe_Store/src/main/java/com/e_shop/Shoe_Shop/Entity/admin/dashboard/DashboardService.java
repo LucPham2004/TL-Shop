@@ -2,7 +2,6 @@ package com.e_shop.Shoe_Shop.Entity.admin.dashboard;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.e_shop.Shoe_Shop.Entity.order.Order;
@@ -13,22 +12,14 @@ import jakarta.persistence.Query;
 
 @Service
 public class DashboardService {
+	private final EntityManager entityManager;
+    private final DashboardInfo dashboardInfo;
+	private final OrderRepository orderRepository;
 
-	@Autowired
-	private EntityManager entityManager;
-
-    private DashboardInfo dashboardInfo;
-
-	@Autowired
-	private OrderRepository orderRepository;
-
-    public DashboardService() {
-	}
-
-	@Autowired
-	public DashboardService(EntityManager entityManager, DashboardInfo dashboardInfo) {
+	public DashboardService(EntityManager entityManager, DashboardInfo dashboardInfo, OrderRepository orderRepository) {
 		this.entityManager = entityManager;
 		this.dashboardInfo = dashboardInfo;
+		this.orderRepository = orderRepository;
 	}
 
 	public DashboardInfo loadSummary() {

@@ -1,6 +1,6 @@
-package com.e_shop.Shoe_Shop.Config.Security.requestsAndResponses;
+package com.e_shop.Shoe_Shop.DTO.response;
 
-import com.e_shop.Shoe_Shop.Entity.customer.CustomerDTO;
+import com.e_shop.Shoe_Shop.DTO.dto.CustomerDTO;
 
 public class LoginResponseDTO {
     private CustomerDTO user;

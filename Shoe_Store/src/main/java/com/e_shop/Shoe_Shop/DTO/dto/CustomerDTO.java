@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.Entity.customer;
+package com.e_shop.Shoe_Shop.DTO.dto;
 
 import java.util.*;
 

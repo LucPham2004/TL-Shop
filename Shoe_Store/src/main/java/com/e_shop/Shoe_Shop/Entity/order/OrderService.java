@@ -2,7 +2,6 @@ package com.e_shop.Shoe_Shop.Entity.order;
 
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerRepository;
@@ -15,18 +14,19 @@ import com.e_shop.Shoe_Shop.Entity.product.detail.ProductDetailRepository;
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
-	@Autowired
-	private CustomerRepository customerRepository;
-	@Autowired
-	private ProductRepository productRepository;
-    @Autowired
-    private ProductDetailRepository productDetailRepository;
+	private final CustomerRepository customerRepository;
+	private final ProductRepository productRepository;
+    private final ProductDetailRepository productDetailRepository;
 
 	private final Float ShippingCostCurrent = 15000.0f;
     private final Float TaxCurrent = 0.08f;
 
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
+            ProductRepository productRepository, ProductDetailRepository productDetailRepository) {
         this.orderRepository = orderRepository;
+        this.customerRepository = customerRepository;
+        this.productRepository = productRepository;
+        this.productDetailRepository = productDetailRepository;
     }
 
     // GET
@@ -206,33 +206,6 @@ public class OrderService {
             this.color = color;
         }
 
-    }
-
-    static class UpdateStatusRequest {
-        private int id;
-        private String status;
-
-        public UpdateStatusRequest(int id, String status) {
-            this.id = id;
-            this.status = status;
-        }
-        public UpdateStatusRequest() {
-        }
-        
-        public int getId() {
-            return id;
-        }
-        public void setId(int id) {
-            this.id = id;
-        }
-        public String getStatus() {
-            return status;
-        }
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        
     }
 
 }

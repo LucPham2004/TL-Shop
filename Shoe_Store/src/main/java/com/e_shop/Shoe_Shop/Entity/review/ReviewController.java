@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.e_shop.Shoe_Shop.Entity.review.ReviewService.NewReviewRequest;
-import com.e_shop.Shoe_Shop.Entity.review.ReviewService.ReviewResponse;
+import com.e_shop.Shoe_Shop.DTO.dto.ReviewDTO;
+import com.e_shop.Shoe_Shop.DTO.request.ReviewCreationRequest;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -27,35 +28,35 @@ public class ReviewController {
 
     // GET
     @GetMapping
-    public List<ReviewResponse> getAllReviews() {
+    public List<ReviewDTO> getAllReviews() {
         return reviewService.getAllReviews();
     }
 
     @GetMapping(path = "/{id}")
-    public ReviewResponse getReviewById(@PathVariable int id) {
+    public ReviewDTO getReviewById(@PathVariable int id) {
         return reviewService.getReviewById(id);
     }
     
     @GetMapping(path = "/product/{product_id}")
-    public List<ReviewResponse> getAllReviewbyProduct(@PathVariable int product_id) {
+    public List<ReviewDTO> getAllReviewbyProduct(@PathVariable int product_id) {
         return reviewService.getAllReviewsByProduct(product_id);
     }
 
     @GetMapping(path = "/customer/{customer_id}")
-    public List<ReviewResponse> getAllReviewbyCustomer(@PathVariable int customer_id) {
+    public List<ReviewDTO> getAllReviewbyCustomer(@PathVariable int customer_id) {
         return reviewService.getAllReviewsByCustomer(customer_id);
     }
 
     // POST
     @PostMapping
-    public ReviewResponse addNewReview(@RequestBody NewReviewRequest newReviewRequest) {
-        return reviewService.addNewReview(newReviewRequest);
+    public ReviewDTO addNewReview(@RequestBody ReviewCreationRequest reviewCreationRequest) {
+        return reviewService.addNewReview(reviewCreationRequest);
     }
 
     // PUT
     @PutMapping
-    public ReviewResponse updateReview(@RequestBody NewReviewRequest newReviewRequest) {
-        return reviewService.updateReview(newReviewRequest);
+    public ReviewDTO updateReview(@RequestBody ReviewCreationRequest reviewCreationRequest) {
+        return reviewService.updateReview(reviewCreationRequest);
     }
 
     // DELETE

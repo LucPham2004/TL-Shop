@@ -47,7 +47,7 @@ public class Customer implements UserDetails{
     @Column(name = "customer_address")
     private String address;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinTable( name = "user_role", 
                 joinColumns = @JoinColumn(name = "customer_id"), 
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -115,6 +115,15 @@ public class Customer implements UserDetails{
     // Constructor
     public Customer(String name, String email, String phone, String address, Set<Role> authorities) {
         this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.authorities = authorities;
+    }
+
+    public Customer(String name, String password, String email, String phone, String address, Set<Role> authorities) {
+        this.name = name;
+        this.password = password;
         this.email = email;
         this.phone = phone;
         this.address = address;

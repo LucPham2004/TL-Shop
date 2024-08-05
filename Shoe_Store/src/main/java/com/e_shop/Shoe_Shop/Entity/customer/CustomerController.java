@@ -5,13 +5,19 @@ import java.util.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.e_shop.Shoe_Shop.Entity.customer.CustomerService.UpdateUserInfoRequest;
+import com.e_shop.Shoe_Shop.DTO.dto.CustomerDTO;
+import com.e_shop.Shoe_Shop.DTO.request.ChangePasswordRequest;
+import com.e_shop.Shoe_Shop.DTO.request.CustomerUpdateRequest;
+
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -47,6 +53,12 @@ public class CustomerController {
     public List<CustomerDTO> searchCustomer(@RequestParam("keyword") String keywword) {
         return customerService.searchCustomer(keywword);
     }
+
+    // POST
+    @PostMapping("/changePassword")
+    public CustomerDTO ChangePassword(ChangePasswordRequest changePasswordRequest, HttpServletResponse response) {
+        return customerService.ChangePassword(changePasswordRequest, response);
+    }
     
     // DELETE
     @DeleteMapping
@@ -57,10 +69,10 @@ public class CustomerController {
 
     // UPDATE
     @PutMapping
-    public void UpdateCustomer(@RequestBody UpdateUserInfoRequest UpdateUserInfoRequest)
+    public CustomerDTO UpdateCustomer(@RequestBody CustomerUpdateRequest customerUpdateRequest)
     {
-        customerService.UpdateCustomer(UpdateUserInfoRequest.getId(), UpdateUserInfoRequest.getEmail(),
-        UpdateUserInfoRequest.getName(), UpdateUserInfoRequest.getPhone(), UpdateUserInfoRequest.getAddress());
+        return customerService.UpdateCustomer(customerUpdateRequest.getId(), customerUpdateRequest.getEmail(),
+        customerUpdateRequest.getName(), customerUpdateRequest.getPhone(), customerUpdateRequest.getAddress());
     }
 }
 

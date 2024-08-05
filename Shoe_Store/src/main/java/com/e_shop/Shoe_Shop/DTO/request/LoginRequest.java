@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.Config.Security.requestsAndResponses;
+package com.e_shop.Shoe_Shop.DTO.request;
 
 public class LoginRequest {
     private String email;

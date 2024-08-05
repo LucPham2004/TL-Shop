@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/admin/api/dashboard")
+@RequestMapping("/api/v1/admin/dashboard")
 public class DashboardController {
     private final DashboardService dashboardService;
 

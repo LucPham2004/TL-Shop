@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +23,7 @@ import com.e_shop.Shoe_Shop.Entity.brand.BrandRepository;
 import com.e_shop.Shoe_Shop.Entity.category.CategoryRepository;
 import com.e_shop.Shoe_Shop.Entity.category.Category;
 import com.e_shop.Shoe_Shop.Entity.product.detail.ProductDetail;
+import com.e_shop.Shoe_Shop.DTO.dto.ProductDTO;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -28,13 +31,14 @@ import jakarta.transaction.Transactional;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
-    @Autowired
-    private BrandRepository brandRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    public ProductService(ProductRepository productRepository) {
+    private final BrandRepository brandRepository;
+    private final CategoryRepository categoryRepository;
+    
+    public ProductService(ProductRepository productRepository, BrandRepository brandRepository,
+            CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
+        this.brandRepository = brandRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     // Convert Product and ProductDetail to DTO
@@ -204,6 +208,28 @@ public class ProductService {
         .collect(Collectors.toList());
     }
 
+    // Get product Images
+    public ResponseEntity<byte[]> getProductImages(String productName) {
+        try {
+            String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/products/";
+            Path path = Paths.get(uploadDir + productName);
+
+            if (!Files.exists(path)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+            byte[] imageBytes = Files.readAllBytes(path);
+
+            String mimeType = Files.probeContentType(path);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(mimeType))
+                    .body(imageBytes);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
     // POST
     public ProductDTO saveProduct(ProductDTO productDTO) {
         Product product = convertToEntity(productDTO);
@@ -219,7 +245,7 @@ public class ProductService {
     }
 
     public String uploadImages(String productName, MultipartFile[] files) {
-        String uploadDir =  "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/public/img/products/" + productName;
+        String uploadDir =  "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/products/" + productName;
 
         File uploadDirFile = new File(uploadDir);
         if (!uploadDirFile.exists()) {
@@ -258,7 +284,7 @@ public class ProductService {
 
     // PUT
     @Transactional
-    public void updateProduct(ProductDTO productDTO) {
+    public ProductDTO updateProduct(ProductDTO productDTO) {
         Product productToUpdate = productRepository.findById(productDTO.getId())
             .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
@@ -292,6 +318,6 @@ public class ProductService {
         productToUpdate.getDetails().addAll(updatedDetails);
         updatedDetails.forEach(detail -> detail.setProduct(productToUpdate));
 
-        productRepository.save(productToUpdate);
+        return convertToDTO(productRepository.save(productToUpdate));
     }
 }

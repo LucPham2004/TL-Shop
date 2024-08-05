@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e_shop.Shoe_Shop.Entity.order.OrderService.OrderRequest;
-import com.e_shop.Shoe_Shop.Entity.order.OrderService.UpdateStatusRequest;
+import com.e_shop.Shoe_Shop.DTO.request.OrderStatusUpdateRequest;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -55,7 +56,7 @@ public class OrderController {
 
     // PUT
     @PutMapping
-    public void UpdateStatus(@RequestBody UpdateStatusRequest request) {
+    public void UpdateStatus(@RequestBody OrderStatusUpdateRequest request) {
         if(request.getId() > 0 && request.getStatus() != null) {
             orderService.UpdateStatus(request.getId(), request.getStatus());
         }

@@ -3,7 +3,7 @@ package com.e_shop.Shoe_Shop.Config.Security.auth;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,36 +15,43 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.e_shop.Shoe_Shop.Entity.customer.Customer;
-import com.e_shop.Shoe_Shop.Entity.customer.CustomerDTO;
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerRepository;
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerService;
 import com.e_shop.Shoe_Shop.Entity.role.Role;
 import com.e_shop.Shoe_Shop.Entity.role.RoleRepository;
+import com.e_shop.Shoe_Shop.DTO.dto.CustomerDTO;
+import com.e_shop.Shoe_Shop.DTO.request.RegisterRequest;
+import com.e_shop.Shoe_Shop.DTO.response.ApiResponse;
+import com.e_shop.Shoe_Shop.DTO.response.LoginResponseDTO;
+import com.nimbusds.jose.JOSEException;
 
-import com.e_shop.Shoe_Shop.Config.Security.requestsAndResponses.LoginResponseDTO;
-import com.e_shop.Shoe_Shop.Config.Security.requestsAndResponses.RegisterRequest;
-
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 @Transactional
 public class AuthService {
-    @Autowired
     private CustomerService customerService;
-    @Autowired
     private CustomerRepository customerRepository;
-    @Autowired
     private RoleRepository roleRepository;
-    @Autowired
     private AuthenticationManager authenticationManager;
-    @Autowired
     private TokenService tokenService;
 
-    public ResponseEntity<?> register(RegisterRequest registerRequest) {
+    public AuthService(@Lazy CustomerService customerService, CustomerRepository customerRepository,
+            RoleRepository roleRepository, @Lazy AuthenticationManager authenticationManager, TokenService tokenService) {
+        this.customerService = customerService;
+        this.customerRepository = customerRepository;
+        this.roleRepository = roleRepository;
+        this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
+    }
+
+    public ApiResponse<String> register(RegisterRequest registerRequest) {
+        ApiResponse<String> apiResponse = new ApiResponse<>();
         if (customerRepository.existsByEmail(registerRequest.getEmail())) {
-            return ResponseEntity.status(400).body("Email taken!");
+            apiResponse.setCode(400);
+            apiResponse.setMessage("Email taken!");
+            return apiResponse;
         }
 
         Role userRole = roleRepository.findByAuthority("USER").get();
@@ -60,69 +67,50 @@ public class AuthService {
 
         customerService.createCustomer(newCustomer);
 
-        return ResponseEntity.ok("Sign Up Success!");
+        apiResponse.setCode(201);
+        apiResponse.setMessage("Create customer successfully!");
+        apiResponse.setResult("Create customer successfully!");
+
+        return apiResponse;
     }
 
-    public LoginResponseDTO login(String email, String password, HttpServletResponse response) {
+    public ApiResponse<LoginResponseDTO> login(String email, String password, HttpServletResponse response) {
         try {
             System.out.println("Starting login process for email: " + email);
             Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(email, password)
             );
-            System.err.println("auth: " + auth);
+            System.out.println("auth: " + auth);
             SecurityContextHolder.getContext().setAuthentication(auth);
-
+    
             String token = tokenService.generateJwt(auth);
-
+    
             Customer user = customerRepository.findByEmail(email);
             if (user == null) {
                 System.out.println("User not found for email: " + email);
                 throw new UsernameNotFoundException("User not found");
             }
-            CustomerDTO userDTO = customerService.ConvertToDTO(user);
-
-            Cookie userLoggedIn = new Cookie("userLoggedIn", "true");
-            userLoggedIn.setMaxAge(6 * 60 * 60); 
-            userLoggedIn.setPath("/");
-
-            response.addCookie(userLoggedIn);
+            CustomerDTO userDTO = customerService.convertToDTO(user);
             response.setStatus(HttpServletResponse.SC_OK);
-            return new LoginResponseDTO(userDTO, token);
             
-        } catch (AuthenticationException e) {
+            LoginResponseDTO loginResponse = new LoginResponseDTO(userDTO, token);
+            return new ApiResponse<>(200, "Login successful", loginResponse);
+    
+        } catch (AuthenticationException | JOSEException e) {
             System.out.println("Authentication failed for email: " + email);
+            e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return new LoginResponseDTO(null, "");
+            return new ApiResponse<>(401, "Authentication failed", null);
         }
     }
 
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("userLoggedIn")) {
-                    cookie.setValue("");
-                    cookie.setPath("/");
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                }
-            }
-        }
+        
         return ResponseEntity.ok("Logged out successfully!");
     }
 
-    public ResponseEntity<Boolean> checkLoginStatus(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        boolean isLoggedIn = false;
+    // public ResponseEntity<Boolean> checkLoginStatus(HttpServletRequest request) {
         
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("userLoggedIn".equals(cookie.getName()) && "true".equals(cookie.getValue())) {
-                    isLoggedIn = true;
-                    break;
-                }
-            }
-        }
-        return ResponseEntity.ok(isLoggedIn);
-    }
+    //     return ResponseEntity.ok();
+    // }
 }

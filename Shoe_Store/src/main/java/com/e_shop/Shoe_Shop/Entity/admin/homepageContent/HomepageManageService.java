@@ -16,41 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class HomepageManageService {
 
-    public FileNameResponse getHomepageBanners_PosterFileNames() {
-        String bannerDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/banner";
-        String posterDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/poster";
-        String sampleDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/sample";
-        
-        File bannerDirFile = new File(bannerDir);
-        if (!bannerDirFile.exists()) {
-            bannerDirFile.mkdirs();
-        }
-        File posterDirFile = new File(posterDir);
-        if (!posterDirFile.exists()) {
-            posterDirFile.mkdirs();
-        }
-        File sampleDirFile = new File(sampleDir);
-        if (!sampleDirFile.exists()) {
-            sampleDirFile.mkdirs();
-        }
-
-        String bannerfileNames = Arrays.stream(bannerDirFile.listFiles())
-            .map(File::getName)
-            .sorted(Comparator.naturalOrder())
-            .collect(Collectors.joining(" "));
-        String posterfileNames = Arrays.stream(posterDirFile.listFiles())
-            .map(File::getName)
-            .sorted(Comparator.naturalOrder())
-            .collect(Collectors.joining(" "));
-        String samplefileNames = Arrays.stream(sampleDirFile.listFiles())
-            .map(File::getName)
-            .sorted(Comparator.naturalOrder())
-            .collect(Collectors.joining(" "));
-
-        FileNameResponse fileNameResponse = new FileNameResponse(bannerfileNames, posterfileNames, samplefileNames);
-        return fileNameResponse;
-    }
-
     public String changeBanners(MultipartFile[] files) {
         String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/banner";
         File uploadDirFile = new File(uploadDir);
