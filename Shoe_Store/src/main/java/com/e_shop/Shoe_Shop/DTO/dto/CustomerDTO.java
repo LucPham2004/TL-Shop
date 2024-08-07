@@ -12,6 +12,7 @@ public class CustomerDTO {
     private String name;
     private String phone;
     private String address;
+    private Date dayCreated;
     private Set<Role> authorities;
     private Set<Order> order;
     private Set<Review> review;
@@ -20,7 +21,7 @@ public class CustomerDTO {
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
 
-    public CustomerDTO(Integer id, String email, String name, String phone, String address, Set<Role> authorities,
+    public CustomerDTO(Integer id, String email, String name, String phone, String address, Date dayCreated, Set<Role> authorities,
             Set<Order> order, Set<Review> review, boolean isAccountNonExpired, boolean isAccountNonLocked,
             boolean isCredentialsNonExpired, boolean isEnabled) {
         this.id = id;
@@ -28,6 +29,7 @@ public class CustomerDTO {
         this.name = name;
         this.phone = phone;
         this.address = address;
+        this.dayCreated = dayCreated;
         this.authorities = authorities;
         this.order = order;
         this.review = review;
@@ -69,6 +71,13 @@ public class CustomerDTO {
     }
     public void setAddress(String address) {
         this.address = address;
+    }
+    public Date getDayCreated() {
+        return dayCreated;
+    }
+
+    public void setDayCreated(Date dayCreated) {
+        this.dayCreated = dayCreated;
     }
 
     public Set<Role> getAuthorities() {

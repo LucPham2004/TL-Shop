@@ -5,8 +5,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
     private AuthService authenticationService;
     
@@ -42,8 +44,10 @@ public class AuthController {
         return authenticationService.logout(request, response);
     }
 
-    // @GetMapping("/status")
-    // public ResponseEntity<Boolean> checkLoginStatus(HttpServletRequest request) {
-    //     return authenticationService.checkLoginStatus(request);
-    // }
+    @GetMapping("/status")
+    public ApiResponse<String> checkLoginStatus(
+        @RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) {
+        String token = authorizationHeader.replace("Bearer ", "");
+        return authenticationService.checkLoginStatus(token, response);
+    }
 }

@@ -43,25 +43,20 @@ public class TokenService {
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.joining(" "));
 
-        JWTClaimsSet claims;
+        JWTClaimsSet.Builder claimBuilder = new JWTClaimsSet.Builder()
+                    .subject(auth.getName())
+                    .issuer("self")
+                    .issueTime(new Date())
+                    .expirationTime(Date.from(Instant.now().plus(1, ChronoUnit.HOURS)))
+                    .jwtID(UUID.randomUUID().toString())
+                    ;
+        
+                    
         if (scope.isEmpty()) {
-            claims = new JWTClaimsSet.Builder()
-                    .subject(auth.getName())
-                    .issuer("self")
-                    .issueTime(new Date())
-                    .expirationTime(Date.from(Instant.now().plus(1, ChronoUnit.HOURS)))
-                    .jwtID(UUID.randomUUID().toString())
-                    .build();
-        } else {
-            claims = new JWTClaimsSet.Builder()
-                    .subject(auth.getName())
-                    .issuer("self")
-                    .issueTime(new Date())
-                    .expirationTime(Date.from(Instant.now().plus(1, ChronoUnit.HOURS)))
-                    .jwtID(UUID.randomUUID().toString())
-                    .claim("roles", scope)
-                    .build();
+            claimBuilder.claim("roles", scope);
         }
+
+        JWTClaimsSet claims = claimBuilder.build();
 
         SignedJWT signedJWT = new SignedJWT(
                 new JWSHeader.Builder(JWSAlgorithm.RS256).build(),
@@ -74,10 +69,18 @@ public class TokenService {
     }
 
     public SignedJWT verifyToken(String token) throws JOSEException, ParseException {
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("Token is null or empty");
+        }
         RSAPublicKey publicKey = keys.getRsaPublicKey();
         JWSVerifier verifier = new RSASSAVerifier(publicKey);
 
-        SignedJWT signedJWT = SignedJWT.parse(token);
+        SignedJWT signedJWT;
+        try {
+            signedJWT = SignedJWT.parse(token);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Invalid token format", e);
+        }
 
         Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
 

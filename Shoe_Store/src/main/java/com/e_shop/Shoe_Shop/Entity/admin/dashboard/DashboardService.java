@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.e_shop.Shoe_Shop.Entity.customer.CustomerService;
 import com.e_shop.Shoe_Shop.Entity.order.Order;
-import com.e_shop.Shoe_Shop.Entity.order.OrderRepository;
+import com.e_shop.Shoe_Shop.Entity.order.OrderService;
+import com.e_shop.Shoe_Shop.Entity.product.ProductService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -13,13 +15,16 @@ import jakarta.persistence.Query;
 @Service
 public class DashboardService {
 	private final EntityManager entityManager;
-    private final DashboardInfo dashboardInfo;
-	private final OrderRepository orderRepository;
+	private final CustomerService customerService;
+	private final OrderService orderService;
+	private final ProductService productService;
 
-	public DashboardService(EntityManager entityManager, DashboardInfo dashboardInfo, OrderRepository orderRepository) {
+	public DashboardService(EntityManager entityManager,  CustomerService customerService, 
+							OrderService orderService, ProductService productService) {
 		this.entityManager = entityManager;
-		this.dashboardInfo = dashboardInfo;
-		this.orderRepository = orderRepository;
+		this.customerService = customerService;
+		this.orderService = orderService;
+		this.productService = productService;
 	}
 
 	public DashboardInfo loadSummary() {
@@ -40,10 +45,10 @@ public class DashboardService {
 					+ "(SELECT COUNT(DISTINCT p.id) AS enabledProducts FROM Product p WHERE p.isEnabled=true), "
 					+ "(SELECT COUNT(DISTINCT p.id) AS disabledProducts FROM Product p WHERE p.isEnabled=false), "
                     
-					+ "(SELECT COUNT(DISTINCT o.id) AS deliveredOrders FROM Order o WHERE o.status = 'Đã giao hàng!'), "
-					+ "(SELECT COUNT(DISTINCT o.id) AS processingOrders FROM Order o WHERE o.status = 'Đã đặt hàng!'), "
-					+ "(SELECT COUNT(DISTINCT o.id) AS shippingOrders FROM Order o WHERE o.status = 'Đang giao hàng!'), "
-					+ "(SELECT COUNT(DISTINCT o.id) AS cancelledOrders FROM Order o WHERE o.status = 'Đã hủy bỏ!'), "
+					+ "(SELECT COUNT(DISTINCT o.id) AS deliveredOrders FROM Order o WHERE o.status = 'Completed'), "
+					+ "(SELECT COUNT(DISTINCT o.id) AS processingOrders FROM Order o WHERE o.status = 'Processing'), "
+					+ "(SELECT COUNT(DISTINCT o.id) AS shippingOrders FROM Order o WHERE o.status = 'Delivering'), "
+					+ "(SELECT COUNT(DISTINCT o.id) AS cancelledOrders FROM Order o WHERE o.status = 'Cancelled'), "
 
 					+ "(SELECT COUNT(DISTINCT r.product.id) AS reviewedProducts FROM Review r) ");
 		
@@ -66,8 +71,6 @@ public class DashboardService {
 		
 		summary.setEnabledProductsCount((Long) arrayCounts[count++]);
 		summary.setDisabledProductsCount((Long) arrayCounts[count++]);
-
-        summary.setTotalRevenue(dashboardInfo.getTotalRevenue());
 		
 		summary.setDeliveredOrdersCount((Long) arrayCounts[count++]);
 		summary.setProcessingOrdersCount((Long) arrayCounts[count++]);
@@ -77,14 +80,18 @@ public class DashboardService {
 		summary.setReviewedProductsCount((Long) arrayCounts[count++]);
 
 		Float revenue = 0.0f;
-		List<Order> orders = orderRepository.findAll();
+		List<Order> orders = orderService.getSortedOrdersByStatus();
 		for(Order order: orders) {
-			if(order.getStatus() == "Đã giao hàng!") {
+			if(order.getStatus().equals("Completed")) {
 				revenue += order.getTotal();
 			}
 		}
 		summary.setTotalRevenue(revenue);
-		
+
+		summary.setNew_customers(customerService.newCustomers());
+		summary.setOrderList(orders);
+		summary.setLowRemainingProducts(productService.lowRemainingProducts());
+
 		return summary;
 	}
 }

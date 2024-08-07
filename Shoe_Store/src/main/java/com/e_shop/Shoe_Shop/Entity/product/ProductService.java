@@ -24,6 +24,7 @@ import com.e_shop.Shoe_Shop.Entity.category.CategoryRepository;
 import com.e_shop.Shoe_Shop.Entity.category.Category;
 import com.e_shop.Shoe_Shop.Entity.product.detail.ProductDetail;
 import com.e_shop.Shoe_Shop.DTO.dto.ProductDTO;
+import com.e_shop.Shoe_Shop.DTO.dto.ProductDTO.ProductDetailDTO;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -206,6 +207,26 @@ public class ProductService {
             keywword, keywword, keywword).stream()
         .map(this::convertToDTO)
         .collect(Collectors.toList());
+    }
+
+    public List<ProductDTO> lowRemainingProducts() {
+        List<ProductDTO> products = productRepository.findAll().stream()
+        .map(this::convertToDTO)
+        .collect(Collectors.toList());
+
+        List<ProductDTO> lowRemainingProducts = new ArrayList<>();
+
+        for(ProductDTO productDTO: products) {
+            Set<ProductDetailDTO> productDetailsList = productDTO.getDetails();
+            for(ProductDetailDTO productDetailsDTO: productDetailsList) {
+                if (productDetailsDTO.getQuantity() < 20) {
+                    lowRemainingProducts.add(productDTO);
+                    break;
+                }
+            }
+        }
+
+        return lowRemainingProducts;
     }
 
     // Get product Images

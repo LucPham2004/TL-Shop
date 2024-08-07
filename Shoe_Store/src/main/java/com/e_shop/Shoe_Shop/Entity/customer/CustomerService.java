@@ -47,6 +47,7 @@ public class CustomerService implements UserDetailsService{
             customer.getName(),
             customer.getPhone(),
             customer.getAddress(),
+            customer.getDayCreated(),
             customer.getRoles(),
             customer.getOrder(),
             customer.getReview(),
@@ -117,6 +118,20 @@ public class CustomerService implements UserDetailsService{
     public List<CustomerDTO> searchCustomer(String keywword) {
         return customerRepository.findByNameContainingOrAddressContaining(keywword, keywword).stream()
         .map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    public List<CustomerDTO> newCustomers() {
+        List<CustomerDTO> new_customers = customerRepository.findAll().stream()
+        .map(this::convertToDTO).collect(Collectors.toList());
+
+        Collections.sort(new_customers, new Comparator<CustomerDTO>() {
+            @Override
+            public int compare(CustomerDTO order1, CustomerDTO order2) {
+                return order2.getDayCreated().compareTo(order1.getDayCreated());
+            }
+        });
+        
+        return new_customers;
     }
 
     // POST

@@ -1,6 +1,7 @@
 package com.e_shop.Shoe_Shop.Entity.order;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -55,6 +56,19 @@ public class OrderService {
 		return orderRepository.findById(id).get();
 	}
 
+    public List<Order> getSortedOrdersByStatus() {
+        List<Order> orders = orderRepository.findAll();
+
+        Comparator<Order> statusComparator = (o1, o2) -> {
+            List<String> statusOrder = List.of("Processing", "Delivering", "Completed", "Cancelled");
+            return Integer.compare(statusOrder.indexOf(o1.getStatus()), statusOrder.indexOf(o2.getStatus()));
+        };
+        
+        return orders.stream()
+                    .sorted(statusComparator)
+                    .collect(Collectors.toList());
+    }
+
     // POST
     public Order createOrder(OrderRequest orderRequest) {
         int customerId = orderRequest.getCustomerId();
@@ -66,7 +80,7 @@ public class OrderService {
         newOrder.setDate(new Date());
         newOrder.setCustomer(customerRepository.findById(customerId));
         newOrder.setShippingCost(ShippingCostCurrent);
-        newOrder.setStatus("Đã đặt hàng!");
+        newOrder.setStatus("Processing");
         newOrder.setTax(TaxCurrent);
         
 

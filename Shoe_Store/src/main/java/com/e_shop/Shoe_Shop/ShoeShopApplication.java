@@ -1,5 +1,7 @@
 package com.e_shop.Shoe_Shop;
 
+import java.util.Date;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,8 +48,16 @@ public class ShoeShopApplication {
 				String rawPassword = "adminPassword";
 				String encodedPassword = passwordEncoder.encode(rawPassword);
 
+				Calendar calendar = Calendar.getInstance();
+
+				calendar.set(Calendar.YEAR, 2024);
+				calendar.set(Calendar.MONTH, Calendar.AUGUST);
+				calendar.set(Calendar.DAY_OF_MONTH, 1);
+
+				Date dayCreated = calendar.getTime();
+
 				Customer admin = new Customer("admin", encodedPassword, 
-					"phamtienluc0601@gmail.com", "0383132114", "Ha Noi, Viet Nam", roles);
+					"phamtienluc0601@gmail.com", "0383132114", "Ha Noi, Viet Nam", dayCreated, roles);
 				customerRepository.save(admin);
 			}
 		};

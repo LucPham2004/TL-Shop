@@ -47,6 +47,9 @@ public class Customer implements UserDetails{
     @Column(name = "customer_address")
     private String address;
 
+    @Column(name = "day_created")
+    private Date dayCreated;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinTable( name = "user_role", 
                 joinColumns = @JoinColumn(name = "customer_id"), 
@@ -111,22 +114,32 @@ public class Customer implements UserDetails{
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public Date getDayCreated() {
+        return dayCreated;
+    }
+
+    public void setDayCreated(Date dayCreated) {
+        this.dayCreated = dayCreated;
+    }
     
     // Constructor
-    public Customer(String name, String email, String phone, String address, Set<Role> authorities) {
+    public Customer(String name, String email, String phone, String address, Date dayCreated, Set<Role> authorities) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.address = address;
+        this.dayCreated = dayCreated;
         this.authorities = authorities;
     }
 
-    public Customer(String name, String password, String email, String phone, String address, Set<Role> authorities) {
+    public Customer(String name, String password, String email, String phone, String address, Date dayCreated, Set<Role> authorities) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.address = address;
+        this.dayCreated = dayCreated;
         this.authorities = authorities;
     }
 
@@ -137,9 +150,9 @@ public class Customer implements UserDetails{
 
     @Override
     public String toString() {
-        return "Customer [id=" + id + ", name=" + name + ", email=" + email + ", phone="
-                + phone + ", address=" + address + ", authorities=" + authorities + ", order=" + order + ", review="
-                + review + "]";
+        return "Customer [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + 
+                ", address=" + address + "day_created=" + dayCreated + ", authorities=" + authorities + 
+                ", order=" + order + ", review=" + review + "]";
     }
 
     @Override
