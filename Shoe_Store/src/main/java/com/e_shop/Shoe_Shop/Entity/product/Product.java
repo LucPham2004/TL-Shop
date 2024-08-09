@@ -207,6 +207,9 @@ public class Product {
     }
 
     public Integer getReviewCount() {
+        if(reviews == null) {
+            return 0;
+        }
         return reviews.size();
     }
 
@@ -216,6 +219,9 @@ public class Product {
 
     public Float getAverageRating() {
         averageRating = 0.0f;
+        if(reviews == null) {
+            return 0.0f;
+        }
         for(Review review: reviews) {
             averageRating += review.getReviewRating();
         }

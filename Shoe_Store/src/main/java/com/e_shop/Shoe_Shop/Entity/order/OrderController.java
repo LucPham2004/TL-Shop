@@ -37,6 +37,11 @@ public class OrderController {
         return orderService.getOrdersByCustomer(customerId);
     }
 
+    @GetMapping(path = "/sortByStatus")
+    public List<Order> getSortedOrdersByStatus(){
+        return orderService.getSortedOrdersByStatus();
+    }
+
     @GetMapping(path = "/{id}")
     public Order getOrderById(@PathVariable Integer id){
         return orderService.getOrderById(id);

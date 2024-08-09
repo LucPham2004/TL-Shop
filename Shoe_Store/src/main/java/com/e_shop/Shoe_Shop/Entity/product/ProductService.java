@@ -5,11 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -259,20 +256,22 @@ public class ProductService {
             " and description: " + product.getProductDescription() + " already exists!");
         else{
             product.getDetails().forEach(detail -> detail.setProduct(product));
+            product.setProductDayCreated(new Date());
 
             Product savedProduct = productRepository.save(product);
             return convertToDTO(savedProduct);
         }
     }
 
+    @SuppressWarnings("null")
     public String uploadImages(String productName, MultipartFile[] files) {
-        String uploadDir =  "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/products/" + productName;
-
+        String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/products/" + productName;
+    
         File uploadDirFile = new File(uploadDir);
         if (!uploadDirFile.exists()) {
             uploadDirFile.mkdirs();
         }
-
+    
         Path path = Paths.get(uploadDir);
         try {
             if (!Files.exists(path)) {
@@ -282,19 +281,36 @@ public class ProductService {
             e.printStackTrace();
             throw new IllegalStateException("Failed to create upload directory");
         }
-
+    
         for (MultipartFile file : files) {
-            @SuppressWarnings("null")
-            String filePath = uploadDir + "/" + StringUtils.cleanPath(file.getOriginalFilename());
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            
+            if (fileName.contains("..")) {
+                throw new IllegalStateException("Invalid file path: " + fileName);
+            }
+    
+            String[] allowedExtensions = { "png", "jpg", "webp", "jpeg", "avif" };
+            String fileExtension = StringUtils.getFilenameExtension(fileName);
+            if (!Arrays.asList(allowedExtensions).contains(fileExtension.toLowerCase())) {
+                throw new IllegalStateException("Invalid file extension: " + fileExtension);
+            }
+    
+            String filePath = uploadDir + "/" + fileName;
+            
             try {
-                file.transferTo(new File(filePath));
+                Path tempFile = Files.createTempFile(uploadDirFile.toPath(), null, "." + fileExtension);
+                file.transferTo(tempFile.toFile());
+                
+                Files.move(tempFile, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new IllegalStateException("Failed to upload images");
+                throw new IllegalStateException("Failed to upload image: " + fileName);
             }
         }
-        return "Upload Images succesfully";
+    
+        return "Upload Images successfully";
     }
+    
 
     // DELETE
     public void deleteProduct(Integer id) {
@@ -315,6 +331,8 @@ public class ProductService {
         productToUpdate.setProductImage(productDTO.getProductImage());
         productToUpdate.setProductPrice(productDTO.getProductPrice());
         productToUpdate.setProductQuantity(productDTO.getProductQuantity());
+        productToUpdate.setProductQuantitySold(productDTO.getProductQuantitySold());
+        productToUpdate.setProductDayCreated(productDTO.getProductDayCreated());
         productToUpdate.setDiscountPercent(productDTO.getDiscountPercent());
         productToUpdate.setReviewCount(productDTO.getReviewCount());
         productToUpdate.setAverageRating(productDTO.getAverageRating());

@@ -1,6 +1,7 @@
 package com.e_shop.Shoe_Shop.Config.Security.auth;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,6 +66,7 @@ public class AuthService {
         newCustomer.setEmail(registerRequest.getEmail());
         newCustomer.setPhone(registerRequest.getPhone());
         newCustomer.setPassword(registerRequest.getPassword());
+        newCustomer.setDayCreated(new Date());
         newCustomer.setAuthorities(authorities);
 
         customerService.createCustomer(newCustomer);

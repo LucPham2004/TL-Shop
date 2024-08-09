@@ -72,6 +72,14 @@ public class ProductController {
         return productService.saveProduct(productDTO);
     }
 
+    @PostMapping("/addMany")
+    public List<ProductDTO> createManyProducts(@RequestBody List<ProductDTO> productDTO) {
+        for(ProductDTO newProductDTO :productDTO) {
+            productService.saveProduct(newProductDTO);
+        }
+        return null;
+    }
+
     @PostMapping(path = "/uploadImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadImages(@RequestParam("productName") String productName, 
                             @RequestParam("productImages") MultipartFile[] productImages){
