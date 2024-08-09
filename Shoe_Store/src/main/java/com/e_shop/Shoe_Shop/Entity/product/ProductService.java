@@ -1,11 +1,10 @@
 package com.e_shop.Shoe_Shop.Entity.product;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -263,54 +262,30 @@ public class ProductService {
         }
     }
 
-    @SuppressWarnings("null")
     public String uploadImages(String productName, MultipartFile[] files) {
-        String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/products/" + productName;
-    
-        File uploadDirFile = new File(uploadDir);
-        if (!uploadDirFile.exists()) {
-            uploadDirFile.mkdirs();
-        }
-    
-        Path path = Paths.get(uploadDir);
+        Path uploadDirPath = Paths.get("C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/products/", productName);
+        
         try {
-            if (!Files.exists(path)) {
-                Files.createDirectories(path);
-            }
+            Files.createDirectories(uploadDirPath);
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Failed to create upload directory");
+            throw new IllegalStateException("Failed to create upload directory: " + uploadDirPath.toString(), e);
         }
     
         for (MultipartFile file : files) {
+            @SuppressWarnings("null")
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            
-            if (fileName.contains("..")) {
-                throw new IllegalStateException("Invalid file path: " + fileName);
-            }
-    
-            String[] allowedExtensions = { "png", "jpg", "webp", "jpeg", "avif" };
-            String fileExtension = StringUtils.getFilenameExtension(fileName);
-            if (!Arrays.asList(allowedExtensions).contains(fileExtension.toLowerCase())) {
-                throw new IllegalStateException("Invalid file extension: " + fileExtension);
-            }
-    
-            String filePath = uploadDir + "/" + fileName;
+            Path filePath = uploadDirPath.resolve(fileName);
             
             try {
-                Path tempFile = Files.createTempFile(uploadDirFile.toPath(), null, "." + fileExtension);
-                file.transferTo(tempFile.toFile());
-                
-                Files.move(tempFile, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+                file.transferTo(filePath.toFile());
             } catch (IOException e) {
-                e.printStackTrace();
-                throw new IllegalStateException("Failed to upload image: " + fileName);
+                throw new IllegalStateException("Failed to upload file: " + fileName, e);
             }
         }
-    
+        
         return "Upload Images successfully";
     }
-    
+
 
     // DELETE
     public void deleteProduct(Integer id) {
