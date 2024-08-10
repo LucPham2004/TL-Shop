@@ -3,8 +3,8 @@ package com.e_shop.Shoe_Shop.Entity.admin.dashboard;
 import org.springframework.stereotype.Component;
 
 import com.e_shop.Shoe_Shop.DTO.dto.CustomerDTO;
+import com.e_shop.Shoe_Shop.DTO.dto.OrderDTO;
 import com.e_shop.Shoe_Shop.DTO.dto.ProductDTO;
-import com.e_shop.Shoe_Shop.Entity.order.Order;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class DashboardInfo {
 	private long reviewedProductsCount;
 
     private List<CustomerDTO> new_customers;
-    private List<Order> orderList;
+    private List<OrderDTO> orderList;
     private List<ProductDTO> lowRemainingProducts;
 
     public DashboardInfo() {
@@ -194,11 +194,11 @@ public class DashboardInfo {
         this.new_customers = new_customers;
     }
 
-    public List<Order> getOrderList() {
+    public List<OrderDTO> getOrderList() {
         return orderList;
     }
 
-    public void setOrderList(List<Order> orderList) {
+    public void setOrderList(List<OrderDTO> orderList) {
         this.orderList = orderList;
     }
     

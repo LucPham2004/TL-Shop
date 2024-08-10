@@ -54,6 +54,11 @@ public class CustomerController {
         return customerService.searchCustomer(keywword);
     }
 
+    @GetMapping("/search/{id}")
+    public List<CustomerDTO> searchCustomer(@PathVariable int id) {
+        return customerService.searchCustomerByIdContaining(id);
+    }
+
     // POST
     @PostMapping("/changePassword")
     public CustomerDTO ChangePassword(ChangePasswordRequest changePasswordRequest, HttpServletResponse response) {

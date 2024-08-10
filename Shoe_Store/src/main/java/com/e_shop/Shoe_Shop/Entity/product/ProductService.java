@@ -161,7 +161,7 @@ public class ProductService {
 
         allproducts.sort(Comparator.comparingInt(product -> product.getProductQuantitySold()));
         for(ProductDTO productDTO: allproducts) {
-            if(index >= 4)
+            if(index >= 12)
                 break;
             resultList.add(productDTO);
             index++;
@@ -170,7 +170,7 @@ public class ProductService {
         index = 0;
         allproducts.sort(Comparator.comparingDouble(product -> product.getAverageRating()));
         for(ProductDTO productDTO: allproducts) {
-            if(index >= 4)
+            if(index >= 12)
                 break;
             resultList.add(productDTO);
             index++;
@@ -179,7 +179,7 @@ public class ProductService {
         index = 0;
         allproducts.sort(Comparator.comparingDouble(product -> product.getDiscountPercent()));
         for(ProductDTO productDTO: allproducts) {
-            if(index >= 8)
+            if(index >= 12)
                 break;
             resultList.add(productDTO);
             index++;
@@ -188,7 +188,7 @@ public class ProductService {
         index = 0;
         allproducts.sort(Comparator.comparingDouble(product -> product.getProductPrice()));
         for(ProductDTO productDTO: allproducts) {
-            if(index >= 4)
+            if(index >= 12)
                 break;
             resultList.add(productDTO);
             index++;
@@ -199,8 +199,14 @@ public class ProductService {
 
     // Search products
     public List<ProductDTO> searchProducts(String keywword) {
-        return productRepository.findByProductNameContainingOrProductDescriptionContainingOrCategoryName(
-            keywword, keywword, keywword).stream()
+        return productRepository.findByProductNameContainingOrProductDescriptionContainingOrCategoryNameOrBrandNameContaining(
+            keywword, keywword, keywword, keywword).stream()
+        .map(this::convertToDTO)
+        .collect(Collectors.toList());
+    }
+
+    public List<ProductDTO> searchProductsByIdContaining(int id) {
+        return productRepository.findByIdContaining(id).stream()
         .map(this::convertToDTO)
         .collect(Collectors.toList());
     }

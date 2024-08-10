@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e_shop.Shoe_Shop.Entity.order.OrderService.OrderRequest;
+import com.e_shop.Shoe_Shop.DTO.dto.OrderDTO;
 import com.e_shop.Shoe_Shop.DTO.request.OrderStatusUpdateRequest;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,28 +30,38 @@ public class OrderController {
 
     // GET
     @GetMapping
-    public List<Order> getAllOrders(){
+    public List<OrderDTO> getAllOrders(){
         return orderService.getAllOrders();
     }
 
     @GetMapping(path = "/customer/{customerId}")
-    public List<Order> getOrdersByCustomer(@PathVariable int customerId){
+    public List<OrderDTO> getOrdersByCustomer(@PathVariable int customerId){
         return orderService.getOrdersByCustomer(customerId);
     }
 
     @GetMapping(path = "/sortByStatus")
-    public List<Order> getSortedOrdersByStatus(){
+    public List<OrderDTO> getSortedOrdersByStatus(){
         return orderService.getSortedOrdersByStatus();
     }
 
+    @GetMapping("/search")
+    public List<OrderDTO> searchOrders(@RequestParam("keyword") String keywword) {
+        return orderService.searchOrders(keywword);
+    }
+
+    @GetMapping("/search/{id}")
+    public List<OrderDTO> searchOrdersByIdContaining(@PathVariable int id) {
+        return orderService.searchOrdersByIdContaining(id);
+    }
+
     @GetMapping(path = "/{id}")
-    public Order getOrderById(@PathVariable Integer id){
+    public OrderDTO getOrderById(@PathVariable Integer id){
         return orderService.getOrderById(id);
     }
 
     // POST
     @PostMapping(path = "/placeOrder")
-    public Order createOrder(@RequestBody OrderRequest orderRequest){
+    public OrderDTO createOrder(@RequestBody OrderRequest orderRequest){
         return orderService.createOrder(orderRequest);
     }
 

@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.e_shop.Shoe_Shop.DTO.dto.OrderDTO;
+import com.e_shop.Shoe_Shop.Entity.customer.Customer;
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerRepository;
 import com.e_shop.Shoe_Shop.Entity.order.detail.OrderDetail;
 import com.e_shop.Shoe_Shop.Entity.product.Product;
@@ -30,33 +32,53 @@ public class OrderService {
         this.productDetailRepository = productDetailRepository;
     }
 
-    // GET
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public OrderDTO convertToDTO(Order order) {
+        Customer customer = order.getCustomer();
+        return new OrderDTO(
+            order.getId(),
+            order.getDate(),
+            order.getShippingCost(),
+            order.getTax(),
+            order.getStatus(),
+            order.getTotal(),
+            customer.getName(),
+            order.getOrderDetails()
+        );
     }
 
-	public List<Order> getOrdersByCustomer(int customerId) {
-		List<Order> orders = orderRepository.findByCustomerId(customerId);
+    // GET
+    public List<OrderDTO> getAllOrders() {
+        return orderRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 
-        Collections.sort(orders, new Comparator<Order>() {
-            @Override
-            public int compare(Order order1, Order order2) {
-                return order2.getDate().compareTo(order1.getDate());
-            }
-        });
+    // Get orders by customers sorted by order status and day ordered
+	public List<OrderDTO> getOrdersByCustomer(int customerId) {
+        List<Order> orders = orderRepository.findByCustomerId(customerId);
+    
+        Comparator<Order> statusComparator = (o1, o2) -> {
+            List<String> statusOrder = List.of("Processing", "Delivering", "Completed", "Cancelled");
+            return Integer.compare(statusOrder.indexOf(o1.getStatus()), statusOrder.indexOf(o2.getStatus()));
+        };
+    
+        Comparator<Order> dateComparator = Comparator.comparing(Order::getDate).reversed();
+    
+        return orders.stream()
+                     .sorted(statusComparator.thenComparing(dateComparator))
+                     .map(this::convertToDTO)
+                     .collect(Collectors.toList());
+    }
 
-        return orders;
-	}
-
-    public Order getOrderById(Integer id) {
+    public OrderDTO getOrderById(Integer id) {
 		boolean exist = orderRepository.existsById(id);
         if(exist){
             throw new IllegalStateException("Order does not exists!");
         }
-		return orderRepository.findById(id).get();
+		return convertToDTO(orderRepository.findById(id).get());
 	}
 
-    public List<Order> getSortedOrdersByStatus() {
+    public List<OrderDTO> getSortedOrdersByStatus() {
         List<Order> orders = orderRepository.findAll();
 
         Comparator<Order> statusComparator = (o1, o2) -> {
@@ -66,11 +88,26 @@ public class OrderService {
         
         return orders.stream()
                     .sorted(statusComparator)
+                    .map(this::convertToDTO)
                     .collect(Collectors.toList());
     }
 
+    // Search orders
+    public List<OrderDTO> searchOrders(String keywword) {
+        return orderRepository.findByStatusContainingOrCustomerNameContainingOrProductNameContaining(
+            keywword, keywword, keywword).stream()
+            .map(this::convertToDTO)
+            .collect(Collectors.toList());
+    }
+
+    public List<OrderDTO> searchOrdersByIdContaining(int id) {
+        return orderRepository.findByIdContaining(id).stream()
+            .map(this::convertToDTO)
+            .collect(Collectors.toList());
+    }
+
     // POST
-    public Order createOrder(OrderRequest orderRequest) {
+    public OrderDTO createOrder(OrderRequest orderRequest) {
         int customerId = orderRequest.getCustomerId();
         List<OrderDetailRequest> orderDetailRequests = orderRequest.getOrderDetails();
 
@@ -117,7 +154,7 @@ public class OrderService {
         }
         newOrder.setTotal(TotalPrice * (1 + newOrder.getTax()) + newOrder.getShippingCost());
 
-        return orderRepository.save(newOrder);
+        return convertToDTO(orderRepository.save(newOrder));
     }
 
     // DELETE

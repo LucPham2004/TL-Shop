@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.e_shop.Shoe_Shop.DTO.dto.OrderDTO;
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerService;
-import com.e_shop.Shoe_Shop.Entity.order.Order;
 import com.e_shop.Shoe_Shop.Entity.order.OrderService;
 import com.e_shop.Shoe_Shop.Entity.product.ProductService;
 
@@ -80,8 +80,8 @@ public class DashboardService {
 		summary.setReviewedProductsCount((Long) arrayCounts[count++]);
 
 		Float revenue = 0.0f;
-		List<Order> orders = orderService.getSortedOrdersByStatus();
-		for(Order order: orders) {
+		List<OrderDTO> orders = orderService.getSortedOrdersByStatus();
+		for(OrderDTO order: orders) {
 			if(order.getStatus().equals("Completed")) {
 				revenue += order.getTotal();
 			}

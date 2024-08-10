@@ -116,7 +116,13 @@ public class CustomerService implements UserDetailsService{
     }
 
     public List<CustomerDTO> searchCustomer(String keywword) {
-        return customerRepository.findByNameContainingOrAddressContaining(keywword, keywword).stream()
+        return customerRepository.findByNameContainingOrAddressContainingOrEmailContainingOrPhoneContaining(
+            keywword, keywword, keywword, keywword).stream()
+        .map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    public List<CustomerDTO> searchCustomerByIdContaining(int id) {
+        return customerRepository.findByIdContaining(id).stream()
         .map(this::convertToDTO).collect(Collectors.toList());
     }
 
