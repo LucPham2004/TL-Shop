@@ -6,12 +6,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/admin/managehomepage")
 public class HomepageManageController {
+
+    private final HomepageManageService homepageManageService;
     
-    private HomepageManageService homepageManageService;
+    public HomepageManageController(HomepageManageService homepageManageService) {
+        this.homepageManageService = homepageManageService;
+    }
+
+    @GetMapping("/getfilenames")
+    public FileNameResponse getHomepageBanners_PosterFileNames() {
+        return homepageManageService.getHomepageBanners_PosterFileNames();
+    }
 
     @PostMapping("/changebanners")
     public String changeBanners(MultipartFile[] files) {
