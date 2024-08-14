@@ -186,7 +186,12 @@ public class ProductService {
         }
 
         index = 0;
-        allproducts.sort(Comparator.comparingDouble(product -> product.getProductPrice()));
+        Collections.sort(allproducts, new Comparator<ProductDTO>() {
+            @Override
+            public int compare(ProductDTO product1, ProductDTO product2) {
+                return product2.getProductDayCreated().compareTo(product1.getProductDayCreated());
+            }
+        });
         for(ProductDTO productDTO: allproducts) {
             if(index >= 12)
                 break;

@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.e_shop</groupId>
 	<artifactId>Shoe_Shop</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>Shoe_Shop</name>
 	<description>Personal project of a Shoe Shop</description>
 	<properties>
@@ -64,13 +64,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>4.0.1</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>

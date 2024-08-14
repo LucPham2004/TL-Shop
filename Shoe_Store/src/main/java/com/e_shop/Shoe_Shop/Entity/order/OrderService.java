@@ -65,7 +65,7 @@ public class OrderService {
         Comparator<Order> dateComparator = Comparator.comparing(Order::getDate).reversed();
     
         return orders.stream()
-                     .sorted(statusComparator.thenComparing(dateComparator))
+                     .sorted(dateComparator.thenComparing(statusComparator))
                      .map(this::convertToDTO)
                      .collect(Collectors.toList());
     }
