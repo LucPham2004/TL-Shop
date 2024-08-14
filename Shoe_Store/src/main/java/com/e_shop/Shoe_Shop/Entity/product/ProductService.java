@@ -239,7 +239,7 @@ public class ProductService {
     // Get product Images
     public ResponseEntity<byte[]> getProductImages(String productName) {
         try {
-            String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/products/";
+            String uploadDir = "temporaryDisabled/img/products/";
             Path path = Paths.get(uploadDir + productName);
 
             if (!Files.exists(path)) {
@@ -274,7 +274,7 @@ public class ProductService {
     }
 
     public String uploadImages(String productName, MultipartFile[] files) {
-        Path uploadDirPath = Paths.get("C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/products/", productName);
+        Path uploadDirPath = Paths.get("temporaryDisabled/img/products/", productName);
         
         try {
             Files.createDirectories(uploadDirPath);

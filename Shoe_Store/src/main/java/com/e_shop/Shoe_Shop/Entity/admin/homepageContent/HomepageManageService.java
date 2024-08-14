@@ -18,9 +18,9 @@ public class HomepageManageService {
     }
 
     public FileNameResponse getHomepageBanners_PosterFileNames() {
-        String bannerDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/banner";
-        String posterDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/poster";
-        String sampleDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/sample";
+        String bannerDir = "temporaryDisabled/img/homepage/banner";
+        String posterDir = "temporaryDisabled/img/homepage/poster";
+        String sampleDir = "temporaryDisabled/img/homepage/sample";
         
         File bannerDirFile = new File(bannerDir);
         if (!bannerDirFile.exists()) {
@@ -66,7 +66,7 @@ public class HomepageManageService {
     }
 
     public String changeBanners(MultipartFile[] files) {
-        String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/banner";
+        String uploadDir = "temporaryDisabled/img/homepage/banner";
         File uploadDirFile = new File(uploadDir);
         if (!uploadDirFile.exists()) {
             uploadDirFile.mkdirs();
@@ -103,7 +103,7 @@ public class HomepageManageService {
     }
 
     public String changePosters(MultipartFile[] files) {
-        String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/poster";
+        String uploadDir = "temporaryDisabled/img/homepage/poster";
         File uploadDirFile = new File(uploadDir);
         if (!uploadDirFile.exists()) {
             uploadDirFile.mkdirs();
@@ -145,7 +145,7 @@ public class HomepageManageService {
     }
 
     public String changeSample(MultipartFile image, int index) {
-        String uploadDir = "C:/Users/ADMIN/Documents/Projects/TL-Shop/Shoe_Store/src/main/resources/static/img/homepage/sample";
+        String uploadDir = "temporaryDisabled/img/homepage/sample";
         File uploadDirFile = new File(uploadDir);
         if (!uploadDirFile.exists()) {
             uploadDirFile.mkdirs();
