@@ -20,7 +20,7 @@ import com.e_shop.Shoe_Shop.Entity.category.CategoryRepository;
 import com.e_shop.Shoe_Shop.Entity.category.Category;
 import com.e_shop.Shoe_Shop.Entity.product.detail.ProductDetail;
 import com.e_shop.Shoe_Shop.DTO.dto.ProductDTO;
-import com.e_shop.Shoe_Shop.DTO.dto.ProductDTO.ProductDetailDTO;
+import com.e_shop.Shoe_Shop.DTO.dto.ProductInfoDTO;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -115,11 +115,24 @@ public class ProductService {
         return detail;
     }
 
+    public ProductInfoDTO convertToInfoDTO(Product product) {
+        return new ProductInfoDTO(
+            product.getId(),
+            product.getProductName(),
+            product.getProductDescription(),
+            product.getProductImage(),
+            product.getProductPrice(),
+            product.getDiscountPercent(),
+            product.getBrand().getName(),
+            product.getCategory().stream().map(Category::getName).collect(Collectors.toSet())
+        );
+    }
+
     // CRUD Methods
     // GET
-    public List<ProductDTO> getAllProducts() {
+    public List<ProductInfoDTO> getAllProducts() {
         return productRepository.findAll().stream()
-        .map(this::convertToDTO)
+        .map(this::convertToInfoDTO)
         .collect(Collectors.toList());
     }
 
@@ -129,38 +142,36 @@ public class ProductService {
         return convertToDTO(product);
     }
 
-    public List<ProductDTO> getProductsByBrand(String brandName) {
+    public List<ProductInfoDTO> getProductsByBrand(String brandName) {
         boolean exists = brandRepository.existsByName(brandName);
         if (!exists) {
             throw new IllegalStateException("Brand with name: " + brandName + " doesn't exist!");
         }
         List<Product> products = productRepository.findByBrandName(brandName);
         return products.stream()
-                .map(this::convertToDTO)
+                .map(this::convertToInfoDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<ProductDTO> getProductsByCategory(String categoryName) {
+    public List<ProductInfoDTO> getProductsByCategory(String categoryName) {
         boolean exists = categoryRepository.existsByName(categoryName);
         if (!exists) {
             throw new IllegalStateException("Category with name: " + categoryName + " doesn't exist!");
         }
         List<Product> products = productRepository.findByCategoryName(categoryName);
         return products.stream()
-                .map(this::convertToDTO)
+                .map(this::convertToInfoDTO)
                 .collect(Collectors.toList());
     }
 
     // Return top-seller, favorite, on-sale and... most costly products
-    public List<ProductDTO> getTopProducts() {
-        List<ProductDTO> allproducts = productRepository.findAll().stream()
-        .map(this::convertToDTO)
-        .collect(Collectors.toList());
-        List<ProductDTO> resultList = new ArrayList<>();
+    public List<ProductInfoDTO> getTopProducts() {
+        List<Product> allproducts = productRepository.findAll();
+        List<Product> resultList = new ArrayList<>();
         int index = 0;
 
         allproducts.sort(Comparator.comparingInt(product -> product.getProductQuantitySold()));
-        for(ProductDTO productDTO: allproducts) {
+        for(Product productDTO: allproducts) {
             if(index >= 12)
                 break;
             resultList.add(productDTO);
@@ -169,7 +180,7 @@ public class ProductService {
 
         index = 0;
         allproducts.sort(Comparator.comparingDouble(product -> product.getAverageRating()));
-        for(ProductDTO productDTO: allproducts) {
+        for(Product productDTO: allproducts) {
             if(index >= 12)
                 break;
             resultList.add(productDTO);
@@ -178,7 +189,7 @@ public class ProductService {
 
         index = 0;
         allproducts.sort(Comparator.comparingDouble(product -> product.getDiscountPercent()));
-        for(ProductDTO productDTO: allproducts) {
+        for(Product productDTO: allproducts) {
             if(index >= 12)
                 break;
             resultList.add(productDTO);
@@ -186,46 +197,44 @@ public class ProductService {
         }
 
         index = 0;
-        Collections.sort(allproducts, new Comparator<ProductDTO>() {
+        Collections.sort(allproducts, new Comparator<Product>() {
             @Override
-            public int compare(ProductDTO product1, ProductDTO product2) {
+            public int compare(Product product1, Product product2) {
                 return product2.getProductDayCreated().compareTo(product1.getProductDayCreated());
             }
         });
-        for(ProductDTO productDTO: allproducts) {
+        for(Product productDTO: allproducts) {
             if(index >= 12)
                 break;
             resultList.add(productDTO);
             index++;
         }
         
-        return resultList;
+        return resultList.stream().map(this::convertToInfoDTO).collect(Collectors.toList());
     }
 
     // Search products
-    public List<ProductDTO> searchProducts(String keywword) {
+    public List<ProductInfoDTO> searchProducts(String keywword) {
         return productRepository.findByProductNameContainingOrProductDescriptionContainingOrCategoryNameOrBrandNameContaining(
             keywword, keywword, keywword, keywword).stream()
-        .map(this::convertToDTO)
+        .map(this::convertToInfoDTO)
         .collect(Collectors.toList());
     }
 
-    public List<ProductDTO> searchProductsByIdContaining(int id) {
+    public List<ProductInfoDTO> searchProductsByIdContaining(int id) {
         return productRepository.findByIdContaining(id).stream()
-        .map(this::convertToDTO)
+        .map(this::convertToInfoDTO)
         .collect(Collectors.toList());
     }
 
-    public List<ProductDTO> lowRemainingProducts() {
-        List<ProductDTO> products = productRepository.findAll().stream()
-        .map(this::convertToDTO)
-        .collect(Collectors.toList());
+    public List<ProductInfoDTO> lowRemainingProducts() {
+        List<Product> products = productRepository.findAll();
 
-        List<ProductDTO> lowRemainingProducts = new ArrayList<>();
+        List<Product> lowRemainingProducts = new ArrayList<>();
 
-        for(ProductDTO productDTO: products) {
-            Set<ProductDetailDTO> productDetailsList = productDTO.getDetails();
-            for(ProductDetailDTO productDetailsDTO: productDetailsList) {
+        for(Product productDTO: products) {
+            Set<ProductDetail> productDetailsList = productDTO.getDetails();
+            for(ProductDetail productDetailsDTO: productDetailsList) {
                 if (productDetailsDTO.getQuantity() < 20) {
                     lowRemainingProducts.add(productDTO);
                     break;
@@ -233,7 +242,9 @@ public class ProductService {
             }
         }
 
-        return lowRemainingProducts;
+        return lowRemainingProducts.stream()
+        .map(this::convertToInfoDTO)
+        .collect(Collectors.toList());
     }
 
     // Get product Images

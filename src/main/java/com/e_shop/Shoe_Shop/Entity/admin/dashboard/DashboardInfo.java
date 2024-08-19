@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.e_shop.Shoe_Shop.DTO.dto.CustomerDTO;
 import com.e_shop.Shoe_Shop.DTO.dto.OrderDTO;
-import com.e_shop.Shoe_Shop.DTO.dto.ProductDTO;
+import com.e_shop.Shoe_Shop.DTO.dto.ProductInfoDTO;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class DashboardInfo {
 
     private List<CustomerDTO> new_customers;
     private List<OrderDTO> orderList;
-    private List<ProductDTO> lowRemainingProducts;
+    private List<ProductInfoDTO> lowRemainingProducts;
 
     public DashboardInfo() {
     }
@@ -202,11 +202,11 @@ public class DashboardInfo {
         this.orderList = orderList;
     }
     
-	public List<ProductDTO> getLowRemainingProducts() {
+	public List<ProductInfoDTO> getLowRemainingProducts() {
         return lowRemainingProducts;
     }
 
-    public void setLowRemainingProducts(List<ProductDTO> lowRemainingProducts) {
+    public void setLowRemainingProducts(List<ProductInfoDTO> lowRemainingProducts) {
         this.lowRemainingProducts = lowRemainingProducts;
     }
 }

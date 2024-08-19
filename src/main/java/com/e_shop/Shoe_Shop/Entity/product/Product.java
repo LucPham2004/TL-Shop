@@ -62,7 +62,7 @@ public class Product {
     @Column(name = "avg_rating")
 	private Float averageRating = 0.0f;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "brand_id")	
 	private Brand brand;
 

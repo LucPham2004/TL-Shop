@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.e_shop.Shoe_Shop.DTO.dto.ProductDTO;
+import com.e_shop.Shoe_Shop.DTO.dto.ProductInfoDTO;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin(maxAge = 3600)
@@ -30,7 +31,7 @@ public class ProductController {
 
     // GET
     @GetMapping
-    public List<ProductDTO> getAllProducts() {
+    public List<ProductInfoDTO> getAllProducts() {
         return productService.getAllProducts();
     }
 
@@ -40,12 +41,12 @@ public class ProductController {
     }
 
     @GetMapping("/topproducts")
-    public List<ProductDTO> getTopProducts() {
+    public List<ProductInfoDTO> getTopProducts() {
         return productService.getTopProducts();
     }
 
     @GetMapping("/search")
-    public List<ProductDTO> searchProducts(@RequestParam("keyword") String keywword) {
+    public List<ProductInfoDTO> searchProducts(@RequestParam("keyword") String keywword) {
         return productService.searchProducts(keywword);
     }
 
@@ -55,14 +56,12 @@ public class ProductController {
     }
 
     @GetMapping(path = "/brand/{brandName}")
-    public List<ProductDTO> getProductsByBrand(@PathVariable String brandName)
-    {
+    public List<ProductInfoDTO> getProductsByBrand(@PathVariable String brandName) {
         return productService.getProductsByBrand(brandName);
     }
 
     @GetMapping(path = "/category/{categoryName}")
-    public List<ProductDTO> getProductsByCategory(@PathVariable String categoryName)
-    {
+    public List<ProductInfoDTO> getProductsByCategory(@PathVariable String categoryName) {
         return productService.getProductsByCategory(categoryName);
     }
 
