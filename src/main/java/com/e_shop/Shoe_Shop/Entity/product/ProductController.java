@@ -35,6 +35,11 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    @GetMapping("/withdetails")
+    public List<ProductDTO> getAllProductsWithDetails() {
+        return productService.getAllProductsWithDetails();
+    }
+
     @GetMapping("/{id}")
     public ProductDTO getProduct(@PathVariable Integer id) {
         return productService.getProductById(id);

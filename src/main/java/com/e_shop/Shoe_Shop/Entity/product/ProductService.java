@@ -136,6 +136,12 @@ public class ProductService {
         .collect(Collectors.toList());
     }
 
+    public List<ProductDTO> getAllProductsWithDetails() {
+        return productRepository.findAll().stream()
+        .map(this::convertToDTO)
+        .collect(Collectors.toList());
+    }
+
     public ProductDTO getProductById(Integer id) {
         Product product = productRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Product not found"));
