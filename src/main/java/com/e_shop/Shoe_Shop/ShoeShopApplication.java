@@ -57,7 +57,7 @@ public class ShoeShopApplication {
 				Date dayCreated = calendar.getTime();
 
 				Customer admin = new Customer("admin", encodedPassword, 
-					"phamtienluc0601@gmail.com", "0383132114", "Ha Noi, Viet Nam", dayCreated, roles);
+					"admin@gmail.com", "099999999", "Ha Noi, Viet Nam", dayCreated, roles);
 				customerRepository.save(admin);
 			}
 		};
