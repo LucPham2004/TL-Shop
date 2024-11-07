@@ -3,7 +3,6 @@ package com.e_shop.Shoe_Shop.Entity.product;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -257,7 +256,7 @@ public class ProductService {
     public ResponseEntity<byte[]> getProductImages(String productName) {
         try {
             String uploadDir = "temporaryDisabled/img/products/";
-            Path path = Paths.get(uploadDir + productName);
+            Path path = Path.of(uploadDir + productName);
 
             if (!Files.exists(path)) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -291,7 +290,7 @@ public class ProductService {
     }
 
     public String uploadImages(String productName, MultipartFile[] files) {
-        Path uploadDirPath = Paths.get("temporaryDisabled/img/products/", productName);
+        Path uploadDirPath = Path.of("temporaryDisabled/img/products/", productName);
         
         try {
             Files.createDirectories(uploadDirPath);

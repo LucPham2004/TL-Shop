@@ -85,8 +85,8 @@ public class ProductController {
     }
 
     @PostMapping(path = "/uploadImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String uploadImages(@RequestParam("productName") String productName, 
-                            @RequestParam("productImages") MultipartFile[] productImages){
+    public String uploadImages(@RequestParam String productName, 
+                            @RequestParam MultipartFile[] productImages){
         return productService.uploadImages(productName, productImages);
     }
 
