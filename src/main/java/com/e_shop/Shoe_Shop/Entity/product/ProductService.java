@@ -3,8 +3,11 @@ package com.e_shop.Shoe_Shop.Entity.product;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -13,13 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import com.e_shop.Shoe_Shop.Entity.brand.Brand;
-import com.e_shop.Shoe_Shop.Entity.brand.BrandRepository;
-import com.e_shop.Shoe_Shop.Entity.category.CategoryRepository;
-import com.e_shop.Shoe_Shop.Entity.category.Category;
-import com.e_shop.Shoe_Shop.Entity.product.detail.ProductDetail;
+
 import com.e_shop.Shoe_Shop.DTO.dto.ProductDTO;
 import com.e_shop.Shoe_Shop.DTO.dto.ProductInfoDTO;
+import com.e_shop.Shoe_Shop.Entity.brand.Brand;
+import com.e_shop.Shoe_Shop.Entity.brand.BrandRepository;
+import com.e_shop.Shoe_Shop.Entity.category.Category;
+import com.e_shop.Shoe_Shop.Entity.category.CategoryRepository;
+import com.e_shop.Shoe_Shop.Entity.product.detail.ProductDetail;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -169,7 +173,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    // Return top-seller, favorite, on-sale and... most costly products
+    // Return top-seller, on-sale products
     public List<ProductInfoDTO> getTopProducts() {
         List<Product> allproducts = productRepository.findAll();
         List<Product> resultList = new ArrayList<>();
@@ -184,30 +188,7 @@ public class ProductService {
         }
 
         index = 0;
-        allproducts.sort(Comparator.comparingDouble(product -> product.getAverageRating()));
-        for(Product productDTO: allproducts) {
-            if(index >= 12)
-                break;
-            resultList.add(productDTO);
-            index++;
-        }
-
-        index = 0;
         allproducts.sort(Comparator.comparingDouble(product -> product.getDiscountPercent()));
-        for(Product productDTO: allproducts) {
-            if(index >= 12)
-                break;
-            resultList.add(productDTO);
-            index++;
-        }
-
-        index = 0;
-        Collections.sort(allproducts, new Comparator<Product>() {
-            @Override
-            public int compare(Product product1, Product product2) {
-                return product2.getProductDayCreated().compareTo(product1.getProductDayCreated());
-            }
-        });
         for(Product productDTO: allproducts) {
             if(index >= 12)
                 break;
