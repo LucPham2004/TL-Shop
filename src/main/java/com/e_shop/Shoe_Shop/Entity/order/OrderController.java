@@ -2,6 +2,8 @@ package com.e_shop.Shoe_Shop.Entity.order;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,12 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.e_shop.Shoe_Shop.Entity.order.OrderService.OrderRequest;
 import com.e_shop.Shoe_Shop.DTO.dto.OrderDTO;
 import com.e_shop.Shoe_Shop.DTO.request.OrderStatusUpdateRequest;
-
-import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import com.e_shop.Shoe_Shop.Entity.order.OrderService.OrderRequest;
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping(path = "/api/v1/orders")
@@ -31,17 +30,19 @@ public class OrderController {
 
     // GET
     @GetMapping
-    public Page<OrderDTO> getAllOrders(int pageNum){
+    public Page<OrderDTO> getAllOrders(@RequestParam(name = "pageNum") int pageNum){
         return orderService.getAllOrders(pageNum);
     }
 
-    @GetMapping(path = "/customer/{customerId}")
-    public Page<OrderDTO> getOrdersByCustomer(@PathVariable int customerId, int pageNum) {
+    @GetMapping(path = "/customer")
+    public Page<OrderDTO> getOrdersByCustomer(
+            @RequestParam(name = "customerId") int customerId, 
+            @RequestParam(name = "pageNum") int pageNum) {
         return orderService.findByCustomerIdSorted(customerId, pageNum);
     }
 
     @GetMapping(path = "/sortByStatus")
-    public Page<OrderDTO> getSortedOrdersByStatus(int pageNum){
+    public Page<OrderDTO> getSortedOrdersByStatus(@RequestParam(name = "pageNum") int pageNum){
         return orderService.getSortedOrdersByStatus(pageNum);
     }
 

@@ -1,6 +1,8 @@
 package com.e_shop.Shoe_Shop.Entity.order;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -27,7 +29,7 @@ public class OrderService {
 	private final Float ShippingCostCurrent = 15000.0f;
     private final Float TaxCurrent = 0.08f;
 
-    private final static int ORDERS_PER_PAGE = 8;
+    private final static int ORDERS_PER_PAGE = 16;
 
     public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
             ProductRepository productRepository, ProductDetailRepository productDetailRepository) {

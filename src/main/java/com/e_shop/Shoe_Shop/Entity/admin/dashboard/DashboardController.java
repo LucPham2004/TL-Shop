@@ -12,7 +12,7 @@ import com.e_shop.Shoe_Shop.Entity.admin.dto.ProductSummary;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/admin/dashboard")
+@RequestMapping("/api/v1/admin")
 public class DashboardController {
     private final DashboardService dashboardService;
 
@@ -20,7 +20,7 @@ public class DashboardController {
         this.dashboardService = dashboardService;
     }
     
-    @GetMapping("/main-entities")
+    @GetMapping("/summary")
     public MainEntitiesSummary getEntitiesSummary() {
         return dashboardService.entitiesSummary();
     }
