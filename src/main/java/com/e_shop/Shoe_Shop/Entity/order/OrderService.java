@@ -169,7 +169,7 @@ public class OrderService {
 	
 
 	// Create Order Request
-    static class OrderRequest {
+    public static class OrderRequest {
         private int customerId;
         private List<OrderDetailRequest> orderDetails;
 
@@ -188,7 +188,7 @@ public class OrderService {
 
     }
 
-    static class OrderDetailRequest {
+    public static class OrderDetailRequest {
         private int productId;
         private String productName;
         private String productImage;
