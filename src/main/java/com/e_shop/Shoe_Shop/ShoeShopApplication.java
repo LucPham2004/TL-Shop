@@ -1,7 +1,7 @@
 package com.e_shop.Shoe_Shop;
 
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +9,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.e_shop.Shoe_Shop.Entity.customer.Customer;
@@ -19,6 +21,7 @@ import com.e_shop.Shoe_Shop.Entity.role.RoleRepository;
 import jakarta.persistence.EntityManager;
 
 @SpringBootApplication
+@EnableSpringDataWebSupport(pageSerializationMode = PageSerializationMode.VIA_DTO)
 public class ShoeShopApplication {
 
 	public static void main(String[] args) {

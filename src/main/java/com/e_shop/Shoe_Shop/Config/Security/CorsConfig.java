@@ -13,7 +13,7 @@ public class CorsConfig {
      @Bean
      public CorsConfigurationSource corsConfigurationSource() {
           CorsConfiguration configuration = new CorsConfiguration();
-          configuration.setAllowedOrigins(Arrays.asList("http://localhost:5502", "http://localhost:5501", "https://main.d3ctxhbwcnglv1.amplifyapp.com"));
+          configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5502", "http://127.0.0.1:5501", "https://main.d3ctxhbwcnglv1.amplifyapp.com"));
           configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
           configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "x-no-retry"));
           configuration.setAllowCredentials(true);

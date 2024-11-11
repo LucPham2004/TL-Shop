@@ -1,6 +1,5 @@
 package com.e_shop.Shoe_Shop.Config.Security.auth;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +25,6 @@ import com.e_shop.Shoe_Shop.Entity.customer.CustomerService;
 import com.e_shop.Shoe_Shop.Entity.role.Role;
 import com.e_shop.Shoe_Shop.Entity.role.RoleRepository;
 import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jwt.SignedJWT;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -114,33 +112,34 @@ public class AuthService {
     }
 
     // Check if token is verified and not expired
-    public ApiResponse<String> checkLoginStatus(String token, HttpServletResponse response) {
-        try {
-            SignedJWT verifyToken = tokenService.verifyToken(token);
-            ApiResponse<String> apiResponse = new ApiResponse<>();
+    // public ApiResponse<String> checkLoginStatus(String token, HttpServletResponse response) {
+    //     try {
+    //         SignedJWT verifyToken = tokenService.verifyToken(token);
+            
+    //         ApiResponse<String> apiResponse = new ApiResponse<>();
 
-            apiResponse.setCode(200);
-            apiResponse.setMessage("Token verified!");
-            apiResponse.setResult(verifyToken.toString());
+    //         apiResponse.setCode(200);
+    //         apiResponse.setMessage("Token verified!");
+    //         apiResponse.setResult(verifyToken.toString());
             
-            return apiResponse;
+    //         return apiResponse;
 
-        } catch (JOSEException | ParseException e) {
-            e.printStackTrace();
-            ApiResponse<String> apiResponse = new ApiResponse<>();
+    //     } catch (JOSEException | ParseException e) {
+    //         e.printStackTrace();
+    //         ApiResponse<String> apiResponse = new ApiResponse<>();
             
-            if (e instanceof JOSEException) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                apiResponse.setCode(401);
-                apiResponse.setMessage("Token verification failed: " + e.getMessage());
-            } else if (e instanceof ParseException) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                apiResponse.setCode(400);
-                apiResponse.setMessage("Token parsing failed: " + e.getMessage());
-            }
+    //         if (e instanceof JOSEException) {
+    //             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    //             apiResponse.setCode(401);
+    //             apiResponse.setMessage("Token verification failed: " + e.getMessage());
+    //         } else if (e instanceof ParseException) {
+    //             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    //             apiResponse.setCode(400);
+    //             apiResponse.setMessage("Token parsing failed: " + e.getMessage());
+    //         }
             
-            apiResponse.setResult("");
-            return apiResponse;
-        } 
-    }
+    //         apiResponse.setResult("");
+    //         return apiResponse;
+    //     } 
+    // }
 }

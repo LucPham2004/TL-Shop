@@ -63,12 +63,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/v1/auth/**").permitAll();
                     
-                    auth.requestMatchers(HttpMethod.GET, "/api/**").permitAll();
-                    auth.requestMatchers(HttpMethod.GET, "/admin/**").permitAll();
-                    auth.requestMatchers(HttpMethod.GET, "/products/**").permitAll();
-                    auth.requestMatchers(HttpMethod.GET, "/brand/**").permitAll();
-                    auth.requestMatchers(HttpMethod.GET, "/category/**").permitAll();
-                    
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/customers/**").hasAnyRole("USER", "ADMIN");
                     auth.requestMatchers("/orders/**").hasAnyRole("USER", "ADMIN");
@@ -76,6 +70,12 @@ public class SecurityConfig {
                     auth.requestMatchers("/products/**").hasRole("ADMIN");
                     auth.requestMatchers("/brand/**").hasRole("ADMIN");
                     auth.requestMatchers("/category/**").hasRole("ADMIN");
+                    
+                    auth.requestMatchers(HttpMethod.GET, "/api/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/admin/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/products/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/brand/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/category/**").permitAll();
 
                     auth.anyRequest().authenticated();
                 })

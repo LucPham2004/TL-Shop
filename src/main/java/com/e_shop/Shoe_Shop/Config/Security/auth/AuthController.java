@@ -2,10 +2,8 @@ package com.e_shop.Shoe_Shop.Config.Security.auth;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,10 +39,10 @@ public class AuthController {
         return authenticationService.logout(request, response);
     }
 
-    @GetMapping("/status")
-    public ApiResponse<String> checkLoginStatus(
-        @RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) {
-        String token = authorizationHeader.replace("Bearer ", "");
-        return authenticationService.checkLoginStatus(token, response);
-    }
+    // @GetMapping("/status")
+    // public ApiResponse<String> checkLoginStatus(
+    //     @RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) {
+    //     String token = authorizationHeader.replace("Bearer ", "");
+    //     return authenticationService.checkLoginStatus(token, response);
+    // }
 }

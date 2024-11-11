@@ -25,21 +25,19 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Integ
     public Page<Order> findByCustomerId(int customerId, Pageable pageable);
     
     @Query("SELECT o FROM Order o WHERE o.customer.id = :customerId " +
-           "ORDER BY CASE o.status " +
-           "  WHEN 'Processing' THEN 1 " +
-           "  WHEN 'Delivering' THEN 2 " +
-           "  WHEN 'Completed' THEN 3 " +
-           "  WHEN 'Cancelled' THEN 4 " +
-           "  ELSE 5 END, o.date DESC")
+              "ORDER BY CASE WHEN o.status = 'Processing' THEN 1 " +
+              "WHEN o.status = 'Delivering' THEN 2 " +
+              "WHEN o.status = 'Completed' THEN 3 " +
+              "WHEN o.status = 'Cancelled' THEN 4 " +
+              "ELSE 5 END")
     Page<Order> findByCustomerIdSorted(@Param("customerId") int customerId, Pageable pageable);
     
     @Query("SELECT o FROM Order o " +
-           "ORDER BY CASE o.status " +
-           "  WHEN 'Processing' THEN 1 " +
-           "  WHEN 'Delivering' THEN 2 " +
-           "  WHEN 'Completed' THEN 3 " +
-           "  WHEN 'Cancelled' THEN 4 " +
-           "  ELSE 5 END, o.date DESC")
+              "ORDER BY CASE WHEN o.status = 'Processing' THEN 1 " +
+              "WHEN o.status = 'Delivering' THEN 2 " +
+              "WHEN o.status = 'Completed' THEN 3 " +
+              "WHEN o.status = 'Cancelled' THEN 4 " +
+              "ELSE 5 END")
     Page<Order> findOrdersSorted(Pageable pageable);
     
     public Order findByIdAndCustomer(int id, Customer customer);

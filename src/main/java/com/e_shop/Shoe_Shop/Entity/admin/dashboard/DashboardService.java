@@ -38,7 +38,7 @@ public class DashboardService {
 		Query query = entityManager.createQuery("SELECT "
 					+ "(SELECT COUNT(DISTINCT p.id) AS totalProducts FROM Product p), "
 					+ "(SELECT COUNT(DISTINCT cu.id) AS totalCustomers FROM Customer cu), "
-					+ "(SELECT COUNT(DISTINCT o.id) AS totalOrders FROM Order o), ");
+					+ "(SELECT COUNT(DISTINCT o.id) AS totalOrders FROM Order o)");
 		
 		@SuppressWarnings("unchecked")
         List<Object[]> entityCounts = query.getResultList();
@@ -51,7 +51,7 @@ public class DashboardService {
 		summary.setTotalRevenue(orderRepository.getTotalRevenue());
 
 		summary.setNew_customers(customerService.newCustomers());
-		summary.setOrderList(orderService.getSortedOrdersByStatus(1));
+		summary.setOrderList(orderService.getSortedOrdersByStatus(0));
 		summary.setLowRemainingProducts(productService.lowRemainingProducts());
 
 		return summary;
@@ -88,10 +88,10 @@ public class DashboardService {
 		OrderSummary summary = new OrderSummary();
 		Query query = entityManager.createQuery("SELECT "
 					+ "(SELECT COUNT(DISTINCT o.id) AS totalOrders FROM Order o), "
-					+ "(SELECT COUNT(DISTINCT o.id) AS deliveredOrders FROM Order o WHERE o.status = 'Completed'), "
 					+ "(SELECT COUNT(DISTINCT o.id) AS processingOrders FROM Order o WHERE o.status = 'Processing'), "
 					+ "(SELECT COUNT(DISTINCT o.id) AS shippingOrders FROM Order o WHERE o.status = 'Delivering'), "
-					+ "(SELECT COUNT(DISTINCT o.id) AS cancelledOrders FROM Order o WHERE o.status = 'Cancelled'), ");
+					+ "(SELECT COUNT(DISTINCT o.id) AS deliveredOrders FROM Order o WHERE o.status = 'Completed'), "
+					+ "(SELECT COUNT(DISTINCT o.id) AS cancelledOrders FROM Order o WHERE o.status = 'Cancelled')");
 		
 		@SuppressWarnings("unchecked")
         List<Object[]> entityCounts = query.getResultList();
@@ -99,9 +99,9 @@ public class DashboardService {
 		
 		int count = 0;
 		summary.setTotalOrders((Long) arrayCounts[count++]);
-		summary.setDeliveredOrdersCount((Long) arrayCounts[count++]);
 		summary.setProcessingOrdersCount((Long) arrayCounts[count++]);
 		summary.setShippingOrdersCount((Long) arrayCounts[count++]);
+		summary.setDeliveredOrdersCount((Long) arrayCounts[count++]);
 		summary.setCancelledOrdersCount((Long) arrayCounts[count++]);
 
 		return summary;
@@ -114,7 +114,7 @@ public class DashboardService {
 					+ "(SELECT COUNT(DISTINCT cu.id) AS enabledCustomers FROM Customer cu WHERE cu.isEnabled=true), "
 					+ "(SELECT COUNT(DISTINCT cu.id) AS disabledCustomers FROM Customer cu WHERE cu.isEnabled=false), "
 					+ "(SELECT COUNT(DISTINCT cu.id) AS nonLockedCustomers FROM Customer cu WHERE cu.isAccountNonLocked=true), "
-					+ "(SELECT COUNT(DISTINCT cu.id) AS lockedCustomers FROM Customer cu WHERE cu.isAccountNonLocked=false), ");
+					+ "(SELECT COUNT(DISTINCT cu.id) AS lockedCustomers FROM Customer cu WHERE cu.isAccountNonLocked=false)");
 		
 		@SuppressWarnings("unchecked")
         List<Object[]> entityCounts = query.getResultList();
