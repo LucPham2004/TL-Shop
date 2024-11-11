@@ -1,13 +1,12 @@
 package com.e_shop.Shoe_Shop.Entity.admin.homepageContent;
 
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-@CrossOrigin(maxAge = 3600)
+
 @RestController
 @RequestMapping("/api/v1/admin/managehomepage")
 public class HomepageManageController {

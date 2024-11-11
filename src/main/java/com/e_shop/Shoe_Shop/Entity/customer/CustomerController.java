@@ -18,8 +18,6 @@ import com.e_shop.Shoe_Shop.DTO.request.CustomerUpdateRequest;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping(path = "api/v1/customers")
 public class CustomerController {

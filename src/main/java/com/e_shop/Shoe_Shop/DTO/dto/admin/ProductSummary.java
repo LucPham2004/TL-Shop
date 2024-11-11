@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.Entity.admin.dto;
+package com.e_shop.Shoe_Shop.DTO.dto.admin;
 
 public class ProductSummary {
     private long totalProducts;

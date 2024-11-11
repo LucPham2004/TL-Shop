@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.e_shop.Shoe_Shop.Entity.admin.dto.CustomerSummary;
-import com.e_shop.Shoe_Shop.Entity.admin.dto.MainEntitiesSummary;
-import com.e_shop.Shoe_Shop.Entity.admin.dto.OrderSummary;
-import com.e_shop.Shoe_Shop.Entity.admin.dto.ProductSummary;
+import com.e_shop.Shoe_Shop.DTO.dto.admin.CustomerSummary;
+import com.e_shop.Shoe_Shop.DTO.dto.admin.MainEntitiesSummary;
+import com.e_shop.Shoe_Shop.DTO.dto.admin.OrderSummary;
+import com.e_shop.Shoe_Shop.DTO.dto.admin.ProductSummary;
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerService;
 import com.e_shop.Shoe_Shop.Entity.order.OrderRepository;
 import com.e_shop.Shoe_Shop.Entity.order.OrderService;

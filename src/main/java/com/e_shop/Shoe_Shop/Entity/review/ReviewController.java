@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.e_shop.Shoe_Shop.DTO.dto.ReviewDTO;
 import com.e_shop.Shoe_Shop.DTO.request.ReviewCreationRequest;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping(path = "/api/v1/reviews")
 public class ReviewController {

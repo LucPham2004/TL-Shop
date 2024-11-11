@@ -3,7 +3,6 @@ package com.e_shop.Shoe_Shop.Entity.order;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.e_shop.Shoe_Shop.DTO.dto.OrderDTO;
 import com.e_shop.Shoe_Shop.DTO.request.OrderStatusUpdateRequest;
 import com.e_shop.Shoe_Shop.Entity.order.OrderService.OrderRequest;
-@CrossOrigin(maxAge = 3600)
+
 @RestController
 @RequestMapping(path = "/api/v1/orders")
 public class OrderController {

@@ -18,8 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.e_shop.Shoe_Shop.DTO.dto.ProductDTO;
 import com.e_shop.Shoe_Shop.DTO.dto.ProductInfoDTO;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping(path = "/api/v1/products")
 public class ProductController {
