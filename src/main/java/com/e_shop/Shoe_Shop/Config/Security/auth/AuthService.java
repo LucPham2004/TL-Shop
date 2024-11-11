@@ -16,15 +16,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.e_shop.Shoe_Shop.DTO.dto.CustomerDTO;
+import com.e_shop.Shoe_Shop.DTO.request.RegisterRequest;
+import com.e_shop.Shoe_Shop.DTO.response.ApiResponse;
+import com.e_shop.Shoe_Shop.DTO.response.LoginResponseDTO;
 import com.e_shop.Shoe_Shop.Entity.customer.Customer;
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerRepository;
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerService;
 import com.e_shop.Shoe_Shop.Entity.role.Role;
 import com.e_shop.Shoe_Shop.Entity.role.RoleRepository;
-import com.e_shop.Shoe_Shop.DTO.dto.CustomerDTO;
-import com.e_shop.Shoe_Shop.DTO.request.RegisterRequest;
-import com.e_shop.Shoe_Shop.DTO.response.ApiResponse;
-import com.e_shop.Shoe_Shop.DTO.response.LoginResponseDTO;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jwt.SignedJWT;
 
@@ -34,11 +34,11 @@ import jakarta.servlet.http.HttpServletResponse;
 @Service
 @Transactional
 public class AuthService {
-    private CustomerService customerService;
-    private CustomerRepository customerRepository;
-    private RoleRepository roleRepository;
-    private AuthenticationManager authenticationManager;
-    private TokenService tokenService;
+    private final CustomerService customerService;
+    private final CustomerRepository customerRepository;
+    private final RoleRepository roleRepository;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
     public AuthService(@Lazy CustomerService customerService, CustomerRepository customerRepository,
             RoleRepository roleRepository, @Lazy AuthenticationManager authenticationManager, TokenService tokenService) {

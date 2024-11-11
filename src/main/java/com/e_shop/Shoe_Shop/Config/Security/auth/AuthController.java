@@ -1,10 +1,7 @@
 package com.e_shop.Shoe_Shop.Config.Security.auth;
 
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,12 +15,12 @@ import com.e_shop.Shoe_Shop.DTO.response.ApiResponse;
 import com.e_shop.Shoe_Shop.DTO.response.LoginResponseDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
-    private AuthService authenticationService;
+    private final AuthService authenticationService;
     
     public AuthController(@Lazy AuthService authenticationService) {
         this.authenticationService = authenticationService;
