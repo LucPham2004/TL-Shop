@@ -2,19 +2,45 @@ package com.e_shop.Shoe_Shop.Entity.order;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.e_shop.Shoe_Shop.Entity.customer.Customer;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Integer>{
+public interface OrderRepository extends PagingAndSortingRepository<Order, Integer>{
 
     public Order findById(int id);
 
-    public List<Order> findByCustomerId(int customerId);
+    public Order save(Order order);
+    
+    public void delete(Order order);
+
+    public boolean existsById(Integer id);
+
+    public Page<Order> findByCustomerId(int customerId, Pageable pageable);
+    
+    @Query("SELECT o FROM Order o WHERE o.customer.id = :customerId " +
+           "ORDER BY CASE o.status " +
+           "  WHEN 'Processing' THEN 1 " +
+           "  WHEN 'Delivering' THEN 2 " +
+           "  WHEN 'Completed' THEN 3 " +
+           "  WHEN 'Cancelled' THEN 4 " +
+           "  ELSE 5 END, o.date DESC")
+    Page<Order> findByCustomerIdSorted(@Param("customerId") int customerId, Pageable pageable);
+    
+    @Query("SELECT o FROM Order o " +
+           "ORDER BY CASE o.status " +
+           "  WHEN 'Processing' THEN 1 " +
+           "  WHEN 'Delivering' THEN 2 " +
+           "  WHEN 'Completed' THEN 3 " +
+           "  WHEN 'Cancelled' THEN 4 " +
+           "  ELSE 5 END, o.date DESC")
+    Page<Order> findOrdersSorted(Pageable pageable);
     
     public Order findByIdAndCustomer(int id, Customer customer);
 
@@ -33,4 +59,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     public List<Order> findByIdContaining(@Param("id") Integer id);
 
     public boolean existsByIdAndCustomer(int id, Customer customer);
+
+    @Query("SELECT SUM(o.total) FROM Order o " + "WHERE o.status = 'Completed' ")
+    public Float getTotalRevenue();
 } 

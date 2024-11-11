@@ -3,6 +3,9 @@ package com.e_shop.Shoe_Shop.Entity.order;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.e_shop.Shoe_Shop.DTO.dto.OrderDTO;
@@ -23,6 +26,8 @@ public class OrderService {
 
 	private final Float ShippingCostCurrent = 15000.0f;
     private final Float TaxCurrent = 0.08f;
+
+    private final static int ORDERS_PER_PAGE = 8;
 
     public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
             ProductRepository productRepository, ProductDetailRepository productDetailRepository) {
@@ -47,27 +52,17 @@ public class OrderService {
     }
 
     // GET
-    public List<OrderDTO> getAllOrders() {
-        return orderRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public Page<OrderDTO> getAllOrders(int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum, ORDERS_PER_PAGE);
+        return orderRepository.findAll(pageable).map(this::convertToDTO);
     }
 
     // Get orders by customers sorted by order status and day ordered
-	public List<OrderDTO> getOrdersByCustomer(int customerId) {
-        List<Order> orders = orderRepository.findByCustomerId(customerId);
+	public Page<OrderDTO> findByCustomerIdSorted(int customerId, int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum, ORDERS_PER_PAGE);
+        Page<Order> orders = orderRepository.findByCustomerId(customerId, pageable);
     
-        Comparator<Order> statusComparator = (o1, o2) -> {
-            List<String> statusOrder = List.of("Processing", "Delivering", "Completed", "Cancelled");
-            return Integer.compare(statusOrder.indexOf(o1.getStatus()), statusOrder.indexOf(o2.getStatus()));
-        };
-    
-        Comparator<Order> dateComparator = Comparator.comparing(Order::getDate).reversed();
-    
-        return orders.stream()
-                     .sorted(dateComparator.thenComparing(statusComparator))
-                     .map(this::convertToDTO)
-                     .collect(Collectors.toList());
+        return orders.map(this::convertToDTO);
     }
 
     public OrderDTO getOrderById(Integer id) {
@@ -75,21 +70,14 @@ public class OrderService {
         if(exist){
             throw new IllegalStateException("Order does not exists!");
         }
-		return convertToDTO(orderRepository.findById(id).get());
+		return convertToDTO(orderRepository.findById(id));
 	}
 
-    public List<OrderDTO> getSortedOrdersByStatus() {
-        List<Order> orders = orderRepository.findAll();
-
-        Comparator<Order> statusComparator = (o1, o2) -> {
-            List<String> statusOrder = List.of("Processing", "Delivering", "Completed", "Cancelled");
-            return Integer.compare(statusOrder.indexOf(o1.getStatus()), statusOrder.indexOf(o2.getStatus()));
-        };
+    public Page<OrderDTO> getSortedOrdersByStatus(int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum, ORDERS_PER_PAGE);
+        Page<Order> orders = orderRepository.findOrdersSorted(pageable);
         
-        return orders.stream()
-                    .sorted(statusComparator)
-                    .map(this::convertToDTO)
-                    .collect(Collectors.toList());
+        return orders.map(this::convertToDTO);
     }
 
     // Search orders

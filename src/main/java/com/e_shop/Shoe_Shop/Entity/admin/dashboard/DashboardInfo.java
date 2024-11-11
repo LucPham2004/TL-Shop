@@ -2,13 +2,6 @@ package com.e_shop.Shoe_Shop.Entity.admin.dashboard;
 
 import org.springframework.stereotype.Component;
 
-import com.e_shop.Shoe_Shop.DTO.dto.CustomerDTO;
-import com.e_shop.Shoe_Shop.DTO.dto.OrderDTO;
-import com.e_shop.Shoe_Shop.DTO.dto.ProductInfoDTO;
-
-import java.util.List;
-
-
 @Component
 public class DashboardInfo {
     private long totalCategories;
@@ -35,9 +28,6 @@ public class DashboardInfo {
     
 	private long reviewedProductsCount;
 
-    private List<CustomerDTO> new_customers;
-    private List<OrderDTO> orderList;
-    private List<ProductInfoDTO> lowRemainingProducts;
 
     public DashboardInfo() {
     }
@@ -186,27 +176,4 @@ public class DashboardInfo {
         this.totalRevenue = totalRevenue;
     }
 
-    public List<CustomerDTO> getNew_customers() {
-        return new_customers;
-    }
-
-    public void setNew_customers(List<CustomerDTO> new_customers) {
-        this.new_customers = new_customers;
-    }
-
-    public List<OrderDTO> getOrderList() {
-        return orderList;
-    }
-
-    public void setOrderList(List<OrderDTO> orderList) {
-        this.orderList = orderList;
-    }
-    
-	public List<ProductInfoDTO> getLowRemainingProducts() {
-        return lowRemainingProducts;
-    }
-
-    public void setLowRemainingProducts(List<ProductInfoDTO> lowRemainingProducts) {
-        this.lowRemainingProducts = lowRemainingProducts;
-    }
 }

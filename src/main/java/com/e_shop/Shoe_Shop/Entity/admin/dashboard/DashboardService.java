@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.e_shop.Shoe_Shop.DTO.dto.OrderDTO;
 import com.e_shop.Shoe_Shop.Entity.customer.CustomerService;
+import com.e_shop.Shoe_Shop.Entity.order.OrderRepository;
 import com.e_shop.Shoe_Shop.Entity.order.OrderService;
 import com.e_shop.Shoe_Shop.Entity.product.ProductService;
 
@@ -17,13 +17,15 @@ public class DashboardService {
 	private final EntityManager entityManager;
 	private final CustomerService customerService;
 	private final OrderService orderService;
+	private final OrderRepository orderRepository;
 	private final ProductService productService;
 
-	public DashboardService(EntityManager entityManager,  CustomerService customerService, 
-							OrderService orderService, ProductService productService) {
+	public DashboardService(EntityManager entityManager, CustomerService customerService, OrderService orderService,
+			OrderRepository orderRepository, ProductService productService) {
 		this.entityManager = entityManager;
 		this.customerService = customerService;
 		this.orderService = orderService;
+		this.orderRepository = orderRepository;
 		this.productService = productService;
 	}
 
@@ -79,17 +81,17 @@ public class DashboardService {
 		
 		summary.setReviewedProductsCount((Long) arrayCounts[count++]);
 
-		Float revenue = 0.0f;
-		List<OrderDTO> orders = orderService.getSortedOrdersByStatus();
-		for(OrderDTO order: orders) {
-			if(order.getStatus().equals("Completed")) {
-				revenue += order.getTotal();
-			}
-		}
-		summary.setTotalRevenue(revenue);
+		summary.setTotalRevenue(orderRepository.getTotalRevenue());
+
+
+		return summary;
+	}
+
+	public MainEntitiesSummary entitiesSummary() {
+		MainEntitiesSummary summary = new MainEntitiesSummary();
 
 		summary.setNew_customers(customerService.newCustomers());
-		summary.setOrderList(orders);
+		summary.setOrderList(orderService.getSortedOrdersByStatus(1));
 		summary.setLowRemainingProducts(productService.lowRemainingProducts());
 
 		return summary;

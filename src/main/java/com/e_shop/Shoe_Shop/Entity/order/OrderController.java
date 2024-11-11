@@ -16,6 +16,7 @@ import com.e_shop.Shoe_Shop.Entity.order.OrderService.OrderRequest;
 import com.e_shop.Shoe_Shop.DTO.dto.OrderDTO;
 import com.e_shop.Shoe_Shop.DTO.request.OrderStatusUpdateRequest;
 
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -30,18 +31,18 @@ public class OrderController {
 
     // GET
     @GetMapping
-    public List<OrderDTO> getAllOrders(){
-        return orderService.getAllOrders();
+    public Page<OrderDTO> getAllOrders(int pageNum){
+        return orderService.getAllOrders(pageNum);
     }
 
     @GetMapping(path = "/customer/{customerId}")
-    public List<OrderDTO> getOrdersByCustomer(@PathVariable int customerId){
-        return orderService.getOrdersByCustomer(customerId);
+    public Page<OrderDTO> getOrdersByCustomer(@PathVariable int customerId, int pageNum) {
+        return orderService.findByCustomerIdSorted(customerId, pageNum);
     }
 
     @GetMapping(path = "/sortByStatus")
-    public List<OrderDTO> getSortedOrdersByStatus(){
-        return orderService.getSortedOrdersByStatus();
+    public Page<OrderDTO> getSortedOrdersByStatus(int pageNum){
+        return orderService.getSortedOrdersByStatus(pageNum);
     }
 
     @GetMapping("/search")
