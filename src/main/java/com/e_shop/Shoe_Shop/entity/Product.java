@@ -81,8 +81,6 @@ public class Product {
     @Column(name = "product_is_enabled")
 	private boolean isEnabled = true;
 
-    @Transient private boolean reviewedByCustomer;
-
     public Integer getId() {
         return id;
     }
@@ -240,21 +238,13 @@ public class Product {
         this.isEnabled = isEnabled;
     }
 
-    public boolean isReviewedByCustomer() {
-        return reviewedByCustomer = (this.reviews != null) ? true : false;
-    }
-
-    public void setReviewedByCustomer(boolean reviewedByCustomer) {
-        this.reviewedByCustomer = reviewedByCustomer;
-    }
-
     // Constructor
     public Product() {
     }
        
     public Product(Integer id, String productName, String productDescription, String productImage, Float productPrice,
             Integer productQuantity, Integer productQuantitySold, Date productDayCreated, Float discountPercent, Integer reviewCount, Float averageRating, Brand brand,
-            Set<Category> category, Set<Review> reviews, Set<ProductDetail> details, boolean reviewedByCustomer) {
+            Set<Category> category, Set<Review> reviews, Set<ProductDetail> details) {
         this.id = id;
         this.productName = productName;
         this.productDescription = productDescription;
@@ -270,7 +260,6 @@ public class Product {
         this.category = category;
         this.reviews = reviews;
         this.details = details;
-        this.reviewedByCustomer = reviewedByCustomer;
     }
     
     @Override

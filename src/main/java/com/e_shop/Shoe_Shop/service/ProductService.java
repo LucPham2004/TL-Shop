@@ -23,6 +23,7 @@ import com.e_shop.Shoe_Shop.entity.Brand;
 import com.e_shop.Shoe_Shop.entity.Category;
 import com.e_shop.Shoe_Shop.entity.Product;
 import com.e_shop.Shoe_Shop.entity.ProductDetail;
+import com.e_shop.Shoe_Shop.mapper.ProductMapper;
 import com.e_shop.Shoe_Shop.repository.BrandRepository;
 import com.e_shop.Shoe_Shop.repository.CategoryRepository;
 import com.e_shop.Shoe_Shop.repository.ProductRepository;
@@ -35,122 +36,34 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductMapper productMapper;
     
     public ProductService(ProductRepository productRepository, BrandRepository brandRepository,
-            CategoryRepository categoryRepository) {
+            CategoryRepository categoryRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
         this.brandRepository = brandRepository;
         this.categoryRepository = categoryRepository;
-    }
-
-    // Convert Product and ProductDetail to DTO
-    public ProductDTO convertToDTO(Product product) {
-        Set<ProductDTO.ProductDetailDTO> detailDTOs = product.getDetails().stream()
-            .map(this::convertDetailToDTO)
-            .collect(Collectors.toSet());
-
-        return new ProductDTO(
-            product.getId(),
-            product.getProductName(),
-            product.getProductDescription(),
-            product.getProductImage(),
-            product.getProductPrice(),
-            product.getProductQuantity(),
-            product.getProductQuantitySold(),
-            product.getProductDayCreated(),
-            product.getDiscountPercent(),
-            product.getReviewCount(),
-            product.getAverageRating(),
-            product.getBrand().getName(),
-            product.getCategory().stream().map(Category::getName).collect(Collectors.toSet()),
-            detailDTOs
-        );
-    }
-
-    public ProductDTO.ProductDetailDTO convertDetailToDTO(ProductDetail productDetail) {
-        return new ProductDTO.ProductDetailDTO(
-            productDetail.getId(),
-            productDetail.getColor(),
-            productDetail.getSize(),
-            productDetail.getQuantity(),
-            productDetail.getQuantitySold()
-        );
-    }
-
-    // Convert DTO to Product and ProductDetail Entity
-    public Product convertToEntity(ProductDTO productDTO) {
-        Product product = new Product();
-        product.setId(productDTO.getId());
-        product.setProductName(productDTO.getProductName());
-        product.setProductDescription(productDTO.getProductDescription());
-        product.setProductImage(productDTO.getProductImage());
-        product.setProductPrice(productDTO.getProductPrice());
-        product.setProductQuantity(productDTO.getProductQuantity());
-        product.setProductQuantitySold(productDTO.getProductQuantitySold());
-        product.setProductDayCreated(new Date());
-        product.setDiscountPercent(productDTO.getDiscountPercent());
-        product.setReviewCount(productDTO.getReviewCount());
-        product.setAverageRating(productDTO.getAverageRating());
-        
-        Brand brand = brandRepository.findByName(productDTO.getBrandName());
-        if (brand != null) {
-            product.setBrand(brand);
-        }
-
-        Set<Category> categories = productDTO.getCategories().stream()
-                .map(categoryId -> categoryRepository.findByName(categoryId))
-                .collect(Collectors.toSet());
-        product.setCategory(categories);
-
-        Set<ProductDetail> details = productDTO.getDetails().stream()
-            .map(this::convertDetailToEntity)
-            .collect(Collectors.toSet());
-        product.setDetails(details);
-
-        return product;
-    }
-
-    public ProductDetail convertDetailToEntity(ProductDTO.ProductDetailDTO productDetailDTO) {
-        ProductDetail detail = new ProductDetail();
-        detail.setId(productDetailDTO.getId());
-        detail.setColor(productDetailDTO.getColor());
-        detail.setSize(productDetailDTO.getSize());
-        detail.setQuantity(productDetailDTO.getQuantity());
-        detail.setQuantitySold(productDetailDTO.getQuantitySold());
-        return detail;
-    }
-
-    public ProductInfoDTO convertToInfoDTO(Product product) {
-        return new ProductInfoDTO(
-            product.getId(),
-            product.getProductName(),
-            product.getProductDescription(),
-            product.getProductImage(),
-            product.getProductPrice(),
-            product.getDiscountPercent(),
-            product.getBrand().getName(),
-            product.getCategory().stream().map(Category::getName).collect(Collectors.toSet())
-        );
+        this.productMapper = productMapper;
     }
 
     // CRUD Methods
     // GET
     public List<ProductInfoDTO> getAllProducts() {
         return productRepository.findAll().stream()
-        .map(this::convertToInfoDTO)
+        .map(productMapper::convertToInfoDTO)
         .collect(Collectors.toList());
     }
 
     public List<ProductDTO> getAllProductsWithDetails() {
         return productRepository.findAll().stream()
-        .map(this::convertToDTO)
+        .map(productMapper::convertToDTO)
         .collect(Collectors.toList());
     }
 
     public ProductDTO getProductById(Integer id) {
         Product product = productRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Product not found"));
-        return convertToDTO(product);
+        return productMapper.convertToDTO(product);
     }
 
     public List<ProductInfoDTO> getProductsByBrand(String brandName) {
@@ -160,7 +73,7 @@ public class ProductService {
         }
         List<Product> products = productRepository.findByBrandName(brandName);
         return products.stream()
-                .map(this::convertToInfoDTO)
+                .map(productMapper::convertToInfoDTO)
                 .collect(Collectors.toList());
     }
 
@@ -171,7 +84,7 @@ public class ProductService {
         }
         List<Product> products = productRepository.findByCategoryName(categoryName);
         return products.stream()
-                .map(this::convertToInfoDTO)
+                .map(productMapper::convertToInfoDTO)
                 .collect(Collectors.toList());
     }
 
@@ -198,20 +111,20 @@ public class ProductService {
             index++;
         }
         
-        return resultList.stream().map(this::convertToInfoDTO).collect(Collectors.toList());
+        return resultList.stream().map(productMapper::convertToInfoDTO).collect(Collectors.toList());
     }
 
     // Search products
     public List<ProductInfoDTO> searchProducts(String keywword) {
         return productRepository.findByProductNameContainingOrProductDescriptionContainingOrCategoryNameOrBrandNameContaining(
             keywword, keywword, keywword, keywword).stream()
-        .map(this::convertToInfoDTO)
+        .map(productMapper::convertToInfoDTO)
         .collect(Collectors.toList());
     }
 
     public List<ProductInfoDTO> searchProductsByIdContaining(int id) {
         return productRepository.findByIdContaining(id).stream()
-        .map(this::convertToInfoDTO)
+        .map(productMapper::convertToInfoDTO)
         .collect(Collectors.toList());
     }
 
@@ -231,7 +144,7 @@ public class ProductService {
         }
 
         return lowRemainingProducts.stream()
-        .map(this::convertToInfoDTO)
+        .map(productMapper::convertToInfoDTO)
         .collect(Collectors.toList());
     }
 
@@ -259,7 +172,7 @@ public class ProductService {
 
     // POST
     public ProductDTO saveProduct(ProductDTO productDTO) {
-        Product product = convertToEntity(productDTO);
+        Product product = productMapper.convertToEntity(productDTO);
         if(productRepository.existsByProductNameAndProductDescription(product.getProductName(), product.getProductDescription()))
             throw new IllegalStateException("Product with name: " + product.getProductName() + 
             " and description: " + product.getProductDescription() + " already exists!");
@@ -268,7 +181,7 @@ public class ProductService {
             product.setProductDayCreated(new Date());
 
             Product savedProduct = productRepository.save(product);
-            return convertToDTO(savedProduct);
+            return productMapper.convertToDTO(savedProduct);
         }
     }
 
@@ -336,12 +249,12 @@ public class ProductService {
 
         // Update product details
         Set<ProductDetail> updatedDetails = productDTO.getDetails().stream()
-            .map(this::convertDetailToEntity)
+            .map(productMapper::convertDetailToEntity)
             .collect(Collectors.toSet());
         productToUpdate.getDetails().clear();
         productToUpdate.getDetails().addAll(updatedDetails);
         updatedDetails.forEach(detail -> detail.setProduct(productToUpdate));
 
-        return convertToDTO(productRepository.save(productToUpdate));
+        return productMapper.convertToDTO(productRepository.save(productToUpdate));
     }
 }
