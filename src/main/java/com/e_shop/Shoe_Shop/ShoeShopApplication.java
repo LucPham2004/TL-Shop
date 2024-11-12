@@ -13,10 +13,10 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.e_shop.Shoe_Shop.Entity.customer.Customer;
-import com.e_shop.Shoe_Shop.Entity.customer.CustomerRepository;
-import com.e_shop.Shoe_Shop.Entity.role.Role;
-import com.e_shop.Shoe_Shop.Entity.role.RoleRepository;
+import com.e_shop.Shoe_Shop.entity.Customer;
+import com.e_shop.Shoe_Shop.entity.Role;
+import com.e_shop.Shoe_Shop.repository.CustomerRepository;
+import com.e_shop.Shoe_Shop.service.RoleRepository;
 
 import jakarta.persistence.EntityManager;
 

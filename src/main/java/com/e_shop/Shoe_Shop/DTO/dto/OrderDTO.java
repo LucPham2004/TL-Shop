@@ -1,9 +1,9 @@
-package com.e_shop.Shoe_Shop.DTO.dto;
+package com.e_shop.Shoe_Shop.dto.dto;
 
 import java.util.Date;
 import java.util.Set;
 
-import com.e_shop.Shoe_Shop.Entity.order.detail.OrderDetail;
+import com.e_shop.Shoe_Shop.entity.OrderDetail;
 
 
 public class OrderDTO {

@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.DTO.dto;
+package com.e_shop.Shoe_Shop.dto.dto;
 
 import java.util.Set;
 

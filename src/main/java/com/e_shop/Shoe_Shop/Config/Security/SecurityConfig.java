@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.e_shop.Shoe_Shop.Config.utils.RSAKeyProperties;
-import com.e_shop.Shoe_Shop.Entity.customer.CustomerService;
+import com.e_shop.Shoe_Shop.service.CustomerService;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;

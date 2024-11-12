@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.DTO.request;
+package com.e_shop.Shoe_Shop.dto.request;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.DTO.request;
+package com.e_shop.Shoe_Shop.dto.request;
 
 public class LoginRequest {
     private String email;

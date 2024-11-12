@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.DTO.response;
+package com.e_shop.Shoe_Shop.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

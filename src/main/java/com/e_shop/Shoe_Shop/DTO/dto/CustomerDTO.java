@@ -1,10 +1,12 @@
-package com.e_shop.Shoe_Shop.DTO.dto;
+package com.e_shop.Shoe_Shop.dto.dto;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Set;
 
-import com.e_shop.Shoe_Shop.Entity.order.Order;
-import com.e_shop.Shoe_Shop.Entity.review.Review;
-import com.e_shop.Shoe_Shop.Entity.role.Role;
+import com.e_shop.Shoe_Shop.entity.Order;
+import com.e_shop.Shoe_Shop.entity.Review;
+import com.e_shop.Shoe_Shop.entity.Role;
+
 
 public class CustomerDTO {
     private Integer id;

@@ -1,6 +1,6 @@
-package com.e_shop.Shoe_Shop.DTO.response;
+package com.e_shop.Shoe_Shop.dto.response;
 
-import com.e_shop.Shoe_Shop.DTO.dto.CustomerDTO;
+import com.e_shop.Shoe_Shop.dto.dto.CustomerDTO;
 
 public class LoginResponseDTO {
     private CustomerDTO user;
