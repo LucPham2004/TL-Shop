@@ -54,14 +54,15 @@ public class Customer implements UserDetails{
 	@JoinTable( name = "user_role", 
                 joinColumns = @JoinColumn(name = "customer_id"), 
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonManagedReference(value="user_role")
 	private Set<Role> authorities;
     
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "customerReference1")
+    @JsonManagedReference(value = "customer_orders")
     private Set<Order> order;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "customerReference2")
+    @JsonManagedReference(value = "customer_reviews")
     private Set<Review> review;
     
     @Column(name = "is_account_non_locked")

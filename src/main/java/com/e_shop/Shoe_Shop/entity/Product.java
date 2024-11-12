@@ -67,14 +67,15 @@ public class Product {
 	@JoinTable( name = "product_categories", 
                 joinColumns = @JoinColumn(name = "product_id"), 
                 inverseJoinColumns = @JoinColumn(name = "category_id"))
+    @JsonManagedReference(value="product_category")
 	private Set<Category> category;
     
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "productReference1")
+    @JsonManagedReference(value = "product_reviews")
     private Set<Review> reviews;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "productReference2")
+    @JsonManagedReference(value = "product_details")
     private Set<ProductDetail> details;
 
     @Column(name = "product_is_enabled")

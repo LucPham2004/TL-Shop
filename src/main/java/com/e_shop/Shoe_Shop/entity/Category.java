@@ -2,6 +2,8 @@ package com.e_shop.Shoe_Shop.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +25,7 @@ public class Category {
     private String name;
 
     @ManyToMany(mappedBy = "category")
+    @JsonBackReference(value = "product_category")
     private Set<Product> product;
 
     public Set<Product> getProduct() {

@@ -47,12 +47,12 @@ public class OrderDetail {
 
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
-    @JsonBackReference
+    @JsonBackReference(value="product_orderDetails")
 	private Product product;
 
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    @JsonBackReference
+    @JsonBackReference(value="orders_details")
 	private Order order;
 
 

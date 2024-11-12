@@ -45,11 +45,11 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    @JsonBackReference(value = "customerReference1")
+    @JsonBackReference(value = "customer_orders")
     private Customer customer;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "orders_details")
     private Set<OrderDetail> orderDetails = new HashSet<>();
     
     public Order(Date date, Float shippingCost, Float tax, String status, Float total,

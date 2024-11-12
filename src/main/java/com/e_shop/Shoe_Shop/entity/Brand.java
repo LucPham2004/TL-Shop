@@ -1,10 +1,15 @@
 package com.e_shop.Shoe_Shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,6 +23,11 @@ public class Brand {
 
     @Column(name = "brand_name")
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id")
+    @JsonBackReference(value="brand_products")
+	private Product product;
 
     public Integer getId() {
         return id;
@@ -47,5 +57,13 @@ public class Brand {
     @Override
     public String toString() {
         return "Brand [id=" + id + ", name=" + name + "]";
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }
