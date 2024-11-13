@@ -32,22 +32,38 @@ public class ProductMapper {
             .map(this::convertDetailToDTO)
             .collect(Collectors.toSet());
 
-        return new ProductDTO(
-            product.getId(),
-            product.getProductName(),
-            product.getProductDescription(),
-            product.getProductImage(),
-            product.getProductPrice(),
-            product.getProductQuantity(),
-            product.getProductQuantitySold(),
-            product.getProductDayCreated(),
-            product.getDiscountPercent(),
-            product.getReviewCount(),
-            product.getAverageRating(),
-            product.getBrand().getName(),
-            product.getCategory().stream().map(Category::getName).collect(Collectors.toSet()),
-            detailDTOs
-        );
+        ProductDTO dto = new ProductDTO();
+
+        dto.setId(product.getId());
+        dto.setProductName(product.getProductName());
+        dto.setProductDescription(product.getProductDescription());
+        dto.setProductImage(product.getProductImage());
+        dto.setProductPrice(product.getProductPrice());
+        dto.setProductQuantity(product.getProductQuantity());
+        dto.setProductQuantitySold(product.getProductQuantitySold());
+        dto.setProductDayCreated(product.getProductDayCreated());
+        dto.setDiscountPercent(product.getDiscountPercent());
+        dto.setReviewCount(product.getReviewCount());
+        dto.setAverageRating(product.getAverageRating());
+        dto.setBrandName(product.getBrand().getName());
+        dto.setCategories(product.getCategory().stream().map(Category::getName).collect(Collectors.toSet()));
+        dto.setDetails(detailDTOs);
+
+        // Set<Media> medias = product.getMedias();
+        // if (medias != null && !medias.isEmpty()) {
+        //     String[] publicIds = medias.stream()
+        //         .map(Media::getPublicId)
+        //         .toArray(String[]::new);
+
+        //     String[] urls = medias.stream()
+        //         .map(Media::getUrl)
+        //         .toArray(String[]::new);
+
+        //     dto.setPublicIds(publicIds);
+        //     dto.setUrls(urls);
+        // }
+
+        return dto;
     }
 
     public ProductDTO.ProductDetailDTO convertDetailToDTO(ProductDetail productDetail) {

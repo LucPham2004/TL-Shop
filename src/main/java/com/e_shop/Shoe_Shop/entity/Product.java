@@ -71,6 +71,10 @@ public class Product {
 	private Set<Category> category;
     
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "product_medias")
+    private Set<Media> medias;
+    
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference(value = "product_reviews")
     private Set<Review> reviews;
 
@@ -268,6 +272,14 @@ public class Product {
                 ", productQuantity=" + productQuantity + ", productQuantitySold=" + productQuantitySold + 
                 ", discountPercent=" + discountPercent + ", category="+ category + ", brand=" + brand + 
                 ", reviewCount=" + reviewCount + ", averageRating=" + averageRating + ", day-created=" + productDayCreated +"]";
+    }
+
+    public Set<Media> getMedias() {
+        return medias;
+    }
+
+    public void setMedias(Set<Media> medias) {
+        this.medias = medias;
     }
 
 }

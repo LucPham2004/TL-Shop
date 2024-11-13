@@ -1,8 +1,5 @@
 package com.e_shop.Shoe_Shop.service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -10,12 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.e_shop.Shoe_Shop.dto.dto.ProductDTO;
 import com.e_shop.Shoe_Shop.dto.dto.ProductInfoDTO;
@@ -148,27 +140,27 @@ public class ProductService {
         .collect(Collectors.toList());
     }
 
-    // Get product Images
-    public ResponseEntity<byte[]> getProductImages(String productName) {
-        try {
-            String uploadDir = "temporaryDisabled/img/products/";
-            Path path = Path.of(uploadDir + productName);
+    // // Get product Images
+    // public ResponseEntity<byte[]> getProductImages(String productName) {
+    //     try {
+    //         String uploadDir = "temporaryDisabled/img/products/";
+    //         Path path = Path.of(uploadDir + productName);
 
-            if (!Files.exists(path)) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            }
+    //         if (!Files.exists(path)) {
+    //             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    //         }
 
-            byte[] imageBytes = Files.readAllBytes(path);
+    //         byte[] imageBytes = Files.readAllBytes(path);
 
-            String mimeType = Files.probeContentType(path);
+    //         String mimeType = Files.probeContentType(path);
 
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(mimeType))
-                    .body(imageBytes);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+    //         return ResponseEntity.ok()
+    //                 .contentType(MediaType.parseMediaType(mimeType))
+    //                 .body(imageBytes);
+    //     } catch (IOException e) {
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    //     }
+    // }
 
     // POST
     public ProductDTO saveProduct(ProductDTO productDTO) {
@@ -180,34 +172,33 @@ public class ProductService {
             product.getDetails().forEach(detail -> detail.setProduct(product));
             product.setProductDayCreated(new Date());
 
-            Product savedProduct = productRepository.save(product);
-            return productMapper.convertToDTO(savedProduct);
+            return productMapper.convertToDTO(productRepository.save(product));
         }
     }
 
-    public String uploadImages(String productName, MultipartFile[] files) {
-        Path uploadDirPath = Path.of("temporaryDisabled/img/products/", productName);
+    // public String uploadImages(String productName, MultipartFile[] files) {
+    //     Path uploadDirPath = Path.of("temporaryDisabled/img/products/", productName);
         
-        try {
-            Files.createDirectories(uploadDirPath);
-        } catch (IOException e) {
-            throw new IllegalStateException("Failed to create upload directory: " + uploadDirPath.toString(), e);
-        }
+    //     try {
+    //         Files.createDirectories(uploadDirPath);
+    //     } catch (IOException e) {
+    //         throw new IllegalStateException("Failed to create upload directory: " + uploadDirPath.toString(), e);
+    //     }
     
-        for (MultipartFile file : files) {
-            @SuppressWarnings("null")
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            Path filePath = uploadDirPath.resolve(fileName);
+    //     for (MultipartFile file : files) {
+    //         @SuppressWarnings("null")
+    //         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+    //         Path filePath = uploadDirPath.resolve(fileName);
             
-            try {
-                file.transferTo(filePath.toFile());
-            } catch (IOException e) {
-                throw new IllegalStateException("Failed to upload file: " + fileName, e);
-            }
-        }
+    //         try {
+    //             file.transferTo(filePath.toFile());
+    //         } catch (IOException e) {
+    //             throw new IllegalStateException("Failed to upload file: " + fileName, e);
+    //         }
+    //     }
         
-        return "Upload Images successfully";
-    }
+    //     return "Upload Images successfully";
+    // }
 
 
     // DELETE

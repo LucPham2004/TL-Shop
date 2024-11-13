@@ -2,8 +2,6 @@ package com.e_shop.Shoe_Shop.controller;
 
 import java.util.List;
 
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.e_shop.Shoe_Shop.dto.dto.ProductDTO;
 import com.e_shop.Shoe_Shop.dto.dto.ProductInfoDTO;
@@ -54,10 +51,10 @@ public class ProductController {
         return productService.searchProducts(keywword);
     }
 
-    @GetMapping("/images/{productName}")
-    public ResponseEntity<byte[]> getProductImages(@PathVariable String productName) {
-        return productService.getProductImages(productName);
-    }
+    // @GetMapping("/images/{productName}")
+    // public ResponseEntity<byte[]> getProductImages(@PathVariable String productName) {
+    //     return productService.getProductImages(productName);
+    // }
 
     @GetMapping(path = "/brand/{brandName}")
     public List<ProductInfoDTO> getProductsByBrand(@PathVariable String brandName) {
@@ -83,11 +80,11 @@ public class ProductController {
         return null;
     }
 
-    @PostMapping(path = "/uploadImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String uploadImages(@RequestParam String productName, 
-                            @RequestParam MultipartFile[] productImages){
-        return productService.uploadImages(productName, productImages);
-    }
+    // @PostMapping(path = "/uploadImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    // public String uploadImages(@RequestParam String productName, 
+    //                         @RequestParam MultipartFile[] productImages){
+    //     return productService.uploadImages(productName, productImages);
+    // }
 
     // PUT
     @PutMapping("/{id}")

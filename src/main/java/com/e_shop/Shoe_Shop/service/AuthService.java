@@ -98,7 +98,7 @@ public class AuthService {
     
         } catch (AuthenticationException | JOSEException e) {
             System.out.println("Authentication failed for email: " + email);
-            e.printStackTrace();
+            e.toString();
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return new ApiResponse<>(401, "Authentication failed", null);
         }

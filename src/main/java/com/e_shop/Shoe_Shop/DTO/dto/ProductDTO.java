@@ -25,6 +25,9 @@ public class ProductDTO {
     private String brandName;
     private Set<String> categories;
     private Set<ProductDetailDTO> details;
+    
+    private String[] urls;
+    private String[] publicIds;
 
     public ProductDTO() {
     }
@@ -32,7 +35,7 @@ public class ProductDTO {
     public ProductDTO(Integer id, String productName, String productDescription, String productImage,
             Float productPrice, Integer productQuantity, Integer productQuantitySold, Date productDayCreated,
             Float discountPercent, Integer reviewCount, Float averageRating, String brandName, Set<String> categories,
-            Set<ProductDetailDTO> details) {
+            Set<ProductDetailDTO> details, String[] urls, String[] publicIds) {
         this.id = id;
         this.productName = productName;
         this.productDescription = productDescription;
@@ -47,8 +50,9 @@ public class ProductDTO {
         this.brandName = brandName;
         this.categories = categories;
         this.details = details;
+        this.urls = urls;
+        this.publicIds = publicIds;
     }
-
 
     // Inner class for ProductDetailDTO
     public static class ProductDetailDTO {
@@ -232,5 +236,21 @@ public class ProductDTO {
 
     public void setProductDayCreated(Date productDayCreated) {
         this.productDayCreated = productDayCreated;
+    }
+
+    public String[] getUrls() {
+        return urls;
+    }
+
+    public void setUrls(String[] urls) {
+        this.urls = urls;
+    }
+
+    public String[] getPublicIds() {
+        return publicIds;
+    }
+
+    public void setPublicIds(String[] publicIds) {
+        this.publicIds = publicIds;
     }
 }
