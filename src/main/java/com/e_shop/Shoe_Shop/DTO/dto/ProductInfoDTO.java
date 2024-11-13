@@ -17,9 +17,13 @@ public class ProductInfoDTO {
     private Float discountPercent;
     private String brandName;
     private Set<String> categories;
+    private String[] urls;
+    private String[] publicIds;
 
+    
     public ProductInfoDTO(Integer id, String productName, String productDescription, String productImage,
-            Float productPrice, Float discountPercent, String brandName, Set<String> categories) {
+            Float productPrice, Float discountPercent, String brandName, Set<String> categories, String[] urls,
+            String[] publicIds) {
         this.id = id;
         this.productName = productName;
         this.productDescription = productDescription;
@@ -28,7 +32,10 @@ public class ProductInfoDTO {
         this.discountPercent = discountPercent;
         this.brandName = brandName;
         this.categories = categories;
+        this.urls = urls;
+        this.publicIds = publicIds;
     }
+    
     public ProductInfoDTO() {
     }
     @Override
@@ -86,5 +93,21 @@ public class ProductInfoDTO {
     }
     public void setDiscountPercent(Float discountPercent) {
         this.discountPercent = discountPercent;
+    }
+
+    public String[] getUrls() {
+        return urls;
+    }
+
+    public void setUrls(String[] urls) {
+        this.urls = urls;
+    }
+
+    public String[] getPublicIds() {
+        return publicIds;
+    }
+
+    public void setPublicIds(String[] publicIds) {
+        this.publicIds = publicIds;
     }
 }

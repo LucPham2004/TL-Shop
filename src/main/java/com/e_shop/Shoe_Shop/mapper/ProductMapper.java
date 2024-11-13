@@ -1,6 +1,7 @@
 package com.e_shop.Shoe_Shop.mapper;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,21 +11,26 @@ import com.e_shop.Shoe_Shop.dto.dto.ProductDTO;
 import com.e_shop.Shoe_Shop.dto.dto.ProductInfoDTO;
 import com.e_shop.Shoe_Shop.entity.Brand;
 import com.e_shop.Shoe_Shop.entity.Category;
+import com.e_shop.Shoe_Shop.entity.Media;
 import com.e_shop.Shoe_Shop.entity.Product;
 import com.e_shop.Shoe_Shop.entity.ProductDetail;
 import com.e_shop.Shoe_Shop.repository.BrandRepository;
 import com.e_shop.Shoe_Shop.repository.CategoryRepository;
+import com.e_shop.Shoe_Shop.repository.MediaRepository;
 
 @Component
 public class ProductMapper {
     
-    public ProductMapper(BrandRepository brandRepository, CategoryRepository categoryRepository) {
+    public ProductMapper(BrandRepository brandRepository, CategoryRepository categoryRepository,
+            MediaRepository mediaRepository) {
         this.brandRepository = brandRepository;
         this.categoryRepository = categoryRepository;
+        this.mediaRepository = mediaRepository;
     }
 
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
+    private final MediaRepository mediaRepository;
     
     // Convert Product and ProductDetail to DTO
     public ProductDTO convertToDTO(Product product) {
@@ -49,19 +55,19 @@ public class ProductMapper {
         dto.setCategories(product.getCategory().stream().map(Category::getName).collect(Collectors.toSet()));
         dto.setDetails(detailDTOs);
 
-        // Set<Media> medias = product.getMedias();
-        // if (medias != null && !medias.isEmpty()) {
-        //     String[] publicIds = medias.stream()
-        //         .map(Media::getPublicId)
-        //         .toArray(String[]::new);
+        Set<Media> medias = product.getMedias();
+        if (medias != null && !medias.isEmpty()) {
+            String[] publicIds = medias.stream()
+                .map(Media::getPublicId)
+                .toArray(String[]::new);
 
-        //     String[] urls = medias.stream()
-        //         .map(Media::getUrl)
-        //         .toArray(String[]::new);
+            String[] urls = medias.stream()
+                .map(Media::getUrl)
+                .toArray(String[]::new);
 
-        //     dto.setPublicIds(publicIds);
-        //     dto.setUrls(urls);
-        // }
+            dto.setPublicIds(publicIds);
+            dto.setUrls(urls);
+        }
 
         return dto;
     }
@@ -106,6 +112,26 @@ public class ProductMapper {
             .collect(Collectors.toSet());
         product.setDetails(details);
 
+        if (productDTO.getPublicIds() != null && productDTO.getUrls() != null) {
+
+            if (productDTO.getPublicIds().length != productDTO.getUrls().length) {
+                throw new IllegalArgumentException("The size of publicIds and urls must be the same.");
+            }
+        
+            Set<Media> medias = new HashSet<>();
+        
+            for (int i = 0; i < productDTO.getPublicIds().length; i++) {
+                Media media = new Media();
+                media.setPublicId(productDTO.getPublicIds()[i]);
+                media.setUrl(productDTO.getUrls()[i]);
+                media.setProduct(product);
+        
+                medias.add(mediaRepository.save(media));
+            }
+        
+            product.setMedias(medias);
+        }
+
         return product;
     }
 
@@ -120,15 +146,31 @@ public class ProductMapper {
     }
 
     public ProductInfoDTO convertToInfoDTO(Product product) {
-        return new ProductInfoDTO(
-            product.getId(),
-            product.getProductName(),
-            product.getProductDescription(),
-            product.getProductImage(),
-            product.getProductPrice(),
-            product.getDiscountPercent(),
-            product.getBrand().getName(),
-            product.getCategory().stream().map(Category::getName).collect(Collectors.toSet())
-        );
+        ProductInfoDTO dto = new ProductInfoDTO();
+
+        dto.setId(product.getId());
+        dto.setProductName(product.getProductName());
+        dto.setProductDescription(product.getProductDescription());
+        dto.setProductImage(product.getProductImage());
+        dto.setProductPrice(product.getProductPrice());
+        dto.setDiscountPercent(product.getDiscountPercent());
+        dto.setBrandName(product.getBrand().getName());
+        dto.setCategories(product.getCategory().stream().map(Category::getName).collect(Collectors.toSet()));
+        
+        Set<Media> medias = product.getMedias();
+        if (medias != null && !medias.isEmpty()) {
+            String[] publicIds = medias.stream()
+                .map(Media::getPublicId)
+                .toArray(String[]::new);
+
+            String[] urls = medias.stream()
+                .map(Media::getUrl)
+                .toArray(String[]::new);
+
+            dto.setPublicIds(publicIds);
+            dto.setUrls(urls);
+        }
+        
+        return dto;
     }
 }
