@@ -46,6 +46,11 @@ public class ProductController {
         return productService.getTopProducts();
     }
 
+    @GetMapping("/low-remaining")
+    public List<ProductInfoDTO> getLowRemainingProducts() {
+        return productService.lowRemainingProducts();
+    }
+
     @GetMapping("/search")
     public List<ProductInfoDTO> searchProducts(@RequestParam("keyword") String keywword) {
         return productService.searchProducts(keywword);

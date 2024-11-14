@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 
 import com.e_shop.Shoe_Shop.dto.dto.CustomerDTO;
 import com.e_shop.Shoe_Shop.dto.dto.OrderDTO;
-import com.e_shop.Shoe_Shop.dto.dto.ProductInfoDTO;
 
 public class MainEntitiesSummary {
     
@@ -18,7 +17,7 @@ public class MainEntitiesSummary {
     
     private List<CustomerDTO> new_customers;
     private Page<OrderDTO> orderList;
-    private List<ProductInfoDTO> lowRemainingProducts;
+    private long lowRemainingProducts;
 
     
     public long getTotalProducts() {
@@ -66,10 +65,10 @@ public class MainEntitiesSummary {
     public void setOrderList(Page<OrderDTO> orderList) {
         this.orderList = orderList;
     }
-    public List<ProductInfoDTO> getLowRemainingProducts() {
+    public long getLowRemainingProducts() {
         return lowRemainingProducts;
     }
-    public void setLowRemainingProducts(List<ProductInfoDTO> lowRemainingProducts) {
+    public void setLowRemainingProducts(long lowRemainingProducts) {
         this.lowRemainingProducts = lowRemainingProducts;
     }
 }

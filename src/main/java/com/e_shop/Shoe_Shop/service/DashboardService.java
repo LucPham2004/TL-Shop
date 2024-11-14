@@ -49,7 +49,7 @@ public class DashboardService {
 
 		summary.setNew_customers(customerService.newCustomers());
 		summary.setOrderList(orderService.getSortedOrdersByStatus(0));
-		summary.setLowRemainingProducts(productService.lowRemainingProducts());
+		summary.setLowRemainingProducts(productService.lowRemainingProducts().size());
 
 		return summary;
 	}
