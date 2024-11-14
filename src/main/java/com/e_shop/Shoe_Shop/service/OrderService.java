@@ -16,6 +16,8 @@ import com.e_shop.Shoe_Shop.entity.Order;
 import com.e_shop.Shoe_Shop.entity.OrderDetail;
 import com.e_shop.Shoe_Shop.entity.Product;
 import com.e_shop.Shoe_Shop.entity.ProductDetail;
+import com.e_shop.Shoe_Shop.exception.AppException;
+import com.e_shop.Shoe_Shop.exception.ErrorCode;
 import com.e_shop.Shoe_Shop.repository.CustomerRepository;
 import com.e_shop.Shoe_Shop.repository.OrderRepository;
 import com.e_shop.Shoe_Shop.repository.ProductDetailRepository;
@@ -71,8 +73,8 @@ public class OrderService {
 
     public OrderDTO getOrderById(Integer id) {
 		boolean exist = orderRepository.existsById(id);
-        if(exist){
-            throw new IllegalStateException("Order does not exists!");
+        if(!exist){
+            throw new AppException(ErrorCode.ENTITY_NOT_EXISTED);
         }
 		return convertToDTO(orderRepository.findById(id));
 	}
@@ -153,7 +155,7 @@ public class OrderService {
     public void DeleteOrder(int id){
 		Order order = orderRepository.findById(id);
 		if(order == null){
-			throw new IllegalStateException("Order does not exists!");
+			throw new AppException(ErrorCode.ENTITY_NOT_EXISTED);
 		}
         orderRepository.delete(order);
     }

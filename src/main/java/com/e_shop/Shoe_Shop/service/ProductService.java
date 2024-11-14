@@ -15,12 +15,13 @@ import com.e_shop.Shoe_Shop.entity.Brand;
 import com.e_shop.Shoe_Shop.entity.Category;
 import com.e_shop.Shoe_Shop.entity.Product;
 import com.e_shop.Shoe_Shop.entity.ProductDetail;
+import com.e_shop.Shoe_Shop.exception.AppException;
+import com.e_shop.Shoe_Shop.exception.ErrorCode;
 import com.e_shop.Shoe_Shop.mapper.ProductMapper;
 import com.e_shop.Shoe_Shop.repository.BrandRepository;
 import com.e_shop.Shoe_Shop.repository.CategoryRepository;
 import com.e_shop.Shoe_Shop.repository.ProductRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -54,7 +55,7 @@ public class ProductService {
 
     public ProductDTO getProductById(Integer id) {
         Product product = productRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Product not found"));
+            .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
         return productMapper.convertToDTO(product);
     }
 
@@ -166,8 +167,7 @@ public class ProductService {
     public ProductDTO saveProduct(ProductDTO productDTO) {
         Product product = productMapper.convertToEntity(productDTO);
         if(productRepository.existsByProductNameAndProductDescription(product.getProductName(), product.getProductDescription()))
-            throw new IllegalStateException("Product with name: " + product.getProductName() + 
-            " and description: " + product.getProductDescription() + " already exists!");
+            throw new AppException(ErrorCode.ENTITY_EXISTED);
         else{
             product.getDetails().forEach(detail -> detail.setProduct(product));
             product.setProductDayCreated(new Date());
@@ -204,7 +204,7 @@ public class ProductService {
     // DELETE
     public void deleteProduct(Integer id) {
         Product product = productRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+        .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
         productRepository.delete(product);
     }
 
@@ -212,7 +212,7 @@ public class ProductService {
     @Transactional
     public ProductDTO updateProduct(ProductDTO productDTO) {
         Product productToUpdate = productRepository.findById(productDTO.getId())
-            .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+            .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
 
         // Update product fields
         productToUpdate.setProductName(productDTO.getProductName());

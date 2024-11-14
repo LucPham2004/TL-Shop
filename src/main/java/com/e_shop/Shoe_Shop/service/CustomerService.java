@@ -1,15 +1,20 @@
 package com.e_shop.Shoe_Shop.service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +27,10 @@ import com.e_shop.Shoe_Shop.dto.dto.CustomerDTO;
 import com.e_shop.Shoe_Shop.dto.request.ChangePasswordRequest;
 import com.e_shop.Shoe_Shop.entity.Customer;
 import com.e_shop.Shoe_Shop.entity.Role;
+import com.e_shop.Shoe_Shop.exception.AppException;
+import com.e_shop.Shoe_Shop.exception.ErrorCode;
 import com.e_shop.Shoe_Shop.repository.CustomerRepository;
+import com.e_shop.Shoe_Shop.repository.RoleRepository;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -67,13 +75,13 @@ public class CustomerService implements UserDetailsService{
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Customer customer = customerRepository.findByEmail(email);
         if(customer == null) {
-            throw new IllegalStateException("Customer not found!");
+            throw new AppException(ErrorCode.ENTITY_NOT_EXISTED);
         }
 
         Set<Role> customerRoles = customer.getRoles();
         Optional<Role> userRole = roleRepository.findByAuthority("USER");
 
-        if (!customerRoles.contains(userRole.orElseThrow(() -> new IllegalStateException("USER role not found in database")))) {
+        if (!customerRoles.contains(userRole.orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED)))) {
             customerRoles.add(userRole.get());
             customer.setAuthorities(customerRoles);
             customerRepository.save(customer);
@@ -90,14 +98,14 @@ public class CustomerService implements UserDetailsService{
 
     public CustomerDTO findCustomerById(Integer id) {
         Customer customer = customerRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Customer with id: " + id + " does not exist!"));
+        .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
         return convertToDTO(customer);
     }
 
     public CustomerDTO findCustomerByEmail(String email) {
         Customer customer = customerRepository.findByEmail(email);
         if (customer == null) {
-            throw new IllegalStateException("Customer with email: " + email + " does not exist!");
+            throw new AppException(ErrorCode.ENTITY_NOT_EXISTED);
         }
         return convertToDTO(customer);
     }
@@ -131,12 +139,8 @@ public class CustomerService implements UserDetailsService{
         List<CustomerDTO> new_customers = customerRepository.findAll().stream()
         .map(this::convertToDTO).collect(Collectors.toList());
 
-        Collections.sort(new_customers, new Comparator<CustomerDTO>() {
-            @Override
-            public int compare(CustomerDTO order1, CustomerDTO order2) {
-                return order2.getDayCreated().compareTo(order1.getDayCreated());
-            }
-        });
+        Collections.sort(new_customers, 
+            (CustomerDTO order1, CustomerDTO order2) -> order2.getDayCreated().compareTo(order1.getDayCreated()));
         
         return new_customers;
     }
@@ -146,7 +150,7 @@ public class CustomerService implements UserDetailsService{
     // Create Customer
     public CustomerDTO createCustomer(Customer customer) {
         if(customerRepository.existsByEmail(customer.getEmail())){
-            throw new IllegalStateException("Customer with email: " + customer.getEmail() + " already exists!");
+            throw new AppException(ErrorCode.ENTITY_EXISTED);
         }
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         return convertToDTO(customerRepository.save(customer));
@@ -192,7 +196,7 @@ public class CustomerService implements UserDetailsService{
     {
         Customer customer = customerRepository.findByIdAndEmail(id, email);
         if(customer == null){
-            throw new IllegalStateException("Customer with email: " + email + " and id: " + id + " does not exist!");
+            throw new AppException(ErrorCode.ENTITY_NOT_EXISTED);
         }
         customerRepository.delete(customer);
     }
@@ -206,7 +210,7 @@ public class CustomerService implements UserDetailsService{
         if(newEmail != null && !newEmail.isBlank() && !Objects.equals(customer.getEmail(), newEmail))
         {
             if(customerRepository.existsByEmail(newEmail))
-                throw new IllegalStateException("Email taken! Please use another email!");
+                throw new AppException(ErrorCode.ENTITY_EXISTED);
 
             customer.setEmail(newEmail);
         }

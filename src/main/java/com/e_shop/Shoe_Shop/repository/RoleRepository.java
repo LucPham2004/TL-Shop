@@ -1,4 +1,4 @@
-package com.e_shop.Shoe_Shop.service;
+package com.e_shop.Shoe_Shop.repository;
 
 import java.util.Optional;
 

@@ -3,6 +3,8 @@ package com.e_shop.Shoe_Shop.service;
 import org.springframework.stereotype.Service;
 
 import com.e_shop.Shoe_Shop.entity.Brand;
+import com.e_shop.Shoe_Shop.exception.AppException;
+import com.e_shop.Shoe_Shop.exception.ErrorCode;
 import com.e_shop.Shoe_Shop.repository.BrandRepository;
 
 @Service
@@ -24,7 +26,7 @@ public class BrandService {
         boolean exists = brandRepository.existsById(id);
         if(!exists)
         {
-            throw new IllegalStateException("Brand with id: " + id +" doesn't exists!");
+            throw new AppException(ErrorCode.ENTITY_NOT_EXISTED);
         }
         return brandRepository.findById(id).get();
     }
@@ -34,7 +36,7 @@ public class BrandService {
         boolean exists = brandRepository.existsByName(brandName);
         if(exists)
         {
-            throw new IllegalStateException("Brand with name: " + brandName +" already exists!");
+            throw new AppException(ErrorCode.ENTITY_EXISTED);
         }
         Brand brand = new Brand();
         brand.setName(brandName);
@@ -46,7 +48,7 @@ public class BrandService {
         boolean exists = brandRepository.existsById(id);
         if(!exists)
         {
-            throw new IllegalStateException("Brand with id: " + id +" doesn't exists!");
+            throw new AppException(ErrorCode.ENTITY_NOT_EXISTED);
         }
         brandRepository.deleteById(id);
     }

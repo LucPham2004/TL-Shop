@@ -1,7 +1,6 @@
 package com.e_shop.Shoe_Shop.service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -11,11 +10,12 @@ import com.e_shop.Shoe_Shop.dto.request.ReviewCreationRequest;
 import com.e_shop.Shoe_Shop.entity.Customer;
 import com.e_shop.Shoe_Shop.entity.Product;
 import com.e_shop.Shoe_Shop.entity.Review;
+import com.e_shop.Shoe_Shop.exception.AppException;
+import com.e_shop.Shoe_Shop.exception.ErrorCode;
 import com.e_shop.Shoe_Shop.repository.CustomerRepository;
 import com.e_shop.Shoe_Shop.repository.ProductRepository;
 import com.e_shop.Shoe_Shop.repository.ReviewRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -52,7 +52,7 @@ public class ReviewService {
     }
 
     public ReviewDTO getReviewById(int id) {
-        return convertToDTO(reviewRepository.findById(id).orElseThrow(() -> new RuntimeException("Review not found")));
+        return convertToDTO(reviewRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED)));
     }
 
     public List<ReviewDTO> getAllReviewsByProduct(int product_id)
@@ -60,7 +60,7 @@ public class ReviewService {
         Product product = productRepository.findById(product_id);
         if(product == null)
         {
-            throw new IllegalStateException("Product with id: " + product_id + " does not exist!");
+            throw new AppException(ErrorCode.ENTITY_NOT_EXISTED);
         }
         return reviewRepository.findByProductId(product_id)
         .stream().map(this::convertToDTO).collect(Collectors.toList());
@@ -71,7 +71,7 @@ public class ReviewService {
         Customer customer = customerRepository.findById(customer_id);
         if(customer == null)
         {
-            throw new IllegalStateException("Customer with id: " + customer_id + " does not exist!");
+            throw new AppException(ErrorCode.ENTITY_NOT_EXISTED);
         }
         return reviewRepository.findByCustomerId(customer_id)
         .stream().map(this::convertToDTO).collect(Collectors.toList());
@@ -90,15 +90,6 @@ public class ReviewService {
         newReview.setReviewTitle(reviewCreationRequest.getReviewTitle());
         newReview.setCustomer(customer);
 
-        Set<Review> reviews = product.getReviews();
-        Float avgRating = 0.0f;
-        for(Review review: reviews) {
-            avgRating += review.getReviewRating();
-        }
-        if (!reviews.isEmpty()) {
-            avgRating /= reviews.size();
-        }
-        
         newReview.setProduct(product);
 
         Review reviewSave = reviewRepository.save(newReview);
@@ -118,7 +109,7 @@ public class ReviewService {
     @Transactional
     public ReviewDTO updateReview(ReviewCreationRequest reviewCreationRequest) {
         Review reviewToUpdate = reviewRepository.findById(reviewCreationRequest.getId())
-        .orElseThrow(() -> new EntityNotFoundException("Review not found"));
+        .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
 
         reviewToUpdate.setReviewTitle(reviewCreationRequest.getReviewTitle());
         reviewToUpdate.setReviewContent(reviewCreationRequest.getReviewContent());

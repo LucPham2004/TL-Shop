@@ -22,6 +22,7 @@ import com.e_shop.Shoe_Shop.dto.response.LoginResponseDTO;
 import com.e_shop.Shoe_Shop.entity.Customer;
 import com.e_shop.Shoe_Shop.entity.Role;
 import com.e_shop.Shoe_Shop.repository.CustomerRepository;
+import com.e_shop.Shoe_Shop.repository.RoleRepository;
 import com.nimbusds.jose.JOSEException;
 
 import jakarta.servlet.http.HttpServletRequest;
