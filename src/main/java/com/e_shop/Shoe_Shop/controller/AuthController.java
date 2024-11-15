@@ -73,6 +73,10 @@ public class AuthController {
                LoginResponse.UserLogin userLogin = new LoginResponse.UserLogin(
                          currentUserDB.getId(),
                          currentUserDB.getEmail(),
+                         currentUserDB.getName(),
+                         currentUserDB.getPhone(),
+                         currentUserDB.getAddress(),
+                         currentUserDB.getDayCreated(),
                          currentUserDB.getAuthorities());
                loginResponse.setUser(userLogin);
           }
@@ -151,6 +155,10 @@ public class AuthController {
           LoginResponse.UserLogin userLogin = new LoginResponse.UserLogin(
                     currentUser.getId(),
                     currentUser.getEmail(),
+                    currentUser.getName(),
+                    currentUser.getPhone(),
+                    currentUser.getAddress(),
+                    currentUser.getDayCreated(),
                     currentUser.getAuthorities());
           res.setUser(userLogin);
 

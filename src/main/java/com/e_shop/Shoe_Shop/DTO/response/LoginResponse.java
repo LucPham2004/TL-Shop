@@ -1,8 +1,10 @@
 package com.e_shop.Shoe_Shop.dto.response;
 
+import java.util.Date;
 import java.util.Set;
 
 import com.e_shop.Shoe_Shop.entity.Role;
+
 
 public class LoginResponse {
     private UserLogin user;
@@ -17,19 +19,27 @@ public class LoginResponse {
 
     public static class UserLogin {
 
-        public UserLogin(long id, String email, Set<Role> authorities) {
+        private long id;
+        private String email;
+        private String name;
+        private String phone;
+        private String address;
+        private Date dayCreated;
+        private Set<Role> authorities;
+
+        public UserLogin(long id, String email, String name, String phone, String address, Date dayCreated,
+                Set<Role> authorities) {
             this.id = id;
             this.email = email;
+            this.name = name;
+            this.phone = phone;
+            this.address = address;
+            this.dayCreated = dayCreated;
             this.authorities = authorities;
         }
 
         public UserLogin() {
         }
-
-        private long id;
-        private String email;
-        private Set<Role> authorities;
-
 
         public long getId() {
             return id;
@@ -53,6 +63,38 @@ public class LoginResponse {
 
         public void setAuthorities(Set<Role> authorities) {
             this.authorities = authorities;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public Date getDayCreated() {
+            return dayCreated;
+        }
+
+        public void setDayCreated(Date dayCreated) {
+            this.dayCreated = dayCreated;
         }
    }
 
