@@ -109,7 +109,8 @@ public class OrderService {
         Float TotalPrice = 0.0f;
 
         newOrder.setDate(new Date());
-        newOrder.setCustomer(customerRepository.findById(customerId));
+        newOrder.setCustomer(customerRepository.findById(customerId)
+            .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED)));
         newOrder.setShippingCost(ShippingCostCurrent);
         newOrder.setStatus("Processing");
         newOrder.setTax(TaxCurrent);

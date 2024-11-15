@@ -68,8 +68,7 @@ public class ReviewService {
 
     public List<ReviewDTO> getAllReviewsByCustomer(int customer_id)
     {
-        Customer customer = customerRepository.findById(customer_id);
-        if(customer == null)
+        if(customerRepository.existsById(customer_id))
         {
             throw new AppException(ErrorCode.ENTITY_NOT_EXISTED);
         }
@@ -81,7 +80,8 @@ public class ReviewService {
     public ReviewDTO addNewReview(ReviewCreationRequest reviewCreationRequest) {
     
         Product product = productRepository.findById(reviewCreationRequest.getProductId());
-        Customer customer = customerRepository.findById(reviewCreationRequest.getCustomerId());
+        Customer customer = customerRepository.findById(reviewCreationRequest.getCustomerId())
+            .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
 
         Review newReview = new Review();
         newReview.setReviewContent(reviewCreationRequest.getReviewContent());

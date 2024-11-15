@@ -18,14 +18,11 @@ public class CustomerDTO {
     private Set<Role> authorities;
     private Set<Order> order;
     private Set<Review> review;
-    private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
-    private boolean isCredentialsNonExpired;
     private boolean isEnabled;
 
     public CustomerDTO(Integer id, String email, String name, String phone, String address, Date dayCreated, Set<Role> authorities,
-            Set<Order> order, Set<Review> review, boolean isAccountNonExpired, boolean isAccountNonLocked,
-            boolean isCredentialsNonExpired, boolean isEnabled) {
+            Set<Order> order, Set<Review> review, boolean isAccountNonLocked, boolean isEnabled) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -35,9 +32,7 @@ public class CustomerDTO {
         this.authorities = authorities;
         this.order = order;
         this.review = review;
-        this.isAccountNonExpired = isAccountNonExpired;
         this.isAccountNonLocked = isAccountNonLocked;
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
         this.isEnabled = isEnabled;
     }
 
@@ -106,28 +101,12 @@ public class CustomerDTO {
         this.review = review;
     }
 
-    public boolean isAccountNonExpired() {
-        return isAccountNonExpired;
-    }
-
-    public void setAccountNonExpired(boolean isAccountNonExpired) {
-        this.isAccountNonExpired = isAccountNonExpired;
-    }
-
     public boolean isAccountNonLocked() {
         return isAccountNonLocked;
     }
 
     public void setAccountNonLocked(boolean isAccountNonLocked) {
         this.isAccountNonLocked = isAccountNonLocked;
-    }
-
-    public boolean isCredentialsNonExpired() {
-        return isCredentialsNonExpired;
-    }
-
-    public void setCredentialsNonExpired(boolean isCredentialsNonExpired) {
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
     }
 
     public boolean isEnabled() {

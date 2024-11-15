@@ -1,12 +1,8 @@
 package com.e_shop.Shoe_Shop.entity;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -25,7 +21,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "customers")
-public class Customer implements UserDetails{
+public class Customer{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +42,9 @@ public class Customer implements UserDetails{
 
     @Column(name = "customer_address")
     private String address;
+
+    @Column(columnDefinition = "MEDIUMTEXT")
+    private String refreshToken;
 
     @Column(name = "day_created")
     private Date dayCreated;
@@ -70,11 +69,6 @@ public class Customer implements UserDetails{
     
     @Column(name = "is_enabled")
     private boolean isEnabled = true;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
-    }
 
     public Integer getId() {
         return id;
@@ -156,11 +150,6 @@ public class Customer implements UserDetails{
                 ", order=" + order + ", review=" + review + "]";
     }
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -189,37 +178,36 @@ public class Customer implements UserDetails{
         this.authorities = authorities;
     }
 
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return isAccountNonLocked;
-    }
-
     public void setAccountNonLocked(boolean isAccountNonLocked) {
         this.isAccountNonLocked = isAccountNonLocked;
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
     }
 
-    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public Set<Role> getAuthorities() {
+        return authorities;
+    }
+
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
     public boolean isEnabled() {
         return isEnabled;
     }
 
-    public void setEnabled(boolean isEnabled) {
-        this.isEnabled = isEnabled;
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
 }

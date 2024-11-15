@@ -1,24 +1,15 @@
 package com.e_shop.Shoe_Shop.service;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,25 +17,21 @@ import org.springframework.transaction.annotation.Transactional;
 import com.e_shop.Shoe_Shop.dto.dto.CustomerDTO;
 import com.e_shop.Shoe_Shop.dto.request.ChangePasswordRequest;
 import com.e_shop.Shoe_Shop.entity.Customer;
-import com.e_shop.Shoe_Shop.entity.Role;
 import com.e_shop.Shoe_Shop.exception.AppException;
 import com.e_shop.Shoe_Shop.exception.ErrorCode;
 import com.e_shop.Shoe_Shop.repository.CustomerRepository;
-import com.e_shop.Shoe_Shop.repository.RoleRepository;
 
 import jakarta.servlet.http.HttpServletResponse;
 
 @Service
-public class CustomerService implements UserDetailsService{
+public class CustomerService{
     private final CustomerRepository customerRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     
-    public CustomerService(CustomerRepository customerRepository, RoleRepository roleRepository,
+    public CustomerService(CustomerRepository customerRepository,
             PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.customerRepository = customerRepository;
-        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
     }
@@ -60,8 +47,6 @@ public class CustomerService implements UserDetailsService{
             customer.getRoles(),
             customer.getOrder(),
             customer.getReview(),
-            customer.isAccountNonExpired(),
-            customer.isCredentialsNonExpired(),
             customer.isAccountNonLocked(),
             customer.isEnabled()
         );
@@ -71,42 +56,21 @@ public class CustomerService implements UserDetailsService{
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
     
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Customer customer = customerRepository.findByEmail(email);
-        if(customer == null) {
-            throw new AppException(ErrorCode.ENTITY_NOT_EXISTED);
-        }
 
-        Set<Role> customerRoles = customer.getRoles();
-        Optional<Role> userRole = roleRepository.findByAuthority("USER");
-
-        if (!customerRoles.contains(userRole.orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED)))) {
-            customerRoles.add(userRole.get());
-            customer.setAuthorities(customerRoles);
-            customerRepository.save(customer);
-        }
-
-        return new User(customer.getUsername(), customer.getPassword(), getAuthorities(customer.getRoles()));
-    }
-
-    private Collection<? extends GrantedAuthority> getAuthorities(Set<Role> roles) {
-        return roles.stream()
-                    .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
-                    .collect(Collectors.toList());
+    public Customer handleGetCustomerByEmail(String email) {
+        return customerRepository.findByEmail(email)
+            .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
     }
 
     public CustomerDTO findCustomerById(Integer id) {
         Customer customer = customerRepository.findById(id)
-        .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
+            .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
         return convertToDTO(customer);
     }
 
     public CustomerDTO findCustomerByEmail(String email) {
-        Customer customer = customerRepository.findByEmail(email);
-        if (customer == null) {
-            throw new AppException(ErrorCode.ENTITY_NOT_EXISTED);
-        }
+        Customer customer = customerRepository.findByEmail(email)
+            .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
         return convertToDTO(customer);
     }
 
@@ -166,7 +130,8 @@ public class CustomerService implements UserDetailsService{
             
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-            Customer customer = customerRepository.findById(changePasswordRequest.getId());
+            Customer customer = customerRepository.findById(changePasswordRequest.getId())
+                .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
 
             if(customer == null) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -194,10 +159,8 @@ public class CustomerService implements UserDetailsService{
     // DELETE
     public void deleteCustomerByIdAndEmail(int id, String email)
     {
-        Customer customer = customerRepository.findByIdAndEmail(id, email);
-        if(customer == null){
-            throw new AppException(ErrorCode.ENTITY_NOT_EXISTED);
-        }
+        Customer customer = customerRepository.findByIdAndEmail(id, email)
+        .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
         customerRepository.delete(customer);
     }
 
@@ -205,7 +168,8 @@ public class CustomerService implements UserDetailsService{
     @Transactional
     public CustomerDTO UpdateCustomer(int id, String newEmail, String newName, String newPhone, String newAddress)
     {
-        Customer customer = customerRepository.findById(id);
+        Customer customer = customerRepository.findById(id)
+            .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
 
         if(newEmail != null && !newEmail.isBlank() && !Objects.equals(customer.getEmail(), newEmail))
         {
@@ -227,4 +191,16 @@ public class CustomerService implements UserDetailsService{
         return convertToDTO(customerRepository.save(customer));
     }
 
+    public void updateUserToken(String token, String email) {
+        Customer currentUser = this.handleGetCustomerByEmail(email);
+        if (currentUser != null) {
+            currentUser.setRefreshToken(token);
+            this.customerRepository.save(currentUser);
+        }
+    }
+
+    public Customer getUserByRefreshTokenAndEmailOrUsernameOrPhone(String token, String emailUsernamePhone) {
+        return this.customerRepository.findByRefreshTokenAndEmailOrUsernameOrPhone(token, emailUsernamePhone)
+                .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
+    }
 }
