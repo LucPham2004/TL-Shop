@@ -36,7 +36,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     public boolean existsByName(String name);
 
-    @Query(value = "SELECT * FROM Customer c WHERE c.refresh_token = :token AND (c.email = :email)", nativeQuery = true)
+    @Query(value = "SELECT * FROM customers c WHERE c.refresh_token = :token AND (c.customer_email = :email)", nativeQuery = true)
      Optional<Customer> findByRefreshTokenAndEmailOrUsernameOrPhone(@Param("token") String token,
                @Param("email") String email);
 }
