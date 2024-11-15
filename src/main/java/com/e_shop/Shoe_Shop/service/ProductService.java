@@ -9,8 +9,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.e_shop.Shoe_Shop.dto.dto.ProductWithDetails;
 import com.e_shop.Shoe_Shop.dto.dto.ProductDTO;
-import com.e_shop.Shoe_Shop.dto.dto.ProductInfoDTO;
+import com.e_shop.Shoe_Shop.dto.dto.ProductFullInfo;
 import com.e_shop.Shoe_Shop.entity.Brand;
 import com.e_shop.Shoe_Shop.entity.Category;
 import com.e_shop.Shoe_Shop.entity.Product;
@@ -41,48 +42,54 @@ public class ProductService {
 
     // CRUD Methods
     // GET
-    public List<ProductInfoDTO> getAllProducts() {
-        return productRepository.findAll().stream()
-        .map(productMapper::convertToInfoDTO)
-        .collect(Collectors.toList());
-    }
-
-    public List<ProductDTO> getAllProductsWithDetails() {
+    public List<ProductDTO> getAllProducts() {
         return productRepository.findAll().stream()
         .map(productMapper::convertToDTO)
         .collect(Collectors.toList());
     }
 
-    public ProductDTO getProductById(Integer id) {
-        Product product = productRepository.findById(id)
-            .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
-        return productMapper.convertToDTO(product);
+    public List<ProductFullInfo> getAllProductsFullInfo() {
+        return productRepository.findAll().stream()
+        .map(productMapper::convertToFullInfoDTO)
+        .collect(Collectors.toList());
     }
 
-    public List<ProductInfoDTO> getProductsByBrand(String brandName) {
+    public List<ProductWithDetails> getAllProductsWithDetails() {
+        return productRepository.findAll().stream()
+        .map(productMapper::convertToDetailsDTO)
+        .collect(Collectors.toList());
+    }
+
+    public ProductWithDetails getProductById(Integer id) {
+        Product product = productRepository.findById(id)
+            .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
+        return productMapper.convertToDetailsDTO(product);
+    }
+
+    public List<ProductDTO> getProductsByBrand(String brandName) {
         boolean exists = brandRepository.existsByName(brandName);
         if (!exists) {
             throw new IllegalStateException("Brand with name: " + brandName + " doesn't exist!");
         }
         List<Product> products = productRepository.findByBrandName(brandName);
         return products.stream()
-                .map(productMapper::convertToInfoDTO)
+                .map(productMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<ProductInfoDTO> getProductsByCategory(String categoryName) {
+    public List<ProductDTO> getProductsByCategory(String categoryName) {
         boolean exists = categoryRepository.existsByName(categoryName);
         if (!exists) {
             throw new IllegalStateException("Category with name: " + categoryName + " doesn't exist!");
         }
         List<Product> products = productRepository.findByCategoryName(categoryName);
         return products.stream()
-                .map(productMapper::convertToInfoDTO)
+                .map(productMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
 
     // Return top-seller, on-sale products
-    public List<ProductInfoDTO> getTopProducts() {
+    public List<ProductDTO> getTopProducts() {
         List<Product> allproducts = productRepository.findAll();
         List<Product> resultList = new ArrayList<>();
         int index = 0;
@@ -104,24 +111,24 @@ public class ProductService {
             index++;
         }
         
-        return resultList.stream().map(productMapper::convertToInfoDTO).collect(Collectors.toList());
+        return resultList.stream().map(productMapper::convertToDTO).collect(Collectors.toList());
     }
 
     // Search products
-    public List<ProductInfoDTO> searchProducts(String keywword) {
+    public List<ProductDTO> searchProducts(String keywword) {
         return productRepository.findByProductNameContainingOrProductDescriptionContainingOrCategoryNameOrBrandNameContaining(
             keywword, keywword, keywword, keywword).stream()
-        .map(productMapper::convertToInfoDTO)
+        .map(productMapper::convertToDTO)
         .collect(Collectors.toList());
     }
 
-    public List<ProductInfoDTO> searchProductsByIdContaining(int id) {
+    public List<ProductDTO> searchProductsByIdContaining(int id) {
         return productRepository.findByIdContaining(id).stream()
-        .map(productMapper::convertToInfoDTO)
+        .map(productMapper::convertToDTO)
         .collect(Collectors.toList());
     }
 
-    public List<ProductInfoDTO> lowRemainingProducts() {
+    public List<ProductDTO> lowRemainingProducts() {
         List<Product> products = productRepository.findAll();
 
         List<Product> lowRemainingProducts = new ArrayList<>();
@@ -137,7 +144,7 @@ public class ProductService {
         }
 
         return lowRemainingProducts.stream()
-        .map(productMapper::convertToInfoDTO)
+        .map(productMapper::convertToDTO)
         .collect(Collectors.toList());
     }
 
@@ -164,7 +171,7 @@ public class ProductService {
     // }
 
     // POST
-    public ProductDTO saveProduct(ProductDTO productDTO) {
+    public ProductWithDetails saveProduct(ProductWithDetails productDTO) {
         Product product = productMapper.convertToEntity(productDTO);
         if(productRepository.existsByProductNameAndProductDescription(product.getProductName(), product.getProductDescription()))
             throw new AppException(ErrorCode.ENTITY_EXISTED);
@@ -172,7 +179,7 @@ public class ProductService {
             product.getDetails().forEach(detail -> detail.setProduct(product));
             product.setProductDayCreated(new Date());
 
-            return productMapper.convertToDTO(productRepository.save(product));
+            return productMapper.convertToDetailsDTO(productRepository.save(product));
         }
     }
 
@@ -210,7 +217,7 @@ public class ProductService {
 
     // PUT
     @Transactional
-    public ProductDTO updateProduct(ProductDTO productDTO) {
+    public ProductWithDetails updateProduct(ProductWithDetails productDTO) {
         Product productToUpdate = productRepository.findById(productDTO.getId())
             .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
 
@@ -246,6 +253,6 @@ public class ProductService {
         productToUpdate.getDetails().addAll(updatedDetails);
         updatedDetails.forEach(detail -> detail.setProduct(productToUpdate));
 
-        return productMapper.convertToDTO(productRepository.save(productToUpdate));
+        return productMapper.convertToDetailsDTO(productRepository.save(productToUpdate));
     }
 }

@@ -7,8 +7,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import com.e_shop.Shoe_Shop.dto.dto.ProductWithDetails;
 import com.e_shop.Shoe_Shop.dto.dto.ProductDTO;
-import com.e_shop.Shoe_Shop.dto.dto.ProductInfoDTO;
+import com.e_shop.Shoe_Shop.dto.dto.ProductFullInfo;
 import com.e_shop.Shoe_Shop.entity.Brand;
 import com.e_shop.Shoe_Shop.entity.Category;
 import com.e_shop.Shoe_Shop.entity.Media;
@@ -33,12 +34,12 @@ public class ProductMapper {
     private final MediaRepository mediaRepository;
     
     // Convert Product and ProductDetail to DTO
-    public ProductDTO convertToDTO(Product product) {
-        Set<ProductDTO.ProductDetailDTO> detailDTOs = product.getDetails().stream()
+    public ProductWithDetails convertToDetailsDTO(Product product) {
+        Set<ProductWithDetails.ProductDetailDTO> detailDTOs = product.getDetails().stream()
             .map(this::convertDetailToDTO)
             .collect(Collectors.toSet());
 
-        ProductDTO dto = new ProductDTO();
+        ProductWithDetails dto = new ProductWithDetails();
 
         dto.setId(product.getId());
         dto.setProductName(product.getProductName());
@@ -72,8 +73,8 @@ public class ProductMapper {
         return dto;
     }
 
-    public ProductDTO.ProductDetailDTO convertDetailToDTO(ProductDetail productDetail) {
-        return new ProductDTO.ProductDetailDTO(
+    public ProductWithDetails.ProductDetailDTO convertDetailToDTO(ProductDetail productDetail) {
+        return new ProductWithDetails.ProductDetailDTO(
             productDetail.getId(),
             productDetail.getColor(),
             productDetail.getSize(),
@@ -83,7 +84,7 @@ public class ProductMapper {
     }
 
     // Convert DTO to Product and ProductDetail Entity
-    public Product convertToEntity(ProductDTO productDTO) {
+    public Product convertToEntity(ProductWithDetails productDTO) {
         Product product = new Product();
         product.setId(productDTO.getId());
         product.setProductName(productDTO.getProductName());
@@ -135,7 +136,7 @@ public class ProductMapper {
         return product;
     }
 
-    public ProductDetail convertDetailToEntity(ProductDTO.ProductDetailDTO productDetailDTO) {
+    public ProductDetail convertDetailToEntity(ProductWithDetails.ProductDetailDTO productDetailDTO) {
         ProductDetail detail = new ProductDetail();
         detail.setId(productDetailDTO.getId());
         detail.setColor(productDetailDTO.getColor());
@@ -145,15 +146,48 @@ public class ProductMapper {
         return detail;
     }
 
-    public ProductInfoDTO convertToInfoDTO(Product product) {
-        ProductInfoDTO dto = new ProductInfoDTO();
+    public ProductDTO convertToDTO(Product product) {
+        ProductDTO dto = new ProductDTO();
+
+        dto.setId(product.getId());
+        dto.setProductName(product.getProductName());
+        dto.setProductImage(product.getProductImage());
+        dto.setProductPrice(product.getProductPrice());
+        dto.setDiscountPercent(product.getDiscountPercent());
+        dto.setBrandName(product.getBrand().getName());
+        dto.setCategories(product.getCategory().stream().map(Category::getName).collect(Collectors.toSet()));
+        
+        Set<Media> medias = product.getMedias();
+        if (medias != null && !medias.isEmpty()) {
+            String[] publicIds = medias.stream()
+                .map(Media::getPublicId)
+                .toArray(String[]::new);
+
+            String[] urls = medias.stream()
+                .map(Media::getUrl)
+                .toArray(String[]::new);
+
+            dto.setPublicIds(publicIds);
+            dto.setUrls(urls);
+        }
+        
+        return dto;
+    }
+
+    public ProductFullInfo convertToFullInfoDTO(Product product) {
+        ProductFullInfo dto = new ProductFullInfo();
 
         dto.setId(product.getId());
         dto.setProductName(product.getProductName());
         dto.setProductDescription(product.getProductDescription());
         dto.setProductImage(product.getProductImage());
         dto.setProductPrice(product.getProductPrice());
+        dto.setProductQuantity(product.getProductQuantity());
+        dto.setProductQuantitySold(product.getProductQuantitySold());
+        dto.setProductDayCreated(new Date());
         dto.setDiscountPercent(product.getDiscountPercent());
+        dto.setReviewCount(product.getReviewCount());
+        dto.setAverageRating(product.getAverageRating());
         dto.setBrandName(product.getBrand().getName());
         dto.setCategories(product.getCategory().stream().map(Category::getName).collect(Collectors.toSet()));
         

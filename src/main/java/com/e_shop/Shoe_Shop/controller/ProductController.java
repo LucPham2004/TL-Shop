@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.e_shop.Shoe_Shop.dto.dto.ProductWithDetails;
 import com.e_shop.Shoe_Shop.dto.dto.ProductDTO;
-import com.e_shop.Shoe_Shop.dto.dto.ProductInfoDTO;
+import com.e_shop.Shoe_Shop.dto.dto.ProductFullInfo;
 import com.e_shop.Shoe_Shop.service.ProductService;
 
 @RestController
@@ -27,32 +28,37 @@ public class ProductController {
 
     // GET
     @GetMapping
-    public List<ProductInfoDTO> getAllProducts() {
+    public List<ProductDTO> getAllProducts() {
         return productService.getAllProducts();
     }
 
+    @GetMapping("/fullInfo")
+    public List<ProductFullInfo> getAllProductsFullInfo() {
+        return productService.getAllProductsFullInfo();
+    }
+
     @GetMapping("/withdetails")
-    public List<ProductDTO> getAllProductsWithDetails() {
+    public List<ProductWithDetails> getAllProductsWithDetails() {
         return productService.getAllProductsWithDetails();
     }
 
     @GetMapping("/{id}")
-    public ProductDTO getProduct(@PathVariable Integer id) {
+    public ProductWithDetails getProduct(@PathVariable Integer id) {
         return productService.getProductById(id);
     }
 
     @GetMapping("/topproducts")
-    public List<ProductInfoDTO> getTopProducts() {
+    public List<ProductDTO> getTopProducts() {
         return productService.getTopProducts();
     }
 
     @GetMapping("/low-remaining")
-    public List<ProductInfoDTO> getLowRemainingProducts() {
+    public List<ProductDTO> getLowRemainingProducts() {
         return productService.lowRemainingProducts();
     }
 
     @GetMapping("/search")
-    public List<ProductInfoDTO> searchProducts(@RequestParam("keyword") String keywword) {
+    public List<ProductDTO> searchProducts(@RequestParam("keyword") String keywword) {
         return productService.searchProducts(keywword);
     }
 
@@ -62,24 +68,24 @@ public class ProductController {
     // }
 
     @GetMapping(path = "/brand/{brandName}")
-    public List<ProductInfoDTO> getProductsByBrand(@PathVariable String brandName) {
+    public List<ProductDTO> getProductsByBrand(@PathVariable String brandName) {
         return productService.getProductsByBrand(brandName);
     }
 
     @GetMapping(path = "/category/{categoryName}")
-    public List<ProductInfoDTO> getProductsByCategory(@PathVariable String categoryName) {
+    public List<ProductDTO> getProductsByCategory(@PathVariable String categoryName) {
         return productService.getProductsByCategory(categoryName);
     }
 
     // POST
     @PostMapping
-    public ProductDTO createProduct(@RequestBody ProductDTO productDTO) {
+    public ProductWithDetails createProduct(@RequestBody ProductWithDetails productDTO) {
         return productService.saveProduct(productDTO);
     }
 
     @PostMapping("/addMany")
-    public List<ProductDTO> createManyProducts(@RequestBody List<ProductDTO> productDTO) {
-        for(ProductDTO newProductDTO :productDTO) {
+    public List<ProductWithDetails> createManyProducts(@RequestBody List<ProductWithDetails> productDTO) {
+        for(ProductWithDetails newProductDTO :productDTO) {
             productService.saveProduct(newProductDTO);
         }
         return null;
@@ -93,7 +99,7 @@ public class ProductController {
 
     // PUT
     @PutMapping("/{id}")
-    public ProductDTO updateProduct(@PathVariable Integer id, @RequestBody ProductDTO productDTO) {
+    public ProductWithDetails updateProduct(@PathVariable Integer id, @RequestBody ProductWithDetails productDTO) {
         productDTO.setId(id);
         return productService.saveProduct(productDTO);
     }
