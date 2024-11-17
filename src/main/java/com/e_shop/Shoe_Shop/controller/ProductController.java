@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.e_shop.Shoe_Shop.dto.dto.ProductWithDetails;
 import com.e_shop.Shoe_Shop.dto.dto.ProductDTO;
 import com.e_shop.Shoe_Shop.dto.dto.ProductFullInfo;
+import com.e_shop.Shoe_Shop.dto.dto.ProductWithDetails;
+import com.e_shop.Shoe_Shop.dto.request.AddProductImages;
+import com.e_shop.Shoe_Shop.dto.request.ProductEditRequest;
 import com.e_shop.Shoe_Shop.service.ProductService;
 
 @RestController
@@ -62,11 +64,6 @@ public class ProductController {
         return productService.searchProducts(keywword);
     }
 
-    // @GetMapping("/images/{productName}")
-    // public ResponseEntity<byte[]> getProductImages(@PathVariable String productName) {
-    //     return productService.getProductImages(productName);
-    // }
-
     @GetMapping(path = "/brand/{brandName}")
     public List<ProductDTO> getProductsByBrand(@PathVariable String brandName) {
         return productService.getProductsByBrand(brandName);
@@ -91,17 +88,21 @@ public class ProductController {
         return null;
     }
 
-    // @PostMapping(path = "/uploadImages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    // public String uploadImages(@RequestParam String productName, 
-    //                         @RequestParam MultipartFile[] productImages){
-    //     return productService.uploadImages(productName, productImages);
-    // }
+    @PostMapping(path = "/image/upload")
+    public ProductFullInfo uploadImages(@RequestBody AddProductImages request){
+        return productService.uploadImages(request);
+    }
 
     // PUT
     @PutMapping("/{id}")
     public ProductWithDetails updateProduct(@PathVariable Integer id, @RequestBody ProductWithDetails productDTO) {
         productDTO.setId(id);
         return productService.saveProduct(productDTO);
+    }
+
+    @PutMapping("/edit")
+    public ProductWithDetails editProductMainInfo(@RequestBody ProductEditRequest request) {
+        return productService.editProductMainInfo(request);
     }
 
     // DELETE

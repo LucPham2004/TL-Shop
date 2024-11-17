@@ -3,17 +3,21 @@ package com.e_shop.Shoe_Shop.service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.e_shop.Shoe_Shop.dto.dto.ProductWithDetails;
 import com.e_shop.Shoe_Shop.dto.dto.ProductDTO;
 import com.e_shop.Shoe_Shop.dto.dto.ProductFullInfo;
+import com.e_shop.Shoe_Shop.dto.dto.ProductWithDetails;
+import com.e_shop.Shoe_Shop.dto.request.AddProductImages;
+import com.e_shop.Shoe_Shop.dto.request.ProductEditRequest;
 import com.e_shop.Shoe_Shop.entity.Brand;
 import com.e_shop.Shoe_Shop.entity.Category;
+import com.e_shop.Shoe_Shop.entity.Media;
 import com.e_shop.Shoe_Shop.entity.Product;
 import com.e_shop.Shoe_Shop.entity.ProductDetail;
 import com.e_shop.Shoe_Shop.exception.AppException;
@@ -21,25 +25,29 @@ import com.e_shop.Shoe_Shop.exception.ErrorCode;
 import com.e_shop.Shoe_Shop.mapper.ProductMapper;
 import com.e_shop.Shoe_Shop.repository.BrandRepository;
 import com.e_shop.Shoe_Shop.repository.CategoryRepository;
+import com.e_shop.Shoe_Shop.repository.MediaRepository;
 import com.e_shop.Shoe_Shop.repository.ProductRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class ProductService {
+
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
+    private final MediaRepository mediaRepository;
     
+
     public ProductService(ProductRepository productRepository, BrandRepository brandRepository,
-            CategoryRepository categoryRepository, ProductMapper productMapper) {
+            CategoryRepository categoryRepository, ProductMapper productMapper, MediaRepository mediaRepository) {
         this.productRepository = productRepository;
         this.brandRepository = brandRepository;
         this.categoryRepository = categoryRepository;
         this.productMapper = productMapper;
+        this.mediaRepository = mediaRepository;
     }
-
     // CRUD Methods
     // GET
     public List<ProductDTO> getAllProducts() {
@@ -183,29 +191,32 @@ public class ProductService {
         }
     }
 
-    // public String uploadImages(String productName, MultipartFile[] files) {
-    //     Path uploadDirPath = Path.of("temporaryDisabled/img/products/", productName);
+    public ProductFullInfo uploadImages(AddProductImages request) {
+        Product product = productRepository.findById(request.getId())
+            .orElseThrow(() -> new AppException(ErrorCode.ENTITY_EXISTED));
+
+        if (request.getPublicIds() != null && request.getUrls() != null) {
+
+            if (request.getPublicIds().length != request.getUrls().length) {
+                throw new IllegalArgumentException("The size of publicIds and urls must be the same.");
+            }
         
-    //     try {
-    //         Files.createDirectories(uploadDirPath);
-    //     } catch (IOException e) {
-    //         throw new IllegalStateException("Failed to create upload directory: " + uploadDirPath.toString(), e);
-    //     }
-    
-    //     for (MultipartFile file : files) {
-    //         @SuppressWarnings("null")
-    //         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-    //         Path filePath = uploadDirPath.resolve(fileName);
-            
-    //         try {
-    //             file.transferTo(filePath.toFile());
-    //         } catch (IOException e) {
-    //             throw new IllegalStateException("Failed to upload file: " + fileName, e);
-    //         }
-    //     }
+            Set<Media> medias = new HashSet<>();
         
-    //     return "Upload Images successfully";
-    // }
+            for (int i = 0; i < request.getPublicIds().length; i++) {
+                Media media = new Media();
+                media.setPublicId(request.getPublicIds()[i]);
+                media.setUrl(request.getUrls()[i]);
+                media.setProduct(product);
+        
+                medias.add(mediaRepository.save(media));
+            }
+        
+            product.setMedias(medias);
+        }
+
+        return productMapper.convertToFullInfoDTO(product);
+    }
 
 
     // DELETE
@@ -252,6 +263,32 @@ public class ProductService {
         productToUpdate.getDetails().clear();
         productToUpdate.getDetails().addAll(updatedDetails);
         updatedDetails.forEach(detail -> detail.setProduct(productToUpdate));
+
+        return productMapper.convertToDetailsDTO(productRepository.save(productToUpdate));
+    }
+
+    @Transactional
+    public ProductWithDetails editProductMainInfo(ProductEditRequest productDTO) {
+        Product productToUpdate = productRepository.findById(productDTO.getId())
+            .orElseThrow(() -> new AppException(ErrorCode.ENTITY_NOT_EXISTED));
+
+        // Update product fields
+        productToUpdate.setProductName(productDTO.getProductName());
+        productToUpdate.setProductDescription(productDTO.getProductDescription());
+        productToUpdate.setProductPrice(productDTO.getProductPrice());
+        productToUpdate.setDiscountPercent(productDTO.getDiscountPercent());
+
+        // Update brand
+        Brand brand = brandRepository.findByName(productDTO.getBrandName());
+        if (brand != null) {
+            productToUpdate.setBrand(brand);
+        }
+
+        // Update categories
+        Set<Category> categories = productDTO.getCategories().stream()
+            .map(categoryId -> categoryRepository.findByName(categoryId))
+            .collect(Collectors.toSet());
+        productToUpdate.setCategory(categories);
 
         return productMapper.convertToDetailsDTO(productRepository.save(productToUpdate));
     }
